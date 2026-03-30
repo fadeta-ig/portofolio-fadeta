@@ -25,15 +25,15 @@ useGsapScrollReveal(sectionRef, {
     <div class="max-w-7xl mx-auto px-6">
 
       <div class="mb-16 md:mb-24">
-        <h2 class="text-xs uppercase tracking-[0.3em] text-accent-icy mb-4 opacity-80">Expertise</h2>
-        <h3 class="text-3xl md:text-5xl font-light text-white">The Hybrid Skillset</h3>
+        <h2 class="text-xs uppercase tracking-[0.3em] text-accent-icy mb-4 opacity-80">Keahlian</h2>
+        <h3 class="text-3xl md:text-5xl font-light text-white">Kombinasi Keahlian</h3>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-10">
 
         <!-- Infrastructure Column -->
         <div class="space-y-6">
-          <h4 class="text-xl font-medium tracking-wide text-gray-400 mb-8 border-b border-glass-border pb-4">Infrastructure & Networking</h4>
+          <h4 class="text-xl font-medium tracking-wide text-gray-400 mb-8 border-b border-glass-border pb-4">Infrastruktur & Jaringan</h4>
 
           <GlassCard
             v-for="(skill, index) in skills.infrastructure"
@@ -53,7 +53,7 @@ useGsapScrollReveal(sectionRef, {
 
         <!-- Web Development Column -->
         <div class="space-y-6">
-          <h4 class="text-xl font-medium tracking-wide text-gray-400 mb-8 border-b border-glass-border pb-4">Web Development</h4>
+          <h4 class="text-xl font-medium tracking-wide text-gray-400 mb-8 border-b border-glass-border pb-4">Pengembangan Web</h4>
 
           <GlassCard
             v-for="(skill, index) in skills.development"

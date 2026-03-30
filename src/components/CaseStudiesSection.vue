@@ -42,12 +42,12 @@ onMounted(() => {
 
       <!-- Section Header -->
       <div class="mb-20 text-center max-w-3xl mx-auto" ref="headerRef">
-        <h2 class="text-xs uppercase tracking-[0.3em] text-accent-icy mb-4 opacity-80">Case Studies</h2>
+        <h2 class="text-xs uppercase tracking-[0.3em] text-accent-icy mb-4 opacity-80">Studi Kasus</h2>
         <h3 class="text-3xl md:text-5xl font-light text-white leading-tight mb-8">
-          Architected for <span class="text-gradient">Performance</span>
+          Dibangun untuk <span class="text-gradient">Performa</span>
         </h3>
         <p class="text-gray-400 font-light text-lg">
-          A selection of recent engineering work, blending robust backend logic with premium, liquid-smooth frontend interfaces.
+          Beberapa proyek terbaru yang menggabungkan logika backend yang solid dengan antarmuka frontend yang modern dan responsif.
         </p>
       </div>
 
@@ -117,7 +117,7 @@ onMounted(() => {
               </div>
 
               <span class="hidden sm:flex items-center gap-1.5 text-[11px] font-medium tracking-wider text-gray-500 group-hover:text-accent-icy transition-all duration-300 whitespace-nowrap">
-                <span class="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">VIEW</span>
+                <span class="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">LIHAT</span>
                 <ArrowUpRight class="w-3.5 h-3.5" stroke-width="2" />
               </span>
             </div>

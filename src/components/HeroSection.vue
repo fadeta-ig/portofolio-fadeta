@@ -70,7 +70,7 @@ onUnmounted(() => {
     
     <!-- Foreground Content -->
     <div class="relative z-10 text-center flex flex-col items-center select-none pointer-events-none">
-      <h2 class="text-xs uppercase tracking-[0.3em] text-accent-icy mb-4 opacity-80">Portfolio</h2>
+      <h2 class="text-xs uppercase tracking-[0.3em] text-accent-icy mb-4 opacity-80">Portofolio</h2>
       
       <h1 ref="nameLabel" class="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-white mb-6">
         Fadeta Ilhan Gandhi
@@ -85,7 +85,7 @@ onUnmounted(() => {
     
     <!-- Scroll indicator -->
     <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 hidden md:flex flex-col items-center opacity-50 animate-pulse">
-      <span class="text-xs uppercase tracking-widest mb-2">Scroll</span>
+      <span class="text-xs uppercase tracking-widest mb-2">Gulir ke Bawah</span>
       <div class="w-[1px] h-12 bg-gradient-to-b from-white to-transparent"></div>
     </div>
   </section>

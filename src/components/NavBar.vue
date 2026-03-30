@@ -20,11 +20,11 @@ const scrollTo = (id) => {
       </a>
       
       <div class="hidden md:flex space-x-8">
-        <a href="#about" @click.prevent="scrollTo('about')" class="text-sm font-medium text-gray-300 hover:text-white transition-colors">About</a>
-        <a href="#education" @click.prevent="scrollTo('education')" class="text-sm font-medium text-gray-300 hover:text-white transition-colors">Education</a>
-        <a href="#expertise" @click.prevent="scrollTo('expertise')" class="text-sm font-medium text-gray-300 hover:text-white transition-colors">Expertise</a>
-        <a href="#case-studies" @click.prevent="scrollTo('case-studies')" class="text-sm font-medium text-gray-300 hover:text-white transition-colors">Projects</a>
-        <a href="#certifications" @click.prevent="scrollTo('certifications')" class="text-sm font-medium text-gray-300 hover:text-white transition-colors">Certifications</a>
+        <a href="#about" @click.prevent="scrollTo('about')" class="text-sm font-medium text-gray-300 hover:text-white transition-colors">Tentang</a>
+        <a href="#education" @click.prevent="scrollTo('education')" class="text-sm font-medium text-gray-300 hover:text-white transition-colors">Pendidikan</a>
+        <a href="#expertise" @click.prevent="scrollTo('expertise')" class="text-sm font-medium text-gray-300 hover:text-white transition-colors">Keahlian</a>
+        <a href="#case-studies" @click.prevent="scrollTo('case-studies')" class="text-sm font-medium text-gray-300 hover:text-white transition-colors">Proyek</a>
+        <a href="#certifications" @click.prevent="scrollTo('certifications')" class="text-sm font-medium text-gray-300 hover:text-white transition-colors">Sertifikasi</a>
       </div>
       
       <div class="flex items-center space-x-4">
@@ -33,7 +33,7 @@ const scrollTo = (id) => {
           <span>Resume</span>
         </a>
         <a href="#contact" @click.prevent="scrollTo('contact')" class="px-5 py-2.5 text-sm font-medium bg-white/10 hover:bg-white/20 text-white rounded-full transition-all border border-white/10 hover:border-white/30">
-          Let's Talk
+          Hubungi Saya
         </a>
       </div>
     </div>

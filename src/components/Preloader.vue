@@ -7,7 +7,7 @@ const emit = defineEmits(['loading-complete']);
 const preloaderRef = ref(null);
 const textRef = ref(null);
 const progressRef = ref(null);
-const loadingText = ref('INITIALIZING PROTOCOLS');
+const loadingText = ref('MEMUAT SISTEM');
 
 onMounted(() => {
   const tl = gsap.timeline();
@@ -19,9 +19,9 @@ onMounted(() => {
     ease: 'power2.inOut',
     onUpdate: function() {
       const progress = Math.round(this.progress() * 100);
-      if (progress > 30 && progress < 70) loadingText.value = 'COMPILING SHADERS';
-      if (progress >= 70) loadingText.value = 'RENDERING ENVIRONMENT';
-      if (progress === 100) loadingText.value = 'SYSTEM READY';
+      if (progress > 30 && progress < 70) loadingText.value = 'MENYIAPKAN TAMPILAN';
+      if (progress >= 70) loadingText.value = 'MEMPERSIAPKAN LINGKUNGAN';
+      if (progress === 100) loadingText.value = 'SIAP';
     }
   });
 

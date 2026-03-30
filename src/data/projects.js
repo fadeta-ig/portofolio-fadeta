@@ -7,36 +7,36 @@ export const projects = [
   {
     id: '01',
     title: 'Koi Farm',
-    category: 'Web Development',
+    category: 'Pengembangan Web',
     tech: 'React, Tailwind CSS',
-    description: 'A modern, responsive platform tailored for showcasing and managing premium Koi fish collections.',
+    description: 'Platform modern dan responsif untuk menampilkan serta mengelola koleksi ikan koi premium.',
     link: 'https://koifarm-six.vercel.app/',
     image: koifarmImg
   },
   {
     id: '02',
     title: 'Rsolv',
-    category: 'Web Development',
+    category: 'Pengembangan Web',
     tech: 'Vue 3, Modern UI',
-    description: 'A dedicated application designed to streamline and resolve complex structural issues.',
+    description: 'Aplikasi yang dirancang untuk membantu menyelesaikan permasalahan struktural secara efisien.',
     link: 'https://rspace-rho.vercel.app/',
     image: rsolvImg
   },
   {
     id: '03',
     title: 'Katalog Lelang',
-    category: 'Web Development',
+    category: 'Pengembangan Web',
     tech: 'Full-stack Platform',
-    description: 'An interactive auction catalog system with real-time bidding updates and secure transactions.',
+    description: 'Sistem katalog lelang interaktif dengan pembaruan penawaran secara langsung dan transaksi yang aman.',
     link: 'https://katalog-lelang-1.vercel.app/',
     image: katalogLelangImg
   },
   {
     id: '04',
     title: 'Kalender 2026',
-    category: 'Web Development',
+    category: 'Pengembangan Web',
     tech: 'Frontend Utility',
-    description: 'A beautifully crafted, fast, and accessible digital calendar interface for 2026 planning.',
+    description: 'Antarmuka kalender digital yang cepat, ringan, dan mudah diakses untuk perencanaan tahun 2026.',
     link: 'https://kalender-2026.vercel.app/',
     image: kalender2026Img
   }

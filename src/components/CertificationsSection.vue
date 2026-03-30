@@ -23,9 +23,9 @@ useGsapScrollReveal(contentRef, {
     <div class="max-w-5xl mx-auto px-6">
 
       <div class="mb-16 text-center max-w-3xl mx-auto" ref="contentRef">
-        <h2 class="text-xs uppercase tracking-[0.3em] text-accent-icy mb-4 opacity-80">Credentials</h2>
+        <h2 class="text-xs uppercase tracking-[0.3em] text-accent-icy mb-4 opacity-80">Kredensial</h2>
         <h3 class="text-3xl md:text-5xl font-light text-white leading-tight mb-12">
-          Certified <span class="font-medium italic text-gradient">Expertise</span>
+          <span class="font-medium italic text-gradient">Sertifikasi</span> Profesional
         </h3>
 
         <!-- Certificate Card -->
@@ -48,16 +48,16 @@ useGsapScrollReveal(contentRef, {
 
             <div class="space-y-4 mb-8 relative z-10">
               <p class="text-gray-300 font-light leading-relaxed">
-                Official certification validating extensive knowledge in RouterOS software and RouterBOARD products, network design, implementation, and advanced troubleshooting.
+                Sertifikasi resmi yang memvalidasi pengetahuan mendalam tentang perangkat lunak RouterOS dan produk RouterBOARD, perancangan jaringan, implementasi, serta pemecahan masalah tingkat lanjut.
               </p>
               <div class="flex items-center gap-6 text-sm text-gray-500 font-mono">
                 <span>ID: 1911NA1056</span>
-                <span>Issued: 13-11-2019</span>
+                <span>Diterbitkan: 13-11-2019</span>
               </div>
             </div>
 
             <div class="inline-flex items-center gap-2 text-sm font-medium tracking-wider text-accent-icy group-hover:translate-x-2 transition-transform duration-300 relative z-10">
-              <span>VIEW ORIGINAL CERTIFICATE</span>
+              <span>LIHAT SERTIFIKAT ASLI</span>
               <ExternalLink class="w-4 h-4" />
             </div>
 
