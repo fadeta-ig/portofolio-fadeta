@@ -1,14 +1,14 @@
-import { 
-  siLinux, siMikrotik, 
-  siVuedotjs, siReact, 
+import {
+  siLinux, siMikrotik,
+  siVuedotjs, siReact,
   siTailwindcss, siWordpress, siGreensock, siLaravel
 } from 'simple-icons';
 import { Server, Video } from 'lucide-vue-next';
 
 export const skills = {
   infrastructure: [
-    { name: 'Network Architecture', level: 90, iconConfig: { type: 'lucide', icon: Server } },
-    { name: 'Linux Server Admin', level: 95, iconConfig: { type: 'simple', path: siLinux.path } },
+    { name: 'Network Architecture', level: 95, iconConfig: { type: 'lucide', icon: Server } },
+    { name: 'Linux Server Admin', level: 90, iconConfig: { type: 'simple', path: siLinux.path } },
     { name: 'Mikrotik & Ruijie', level: 95, iconConfig: { type: 'simple', path: siMikrotik.path } },
     { name: 'CCTV & VoIP Systems', level: 90, iconConfig: { type: 'lucide', icon: Video } },
     { name: 'Security & Firewalls', level: 85, iconConfig: { type: 'lucide', icon: Server } },

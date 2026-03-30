@@ -19,7 +19,7 @@ useGsapScrollReveal(contentRef, {
 </script>
 
 <template>
-  <section id="certifications" class="py-24 relative z-10">
+  <section id="certifications" class="py-16 relative z-10">
     <div class="max-w-5xl mx-auto px-6">
 
       <div class="mb-16 text-center max-w-3xl mx-auto" ref="contentRef">

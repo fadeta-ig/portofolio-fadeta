@@ -12,39 +12,45 @@ useGsapScrollReveal(contentRef, {
 </script>
 
 <template>
-  <section id="education" class="py-24 relative z-10">
-    <div class="max-w-4xl mx-auto px-6" ref="contentRef">
-      <h2 class="text-xs uppercase tracking-[0.3em] text-accent-icy mb-8 opacity-80">Pendidikan</h2>
+  <section id="education" class="pt-10 pb-12 relative z-10">
+    <div class="max-w-5xl mx-auto px-6" ref="contentRef">
 
-      <p class="text-3xl md:text-5xl font-light leading-tight text-white/90 mb-10">
-        Lulus <span class="text-gradient font-medium italic">Cumlaude</span> dari
-        Telkom University Surabaya.
-      </p>
+      <!-- Section Label -->
+      <h2 class="text-xs uppercase tracking-[0.3em] text-accent-icy mb-10 opacity-80">Pendidikan</h2>
 
-      <p class="text-xl md:text-2xl font-light text-gray-400 leading-relaxed mb-6">
-        Meraih gelar <span class="text-white">Sarjana Teknik Komputer</span> (S1)
-        dengan <span class="text-white">IPK 3.8</span>, memadukan pemahaman mendalam tentang sistem komputer
-        dengan kemampuan membangun solusi perangkat lunak yang efektif.
-      </p>
+      <!-- Two-column layout (matching About) -->
+      <div class="grid grid-cols-1 md:grid-cols-[1fr_1.2fr] gap-10 md:gap-16 items-start">
 
-      <p class="text-xl md:text-2xl font-light text-gray-400 leading-relaxed mb-10">
-        Penelitian saya berfokus pada pengembangan <span class="text-white">aplikasi mobile berbasis Flutter</span> untuk
-        mendiagnosis penyakit ikan koi menggunakan <span class="text-white">Sistem Pakar</span> dengan
-        metode Forward &amp; Backward Chaining — menggabungkan rekayasa mobile dengan kecerdasan buatan.
-      </p>
+        <!-- Left: headline -->
+        <div>
+          <h3 class="text-2xl md:text-3xl font-light leading-snug text-white/90">
+            Lulus <span class="text-gradient font-medium">Cumlaude</span> dari
+            Telkom University Surabaya dengan
+            <span class="text-gradient font-medium">IPK 3.8</span>.
+          </h3>
+        </div>
 
-      <!-- Research Tags -->
-      <div class="flex flex-wrap gap-3 mb-12">
-        <span class="px-4 py-1.5 text-xs font-medium text-gray-300 bg-white/[0.04] border border-white/[0.08] rounded-full">Flutter</span>
-        <span class="px-4 py-1.5 text-xs font-medium text-gray-300 bg-white/[0.04] border border-white/[0.08] rounded-full">Android</span>
-        <span class="px-4 py-1.5 text-xs font-medium text-gray-300 bg-white/[0.04] border border-white/[0.08] rounded-full">Sistem Pakar</span>
-        <span class="px-4 py-1.5 text-xs font-medium text-gray-300 bg-white/[0.04] border border-white/[0.08] rounded-full">Forward Chaining</span>
-        <span class="px-4 py-1.5 text-xs font-medium text-gray-300 bg-white/[0.04] border border-white/[0.08] rounded-full">Backward Chaining</span>
-      </div>
+        <!-- Right: description + tags + tagline -->
+        <div>
+          <p class="text-base md:text-lg font-light text-gray-400 leading-relaxed border-l-2 border-accent-icy/20 pl-6 mb-6">
+            Meraih gelar Sarjana Teknik Komputer (S1) dengan fokus penelitian pada pengembangan aplikasi mobile berbasis Flutter untuk mendiagnosis penyakit ikan koi menggunakan Sistem Pakar dengan metode Forward &amp; Backward Chaining.
+          </p>
 
-      <div class="flex gap-4 items-center">
-        <div class="h-[1px] w-12 bg-accent-silver/30"></div>
-        <p class="text-sm tracking-widest uppercase text-accent-silver/70 font-medium">IPK 3.8 · Cumlaude</p>
+          <!-- Research Tags -->
+          <div class="flex flex-wrap gap-2 mb-8 pl-6">
+            <span class="px-3 py-1 text-[11px] font-medium text-gray-300 bg-white/[0.04] border border-white/[0.08] rounded-full">Flutter</span>
+            <span class="px-3 py-1 text-[11px] font-medium text-gray-300 bg-white/[0.04] border border-white/[0.08] rounded-full">Android</span>
+            <span class="px-3 py-1 text-[11px] font-medium text-gray-300 bg-white/[0.04] border border-white/[0.08] rounded-full">Sistem Pakar</span>
+            <span class="px-3 py-1 text-[11px] font-medium text-gray-300 bg-white/[0.04] border border-white/[0.08] rounded-full">Forward Chaining</span>
+            <span class="px-3 py-1 text-[11px] font-medium text-gray-300 bg-white/[0.04] border border-white/[0.08] rounded-full">Backward Chaining</span>
+          </div>
+
+          <div class="flex gap-4 items-center">
+            <div class="h-[1px] w-10 bg-accent-silver/30"></div>
+            <p class="text-xs tracking-widest uppercase text-accent-silver/70 font-medium">S1 Teknik Komputer · Cumlaude</p>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>

@@ -16,21 +16,36 @@ useGsapScrollReveal(contentRef, {
 </script>
 
 <template>
-  <section id="about" class="min-h-screen py-24 flex items-center justify-center relative z-10">
-    <div class="max-w-4xl mx-auto px-6" ref="contentRef">
-      <h2 class="text-xs uppercase tracking-[0.3em] text-accent-icy mb-8 opacity-80">Tentang Saya</h2>
-      
-      <p class="text-3xl md:text-5xl font-light leading-tight text-white/90 mb-10">
-        Pengalaman digital yang berkualitas membutuhkan lebih dari sekadar tampilan yang menarik.
-      </p>
-      
-      <p class="text-xl md:text-2xl font-light text-gray-400 leading-relaxed mb-10">
-        Dibutuhkan fondasi teknis yang kuat dan arsitektur yang tepat. Sebagai <span class="text-white">IT Infrastructure Engineer</span> sekaligus <span class="text-white">Web Developer</span>, saya menggabungkan kemampuan merancang infrastruktur jaringan dengan membangun antarmuka web yang responsif dan fungsional.
-      </p>
+  <section id="about" class="pt-16 pb-10 relative z-10">
+    <div class="max-w-5xl mx-auto px-6" ref="contentRef">
 
-      <div class="flex gap-4 items-center mt-12">
-        <div class="h-[1px] w-12 bg-accent-silver/30"></div>
-        <p class="text-sm tracking-widest uppercase text-accent-silver/70 font-medium">Kode yang Bersih & Terstruktur</p>
+      <!-- Section Label -->
+      <h2 class="text-xs uppercase tracking-[0.3em] text-accent-icy mb-10 opacity-80">Tentang Saya</h2>
+
+      <!-- Two-column layout -->
+      <div class="grid grid-cols-1 md:grid-cols-[1fr_1.2fr] gap-10 md:gap-16 items-start">
+
+        <!-- Left: headline -->
+        <div>
+          <h3 class="text-2xl md:text-3xl font-light leading-snug text-white/90">
+            IT Infrastructure Engineer &amp; Web Developer yang berfokus pada
+            <span class="text-gradient font-medium">stabilitas</span> dan
+            <span class="text-gradient font-medium">fungsionalitas</span> sistem.
+          </h3>
+        </div>
+
+        <!-- Right: description + tagline -->
+        <div>
+          <p class="text-base md:text-lg font-light text-gray-400 leading-relaxed border-l-2 border-accent-icy/20 pl-6 mb-8">
+            Bagi saya, pengembangan antarmuka web harus selalu sejalan dengan kesiapan infrastruktur di belakangnya. Pekerjaan saya mencakup pengelolaan jaringan yang andal hingga penulisan kode untuk antarmuka yang interaktif. Pendekatan terintegrasi ini memastikan setiap sistem yang saya bangun dapat beroperasi secara maksimal, aman, dan mudah dikelola.
+          </p>
+
+          <div class="flex gap-4 items-center">
+            <div class="h-[1px] w-10 bg-accent-silver/30"></div>
+            <p class="text-xs tracking-widest uppercase text-accent-silver/70 font-medium">Fadeta Ilhan G</p>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>

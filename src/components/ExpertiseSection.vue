@@ -21,7 +21,7 @@ useGsapScrollReveal(sectionRef, {
 </script>
 
 <template>
-  <section id="expertise" class="py-24 relative z-10" ref="sectionRef">
+  <section id="expertise" class="py-16 relative z-10" ref="sectionRef">
     <div class="max-w-7xl mx-auto px-6">
 
       <div class="mb-16 md:mb-24">

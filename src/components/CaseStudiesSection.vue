@@ -37,7 +37,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <section id="case-studies" class="py-32 relative z-10" ref="sectionRef">
+  <section id="case-studies" class="py-16 relative z-10" ref="sectionRef">
     <div class="max-w-7xl mx-auto px-6">
 
       <!-- Section Header -->
