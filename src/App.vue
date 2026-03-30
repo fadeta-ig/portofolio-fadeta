@@ -6,6 +6,7 @@ import TechMarquee from './components/TechMarquee.vue'
 import AboutSection from './components/AboutSection.vue'
 import ExpertiseSection from './components/ExpertiseSection.vue'
 import CaseStudiesSection from './components/CaseStudiesSection.vue'
+import InfrastructureSection from './components/InfrastructureSection.vue'
 import CertificationsSection from './components/CertificationsSection.vue'
 import EducationSection from './components/EducationSection.vue'
 import ContactSection from './components/ContactSection.vue'
@@ -36,6 +37,7 @@ const handleLoadingComplete = () => {
         <EducationSection />
         <ExpertiseSection />
         <CaseStudiesSection />
+        <InfrastructureSection />
         <CertificationsSection />
         <ContactSection />
       </main>

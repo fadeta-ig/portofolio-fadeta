@@ -1,7 +1,7 @@
 <script setup>
 import { Download } from 'lucide-vue-next';
 import LogoMark from './LogoMark.vue';
-import { certPdf } from '../data/assets';
+import { cvPdf } from '../data/assets';
 
 // Smooth scroll function for Anchor links
 const scrollTo = (id) => {
@@ -28,7 +28,7 @@ const scrollTo = (id) => {
       </div>
       
       <div class="flex items-center space-x-4">
-        <a :href="certPdf" target="_blank" class="hidden sm:inline-flex items-center gap-2 text-sm font-medium text-gray-300 hover:text-white transition-colors">
+        <a :href="cvPdf" target="_blank" class="hidden sm:inline-flex items-center gap-2 text-sm font-medium text-gray-300 hover:text-white transition-colors">
           <Download class="w-4 h-4" />
           <span>Resume</span>
         </a>

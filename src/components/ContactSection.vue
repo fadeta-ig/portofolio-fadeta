@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { useMagneticHover } from '../composables/useMagneticHover';
 import { Github, Linkedin, Mail, ArrowRight, Download, MessageCircle } from 'lucide-vue-next';
-import { certPdf } from '../data/assets';
+import { cvPdf } from '../data/assets';
 
 const btnRef = ref(null);
 const email = 'fadeta287@gmail.com';
@@ -36,7 +36,7 @@ useMagneticHover(btnRef);
         </a>
 
         <a 
-          :href="certPdf" 
+          :href="cvPdf" 
           target="_blank"
           class="group relative inline-flex items-center gap-3 px-8 py-5 rounded-full bg-transparent border border-white/20 text-white font-medium text-lg hover:border-accent-icy hover:text-accent-icy transition-colors duration-300"
         >
