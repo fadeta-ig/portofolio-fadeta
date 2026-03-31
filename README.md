@@ -24,7 +24,7 @@ Fokus saya adalah mengoptimalkan teknologi untuk menciptakan efisiensi sistem, m
 - **Framework & Library:** React.js, Next.js, Vue.js, GSAP, Laravel, Tailwind CSS.
 - **Tools & Version Control:** Git, GitHub, VS Code, Figma.
 
-## 🌐 Mari Terhubung
+## Mari Terhubung
 
 Saya selalu terbuka untuk diskusi mengenai arsitektur jaringan, teknologi IT terbaru, maupun peluang kolaborasi proyek.
 
