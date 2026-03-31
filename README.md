@@ -1,5 +1,47 @@
-# Vue 3 + Vite
+# Hi, saya Fadeta
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+Selamat datang di profil GitHub saya. Saya adalah seorang profesional di bidang Teknologi Informasi dengan keahlian utama pada **Infrastruktur Jaringan (Network Engineering)** dan ketertarikan yang kuat pada pengembangan **Sistem Digital**. 
 
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
+Fokus saya adalah mengoptimalkan teknologi untuk menciptakan efisiensi sistem, memastikan keandalan jaringan, dan mengeksplorasi solusi otomasi.
+
+---
+## Tentang Saya
+
+- **Fokus Saat Ini:** Optimalisasi infrastruktur IT dan eksplorasi sistem digital.
+- **Pengalaman Profesional:** - **IT Staff (Industri Manufaktur):** Bertanggung jawab atas operasional IT end-to-end, pengelolaan infrastruktur jaringan, dan dukungan teknis yang melayani ekosistem bisnis B2B serta B2C.
+- **PT Telkom Indonesia:** Memiliki rekam jejak praktis dalam pemeliharaan dan manajemen jaringan telekomunikasi skala besar.
+- **Minat Lainnya:** Di luar ranah teknis, saya aktif mengikuti perkembangan dunia e-sports kompetitif dan sepak bola.
+
+---
+## Keahlian & Teknologi
+
+**Infrastruktur & Jaringan:**
+- Routing & Switching, Manajemen VLAN, Konfigurasi Firewall, dan Keamanan Jaringan.
+- Analisis, pemantauan (monitoring), dan pemecahan masalah (troubleshooting) arsitektur IT.
+
+**Pengembangan & Eksplorasi AI:**
+- **Bahasa & Ekosistem:** JavaScript, PHP, HTML5, CSS3.
+- **Framework & Library:** React.js, Next.js, Vue.js, GSAP, Laravel, Tailwind CSS.
+- **Tools & Version Control:** Git, GitHub, VS Code, Figma.
+
+**Alat & Platform:**
+- Git, GitHub, Linux Server Administration, dan tools jaringan terkait.
+
+---
+
+## Statistik GitHub
+
+<p align="left">
+  <img src="https://github-readme-stats.vercel.app/api?username=fadeta-ig&show_icons=true&theme=transparent&hide_border=true&title_color=white&text_color=gray" alt="Statistik GitHub" height="150" />
+  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=fadeta-ig&layout=compact&theme=transparent&hide_border=true&title_color=white&text_color=gray" alt="Bahasa Pemrograman" height="150" />
+</p>
+
+---
+
+## 🌐 Mari Terhubung
+
+Saya selalu terbuka untuk diskusi mengenai arsitektur jaringan, teknologi IT terbaru, maupun peluang kolaborasi proyek.
+
+- **Portofolio:** [portofolio-fadeta.vercel.app](https://portofolio-fadeta.vercel.app/)
+- **LinkedIn:** [linkedin.com/in/fadetaig(#)
+- **Email:** [fadeta287@gmail.com](mailto:fadeta287@gmail.com)
