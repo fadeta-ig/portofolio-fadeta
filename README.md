@@ -29,5 +29,5 @@ Fokus saya adalah mengoptimalkan teknologi untuk menciptakan efisiensi sistem, m
 Saya selalu terbuka untuk diskusi mengenai arsitektur jaringan, teknologi IT terbaru, maupun peluang kolaborasi proyek.
 
 - **Portofolio:** [portofolio-fadeta.vercel.app](https://portofolio-fadeta.vercel.app/)
-- **LinkedIn:** [linkedin.com/in/fadetaig(#)
+- **LinkedIn:** [linkedin.com/in/fadetaig](https://www.linkedin.com/in/fadetaig/)
 - **Email:** [fadeta287@gmail.com](mailto:fadeta287@gmail.com)
