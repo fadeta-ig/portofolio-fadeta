@@ -15,7 +15,7 @@ export const projects = [
   },
   {
     id: '02',
-    title: 'Rsolv',
+    title: 'RSLOV Digital Space',
     category: 'Pengembangan Web',
     tech: 'Vue 3, Modern UI',
     description: 'Aplikasi yang dirancang untuk membantu menyelesaikan permasalahan struktural secara efisien.',
