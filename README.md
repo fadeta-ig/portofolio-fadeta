@@ -24,20 +24,6 @@ Fokus saya adalah mengoptimalkan teknologi untuk menciptakan efisiensi sistem, m
 - **Framework & Library:** React.js, Next.js, Vue.js, GSAP, Laravel, Tailwind CSS.
 - **Tools & Version Control:** Git, GitHub, VS Code, Figma.
 
-**Alat & Platform:**
-- Git, GitHub, Linux Server Administration, dan tools jaringan terkait.
-
----
-
-## Statistik GitHub
-
-<p align="left">
-  <img src="https://github-readme-stats.vercel.app/api?username=fadeta-ig&show_icons=true&theme=transparent&hide_border=true&title_color=white&text_color=gray" alt="Statistik GitHub" height="150" />
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=fadeta-ig&layout=compact&theme=transparent&hide_border=true&title_color=white&text_color=gray" alt="Bahasa Pemrograman" height="150" />
-</p>
-
----
-
 ## 🌐 Mari Terhubung
 
 Saya selalu terbuka untuk diskusi mengenai arsitektur jaringan, teknologi IT terbaru, maupun peluang kolaborasi proyek.
