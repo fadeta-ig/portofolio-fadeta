@@ -23,7 +23,7 @@ const scrollTo = (id) => {
         <a href="#about" @click.prevent="scrollTo('about')" class="text-sm font-medium text-gray-300 hover:text-white transition-colors">Tentang</a>
         <a href="#education" @click.prevent="scrollTo('education')" class="text-sm font-medium text-gray-300 hover:text-white transition-colors">Pendidikan</a>
         <a href="#expertise" @click.prevent="scrollTo('expertise')" class="text-sm font-medium text-gray-300 hover:text-white transition-colors">Keahlian</a>
-        <a href="#case-studies" @click.prevent="scrollTo('case-studies')" class="text-sm font-medium text-gray-300 hover:text-white transition-colors">Proyek</a>
+        <a href="#karya" @click.prevent="scrollTo('karya')" class="text-sm font-medium text-gray-300 hover:text-white transition-colors">Proyek</a>
         <a href="#certifications" @click.prevent="scrollTo('certifications')" class="text-sm font-medium text-gray-300 hover:text-white transition-colors">Sertifikasi</a>
       </div>
       
