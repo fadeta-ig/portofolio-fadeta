@@ -1,66 +1,87 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowUpRight } from 'lucide-vue-next';
 import { projects } from '../data/projects';
-import { useGsapScrollReveal } from '../composables/useGsapScrollReveal';
-
-gsap.registerPlugin(ScrollTrigger);
 
 const sectionRef = ref(null);
-const headerRef = ref(null);
-const projectsRef = ref([]);
-
-useGsapScrollReveal(headerRef, {
-  y: 30,
-  duration: 1,
-  triggerStart: 'top 80%'
-});
+const cardsRef = ref([]);
+let ctx;
 
 onMounted(() => {
-  projectsRef.value.forEach((el, index) => {
-    if (!el) return;
-    
-    // Elements to animate
-    const imageContainer = el.querySelector('.project-image-container');
-    const image = el.querySelector('.project-image');
-    const content = el.querySelector('.project-content');
-    const number = el.querySelector('.project-number');
-    const details = el.querySelectorAll('.anim-detail');
-    
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: el,
-        start: 'top 75%',
-        toggleActions: 'play none none reverse'
-      }
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  
+  ctx = gsap.context(() => {
+    // Header reveal
+    gsap.from('.section-header-elem', {
+      y: 30, opacity: 0, duration: 1, stagger: 0.1,
+      scrollTrigger: { trigger: sectionRef.value, start: 'top 85%' }
     });
-    
-    // Clip path reveal for image container
-    tl.fromTo(imageContainer,
-      { clipPath: 'inset(0% 100% 0% 0%)' },
-      { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.2, ease: 'power3.inOut' }
-    )
-    // Slight scale down for image inside
-    .fromTo(image,
-      { scale: 1.2 },
-      { scale: 1, duration: 1.2, ease: 'power3.inOut' },
-      "<" // Start at same time as container
-    )
-    // Fade in content block
-    .fromTo(content,
-      { opacity: 0, x: index % 2 === 0 ? 30 : -30 },
-      { opacity: 1, x: 0, duration: 1, ease: 'power2.out' },
-      "-=0.6"
-    )
-    // Stagger details (number, category, title, description, tags, link)
-    .fromTo([number, ...details],
-      { y: 20, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.6, stagger: 0.1, ease: 'power2.out' },
-      "-=0.6"
-    );
-  });
+
+    if (prefersReducedMotion) return;
+
+    // Stacking Card Effect
+    cardsRef.value.forEach((card, index) => {
+      
+      // Scale down card as the next card overlaps it
+      if (index < cardsRef.value.length - 1) {
+        gsap.to(card, {
+          scale: 0.92,
+          opacity: 0.3,
+          ease: "none",
+          scrollTrigger: {
+            trigger: card,
+            start: "top 12%", 
+            endTrigger: cardsRef.value[index + 1],
+            end: `top 12%+=${index * 12}px`, // Finish when next card hits its specific sticky offset
+            scrub: true,
+          }
+        });
+      }
+      
+      // Content entrance animations
+      const contentElements = card.querySelectorAll('.card-anim');
+      gsap.from(contentElements, {
+        y: 20, opacity: 0, duration: 0.6, stagger: 0.08,
+        scrollTrigger: {
+          trigger: card,
+          start: "top 85%",
+          toggleActions: "play none none reverse"
+        }
+      });
+      
+      // Browser Mockup entrance scale
+      const browser = card.querySelector('.browser-mockup');
+      gsap.from(browser, {
+        y: 40, opacity: 0, duration: 0.8, ease: "power2.out",
+        scrollTrigger: {
+          trigger: card,
+          start: "top 80%",
+          toggleActions: "play none none reverse"
+        }
+      });
+
+      // Browser Image zoom effect
+      const img = card.querySelector('.browser-img');
+      gsap.from(img, {
+        scale: 1.15,
+        duration: 1.2,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: card,
+          start: "top 80%",
+          toggleActions: "play none none reverse"
+        }
+      });
+
+    });
+
+  }, sectionRef.value);
+});
+
+onUnmounted(() => {
+  ctx?.revert();
 });
 </script>
 
@@ -69,84 +90,114 @@ onMounted(() => {
     <div class="max-w-7xl mx-auto px-6">
 
       <!-- Section Header -->
-      <div class="mb-32 text-center max-w-3xl mx-auto" ref="headerRef">
-        <h2 class="text-xs uppercase tracking-[0.3em] text-accent-icy mb-4 opacity-80">Karya</h2>
-        <h3 class="text-4xl md:text-6xl font-light text-white leading-tight mb-8">
-          Editorial <span class="text-gradient">Folio</span>
+      <div class="mb-24 text-center max-w-3xl mx-auto">
+        <h2 class="section-label mb-4 section-header-elem">Karya</h2>
+        <h3 class="text-4xl md:text-6xl font-light text-text-primary leading-tight mb-8 section-heading section-header-elem">
+          Editorial <span class="text-gradient font-medium font-display italic">Folio</span>
         </h3>
-        <p class="text-gray-400 font-light text-lg">
-          Kumpulan proyek yang merepresentasikan dedikasi pada performa, estetika fungsional, dan inovasi arsitektur digital.
+        <p class="text-text-secondary font-normal text-lg section-header-elem">
+          Kumpulan proyek web yang merepresentasikan dedikasi pada performa, estetika fungsional, dan inovasi visual.
         </p>
       </div>
 
-      <!-- Projects Stack -->
-      <div class="flex flex-col space-y-24 md:space-y-32 max-w-6xl mx-auto">
-        <div 
-          v-for="(project, index) in projects" 
+      <!-- Sticky Stacking Container -->
+      <!-- Added extra padding bottom to allow scrolling past the last card smoothly -->
+      <div class="relative w-full pb-[15vh]">
+        <div
+          v-for="(project, index) in projects"
           :key="project.id"
-          class="project-row group flex flex-col md:flex-row items-center gap-10 lg:gap-16"
-          :class="{ 'md:flex-row-reverse': index % 2 !== 0 }"
-          :ref="el => { if (el) projectsRef.push(el) }"
+          class="project-card sticky w-full mb-[20vh] last:mb-0 transform-gpu origin-top"
+          :style="{ top: `calc(12vh + ${index * 12}px)` }"
+          :ref="el => { if (el) cardsRef.push(el) }"
         >
-          <!-- Image Side (50%) -->
-          <div class="w-full md:w-[50%] lg:w-[55%] relative">
-            <a :href="project.link" target="_blank" rel="noopener noreferrer" class="block relative overflow-hidden rounded-xl project-image-container bg-obsidian border border-white/5">
-              <img 
-                :src="project.image" 
-                :alt="project.title"
-                class="w-full h-auto aspect-[16/10] object-cover project-image transition-transform duration-1000 group-hover:scale-105"
-                loading="lazy"
-              />
-              <div class="absolute inset-0 bg-obsidian/20 group-hover:bg-transparent transition-colors duration-700"></div>
-            </a>
-          </div>
-
-          <!-- Content Side (50%) -->
-          <div class="w-full md:w-[50%] lg:w-[45%] flex flex-col relative project-content">
-            <div class="relative z-10 pt-4 md:pt-0">
-              <!-- Neat & Elegant Top Detail -->
-              <div class="anim-detail mb-6 flex items-center gap-4">
-                <span class="project-number text-2xl md:text-3xl font-light text-white/30 tracking-widest font-mono">
+          <!-- Card Body -->
+          <div class="w-full flex flex-col lg:flex-row bg-bg-primary border border-border-default shadow-[0_30px_60px_rgba(0,0,0,0.08)] dark:shadow-[0_30px_60px_rgba(0,0,0,0.4)] rounded-[2rem] overflow-hidden">
+            
+            <!-- Left: Text Content -->
+            <div class="w-full lg:w-[45%] p-8 md:p-12 lg:p-16 flex flex-col justify-center relative z-10 bg-bg-primary">
+              <div class="card-anim mb-6 flex items-center gap-4">
+                <span class="text-2xl md:text-3xl font-light text-text-tertiary tracking-widest font-mono">
                   {{ project.id }}
                 </span>
-                <div class="w-12 h-[1px] bg-white/10"></div>
-                <span class="text-[10px] uppercase tracking-[0.2em] text-accent-icy font-medium">
+                <div class="w-12 h-[1px] bg-border-default"></div>
+                <span class="text-[10px] uppercase tracking-[0.2em] text-accent font-medium">
                   {{ project.category }}
                 </span>
               </div>
-              
-              <h4 class="anim-detail text-3xl md:text-4xl lg:text-5xl font-semibold text-white mb-6 tracking-tight leading-tight group-hover:text-accent-icy transition-colors duration-500">
+
+              <h4 class="card-anim text-3xl md:text-4xl lg:text-5xl font-semibold text-text-primary mb-6 tracking-tight leading-tight">
                 {{ project.title }}
               </h4>
-              
-              <p class="anim-detail text-gray-400 font-light leading-relaxed mb-8 text-sm md:text-base">
+
+              <p class="card-anim text-text-secondary font-normal leading-relaxed mb-8 text-sm md:text-base">
                 {{ project.description }}
               </p>
-              
-              <!-- Tech Tags -->
-              <div class="anim-detail flex flex-wrap gap-2 mb-10">
-                <span 
-                  v-for="(tech, i) in project.tech.split(',')" 
+
+              <div class="card-anim flex flex-wrap gap-2 mb-12">
+                <span
+                  v-for="(tech, i) in project.tech.split(',')"
                   :key="i"
-                  class="px-3 py-1 text-[10px] font-mono tracking-wider text-gray-300 border border-white/10 rounded-full"
+                  class="tag font-mono border-border-subtle"
                 >
                   {{ tech.trim() }}
                 </span>
               </div>
-              
-              <!-- Link -->
-              <a 
-                :href="project.link" 
-                target="_blank" 
+
+              <a
+                :href="project.link"
+                target="_blank"
                 rel="noopener noreferrer"
-                class="anim-detail inline-flex items-center gap-3 text-xs uppercase tracking-widest text-white group-hover:text-accent-icy transition-colors duration-300"
+                class="card-anim inline-flex items-center gap-3 w-fit text-xs uppercase tracking-widest text-text-primary group/btn hover:text-accent transition-colors duration-300"
               >
-                <span>Lihat Proyek</span>
-                <span class="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center group-hover:border-accent-icy/50 transition-colors duration-300">
-                  <ArrowUpRight class="w-4 h-4" />
+                <span>Kunjungi Website</span>
+                <span class="w-8 h-8 rounded-full border border-border-default flex items-center justify-center group-hover/btn:border-accent/50 group-hover/btn:bg-accent-subtle transition-all duration-300">
+                  <ArrowUpRight class="w-4 h-4 group-hover/btn:rotate-45 transition-transform duration-300" />
                 </span>
               </a>
             </div>
+
+            <!-- Right: Browser Mockup -->
+            <div class="w-full lg:w-[55%] p-6 md:p-10 lg:p-12 bg-bg-secondary border-t lg:border-t-0 lg:border-l border-border-default flex items-center justify-center relative">
+              
+              <!-- Subtle ambient glow -->
+              <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                 <div class="w-3/4 h-3/4 bg-accent blur-[100px] opacity-[0.08] dark:opacity-[0.12] rounded-full"></div>
+              </div>
+
+              <!-- Browser Frame -->
+              <div class="browser-mockup relative w-full rounded-xl overflow-hidden border border-border-default shadow-2xl bg-bg-primary group/browser transition-transform duration-700 hover:-translate-y-2">
+                
+                <!-- macOS Style Header -->
+                <div class="h-8 md:h-10 flex items-center px-4 gap-2 bg-bg-tertiary border-b border-border-default">
+                   <!-- Dots -->
+                   <div class="w-2.5 h-2.5 rounded-full bg-border-default group-hover/browser:bg-red-400/90 transition-colors duration-300"></div>
+                   <div class="w-2.5 h-2.5 rounded-full bg-border-default group-hover/browser:bg-amber-400/90 transition-colors duration-300"></div>
+                   <div class="w-2.5 h-2.5 rounded-full bg-border-default group-hover/browser:bg-emerald-400/90 transition-colors duration-300"></div>
+                   
+                   <!-- Fake URL Bar -->
+                   <div class="ml-3 flex-1 h-5 md:h-6 rounded-md bg-bg-primary border border-border-subtle flex items-center justify-center overflow-hidden">
+                      <span class="text-[9px] md:text-[10px] text-text-tertiary font-mono tracking-wider opacity-0 group-hover/browser:opacity-100 transition-opacity duration-300 translate-y-1 group-hover/browser:translate-y-0">
+                        {{ project.title.toLowerCase().replace(/\s+/g, '-') }}.com
+                      </span>
+                   </div>
+                </div>
+
+                <!-- Browser Image -->
+                <div class="relative w-full aspect-[16/10] bg-bg-secondary overflow-hidden">
+                  <!-- Dark overlay that fades on hover to draw focus to content initially -->
+                  <div class="absolute inset-0 bg-gradient-to-t from-bg-primary/50 to-transparent opacity-100 group-hover/browser:opacity-0 transition-opacity duration-700 z-10 pointer-events-none"></div>
+                  
+                  <img
+                    :src="project.image"
+                    :alt="project.title"
+                    class="browser-img w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
+              </div>
+
+            </div>
+
           </div>
         </div>
       </div>
@@ -154,10 +205,3 @@ onMounted(() => {
     </div>
   </section>
 </template>
-
-<style scoped>
-.project-image-container {
-  clip-path: inset(0% 0% 0% 0%);
-}
-</style>
-

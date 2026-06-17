@@ -7,24 +7,26 @@ const props = defineProps({
   },
   variant: {
     type: String,
-    default: 'default', // 'default' | 'highlight'
+    default: 'default',
     validator: (val) => ['default', 'highlight'].includes(val)
   }
 });
 </script>
 
 <template>
-  <div 
-    class="glass-panel rounded-2xl p-6 md:p-8 transition-all duration-300 transform hover:scale-[1.02] hover:-translate-y-1 hover:bg-glass-200 border"
+  <div
+    class="card p-6 md:p-8 transition-all duration-300 transform hover:scale-[1.01] hover:-translate-y-1"
     :class="[
-      variant === 'highlight' ? 'border-accent-icy/30 shadow-[0_0_20px_rgba(160,240,255,0.1)]' : 'border-glass-border'
+      variant === 'highlight'
+        ? 'border-accent/25 shadow-[0_0_16px_var(--accent-subtle)]'
+        : ''
     ]"
   >
-    <h3 v-if="title" class="text-xl font-medium tracking-tight text-white mb-4 flex items-center gap-3">
+    <h3 v-if="title" class="text-lg font-medium tracking-tight text-text-primary mb-4 flex items-center gap-3">
       <slot name="icon"></slot>
       {{ title }}
     </h3>
-    <div class="text-gray-400 font-light leading-relaxed">
+    <div class="text-text-secondary font-normal leading-relaxed">
       <slot></slot>
     </div>
   </div>

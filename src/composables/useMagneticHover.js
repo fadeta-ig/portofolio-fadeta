@@ -1,63 +1,59 @@
 import { onMounted, onUnmounted } from 'vue';
 import gsap from 'gsap';
 
-export function useMagneticHover(elementRef) {
-  let isHovering = false;
+/**
+ * Magnetic hover effect composable.
+ * Moves element subtly toward cursor on hover, springs back on leave.
+ * Automatically cleans up event listeners on unmount.
+ *
+ * @param {import('vue').Ref} elementRef - Template ref for the target element
+ * @param {Object} options - Configuration
+ */
+export function useMagneticHover(elementRef, options = {}) {
+  const { strength = 0.35, resetEase = 'elastic.out(1, 0.3)' } = options;
+  let cleanup = null;
 
   onMounted(() => {
     if (!elementRef.value) return;
-    
-    // Depending on if the ref is a component (has $el) or basic element
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
+
     const el = elementRef.value.$el || elementRef.value;
-    
-    const handleMouseMove = (e) => {
+
+    const handleMouseMove = (event) => {
       const rect = el.getBoundingClientRect();
-      // Calculate cursor position relative to center of element
-      const x = (e.clientX - rect.left) - rect.width / 2;
-      const y = (e.clientY - rect.top) - rect.height / 2;
-      
-      // Move element slightly towards cursor
+      const x = (event.clientX - rect.left) - rect.width / 2;
+      const y = (event.clientY - rect.top) - rect.height / 2;
+
       gsap.to(el, {
-        x: x * 0.4,
-        y: y * 0.4,
-        duration: 0.6,
+        x: x * strength,
+        y: y * strength,
+        duration: 0.5,
         ease: 'power3.out'
       });
     };
 
-    const handleMouseEnter = () => {
-      isHovering = true;
-    };
-
     const handleMouseLeave = () => {
-      isHovering = false;
-      // Reset position
       gsap.to(el, {
         x: 0,
         y: 0,
         duration: 0.8,
-        ease: 'elastic.out(1, 0.3)'
+        ease: resetEase
       });
     };
 
     el.addEventListener('mousemove', handleMouseMove);
-    el.addEventListener('mouseenter', handleMouseEnter);
     el.addEventListener('mouseleave', handleMouseLeave);
 
-    // Store cleanup function on element
-    el._cleanupMagnetic = () => {
+    cleanup = () => {
       el.removeEventListener('mousemove', handleMouseMove);
-      el.removeEventListener('mouseenter', handleMouseEnter);
       el.removeEventListener('mouseleave', handleMouseLeave);
-      delete el._cleanupMagnetic;
+      gsap.killTweensOf(el);
     };
   });
 
   onUnmounted(() => {
-    if (!elementRef.value) return;
-    const el = elementRef.value.$el || elementRef.value;
-    if (el && el._cleanupMagnetic) {
-      el._cleanupMagnetic();
-    }
+    cleanup?.();
   });
 }
