@@ -28,11 +28,13 @@ useMagneticHover(btnRef);
       <div class="flex flex-col sm:flex-row items-center justify-center gap-6">
         <!-- Primary CTA -->
         <a
-          :href="'mailto:' + email"
+          :href="'https://wa.me/' + whatsapp"
+          target="_blank"
+          rel="noopener noreferrer"
           ref="btnRef"
           class="group relative inline-flex items-center gap-4 px-8 py-4 rounded-full bg-accent text-white font-medium text-lg overflow-hidden transition-all duration-300 hover:bg-accent-hover hover:shadow-lg"
         >
-          <span class="relative z-10">Kirim Pesan</span>
+          <span class="relative z-10">Kirim Pesan via WhatsApp</span>
           <ArrowRight class="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform duration-300" />
         </a>
 
