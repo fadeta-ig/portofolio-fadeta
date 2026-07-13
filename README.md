@@ -13,15 +13,10 @@ Website ini dirancang untuk:
 
 ## Struktur halaman
 
-1. Hero dan proposisi nilai
-2. Segmen bisnis yang dilayani
-3. Masalah dan pendekatan
-4. Layanan
-5. Karya pilihan
-6. Proses kerja
-7. Tentang studio
-8. FAQ
-9. Kontak
+- `/` — homepage untuk menjelaskan positioning, layanan, proses, dan mengarahkan pengunjung ke konsultasi.
+- `/portfolio` — arsip karya yang memisahkan website publik, sistem internal, dan eksperimen digital.
+
+Homepage hanya menampilkan pengantar portofolio dan satu CTA. Detail proyek ditempatkan di halaman khusus agar halaman utama tetap ringkas dan alur membaca lebih fokus.
 
 ## Menjalankan proyek
 
@@ -40,5 +35,6 @@ npm run build
 
 - Nomor WhatsApp dan email saat ini mengikuti kontak Fadeta yang sudah ada di proyek.
 - CTA memiliki atribut `data-track` agar dapat disambungkan ke analytics setelah ID dan platform tracking ditentukan.
+- Detail proyek private dibatasi pada konteks dan ruang lingkup umum; nama klien, screenshot, data, dan akses sistem tidak dipublikasikan.
 - Domain produksi belum ditetapkan, sehingga canonical URL dan sitemap belum ditambahkan.
 - File sumber logo beresolusi tinggi disimpan di `src/assets/brand/source`; versi ringan untuk website berada di `public`.

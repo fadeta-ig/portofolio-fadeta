@@ -1,11 +1,14 @@
 <script setup>
 import { onMounted, onUnmounted, ref, watch } from 'vue';
 import { Menu, MessageCircle, Moon, Sun, X } from '@lucide/vue';
+import { useRoute, useRouter } from 'vue-router';
 import gsap from 'gsap';
 import LogoMark from './LogoMark.vue';
 import { useTheme } from '../composables/useTheme';
 
 const { isDark, toggleTheme } = useTheme();
+const route = useRoute();
+const router = useRouter();
 
 const navRef = ref(null);
 const isMobileMenuOpen = ref(false);
@@ -17,15 +20,39 @@ const whatsappLink = `https://wa.me/${whatsapp}?text=${whatsappMessage}`;
 
 const navItems = [
   { label: 'Layanan', id: 'services' },
-  { label: 'Karya', id: 'work' },
+  { label: 'Portofolio', path: '/portfolio' },
   { label: 'Proses', id: 'process' },
   { label: 'Tentang', id: 'studio' },
   { label: 'FAQ', id: 'faq' }
 ];
 
-function scrollTo(id) {
-  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+function hrefFor(item) {
+  return item.path ?? `/#${item.id}`;
+}
+
+async function navigateTo(item) {
   isMobileMenuOpen.value = false;
+
+  if (item.path) {
+    await router.push(item.path);
+    return;
+  }
+
+  if (route.path === '/') {
+    document.getElementById(item.id)?.scrollIntoView({ behavior: 'smooth' });
+    return;
+  }
+
+  await router.push({ name: 'home', hash: `#${item.id}` });
+}
+
+async function goHome() {
+  isMobileMenuOpen.value = false;
+  if (route.path === '/') {
+    document.getElementById('hero')?.scrollIntoView({ behavior: 'smooth' });
+    return;
+  }
+  await router.push({ name: 'home' });
 }
 
 function handleEscape(event) {
@@ -61,18 +88,19 @@ onUnmounted(() => {
 <template>
   <header ref="navRef" class="fixed inset-x-0 top-0 z-50 px-3 pt-3 md:px-5">
     <nav class="glass-panel mx-auto flex h-16 max-w-7xl items-center justify-between rounded-2xl px-4 md:px-5" aria-label="Navigasi utama">
-      <a href="#hero" class="flex items-center gap-2.5 rounded-xl" aria-label="Gandiva Labs — kembali ke atas" @click.prevent="scrollTo('hero')">
-        <LogoMark :size="35" />
+      <a href="/" class="flex items-center gap-2.5 rounded-xl" aria-label="Gandiva Labs — kembali ke beranda" @click.prevent="goHome">
+        <LogoMark :size="35" :variant="isDark ? 'light' : 'dark'" />
         <span class="text-[15px] font-bold tracking-[-0.025em] text-text-primary">Gandiva Labs</span>
       </a>
 
       <div class="hidden items-center gap-7 lg:flex">
         <a
           v-for="item in navItems"
-          :key="item.id"
-          :href="`#${item.id}`"
+          :key="item.label"
+          :href="hrefFor(item)"
           class="py-3 text-sm font-medium text-text-secondary transition-colors hover:text-text-primary"
-          @click.prevent="scrollTo(item.id)"
+          :class="route.path === item.path ? 'text-text-primary' : ''"
+          @click.prevent="navigateTo(item)"
         >
           {{ item.label }}
         </a>
@@ -134,7 +162,7 @@ onUnmounted(() => {
       >
         <div class="flex items-center justify-between border-b border-border-default pb-5">
           <div class="flex items-center gap-3">
-            <LogoMark :size="38" />
+            <LogoMark :size="38" :variant="isDark ? 'light' : 'dark'" />
             <span class="font-bold text-text-primary">Gandiva Labs</span>
           </div>
           <button type="button" class="flex h-11 w-11 items-center justify-center rounded-full hover:bg-bg-secondary" aria-label="Tutup menu" @click="isMobileMenuOpen = false">
@@ -145,10 +173,10 @@ onUnmounted(() => {
         <div class="flex flex-1 flex-col gap-1 py-6">
           <a
             v-for="item in navItems"
-            :key="item.id"
-            :href="`#${item.id}`"
+            :key="item.label"
+            :href="hrefFor(item)"
             class="rounded-xl px-4 py-3 text-lg font-medium text-text-primary hover:bg-bg-secondary"
-            @click.prevent="scrollTo(item.id)"
+            @click.prevent="navigateTo(item)"
           >
             {{ item.label }}
           </a>

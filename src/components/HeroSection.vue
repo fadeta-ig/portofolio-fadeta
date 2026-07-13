@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, onUnmounted, ref } from 'vue';
 import gsap from 'gsap';
-import { ArrowDown, ArrowUpRight, Check, MessageCircle } from '@lucide/vue';
+import { ArrowRight, ArrowUpRight, Check, MessageCircle } from '@lucide/vue';
 
 const heroRef = ref(null);
 let ctx;
@@ -76,13 +76,13 @@ onUnmounted(() => ctx?.revert());
             <ArrowUpRight class="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </a>
 
-          <a
-            href="#work"
+          <RouterLink
+            to="/portfolio"
             class="group inline-flex min-h-12 items-center justify-center gap-3 rounded-full border border-border-default bg-bg-card/70 px-6 text-sm font-bold text-text-primary transition-colors hover:border-text-tertiary"
           >
-            Lihat karya pilihan
-            <ArrowDown class="h-4 w-4 transition-transform group-hover:translate-y-1" />
-          </a>
+            Lihat portofolio
+            <ArrowRight class="h-4 w-4 transition-transform group-hover:translate-x-1" />
+          </RouterLink>
         </div>
 
         <div class="hero-animate mt-6 flex flex-wrap gap-x-5 gap-y-2.5 text-sm text-text-secondary">
