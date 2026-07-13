@@ -59,14 +59,11 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <header ref="navRef" class="fixed inset-x-0 top-0 z-50 px-3 pt-3 md:px-5 md:pt-4">
-    <nav class="glass-panel mx-auto flex h-[4.5rem] max-w-7xl items-center justify-between rounded-2xl px-4 md:px-5" aria-label="Navigasi utama">
-      <a href="#hero" class="flex items-center gap-3 rounded-xl" aria-label="Gandiva Labs — kembali ke atas" @click.prevent="scrollTo('hero')">
-        <LogoMark :size="39" />
-        <span class="leading-none">
-          <span class="block text-sm font-bold tracking-[-0.02em] text-text-primary">Gandiva Labs</span>
-          <span class="mt-1 hidden text-[9px] font-bold uppercase tracking-[0.16em] text-text-tertiary sm:block">Web studio</span>
-        </span>
+  <header ref="navRef" class="fixed inset-x-0 top-0 z-50 px-3 pt-3 md:px-5">
+    <nav class="glass-panel mx-auto flex h-16 max-w-7xl items-center justify-between rounded-2xl px-4 md:px-5" aria-label="Navigasi utama">
+      <a href="#hero" class="flex items-center gap-2.5 rounded-xl" aria-label="Gandiva Labs — kembali ke atas" @click.prevent="scrollTo('hero')">
+        <LogoMark :size="35" />
+        <span class="text-[15px] font-bold tracking-[-0.025em] text-text-primary">Gandiva Labs</span>
       </a>
 
       <div class="hidden items-center gap-7 lg:flex">
@@ -74,7 +71,7 @@ onUnmounted(() => {
           v-for="item in navItems"
           :key="item.id"
           :href="`#${item.id}`"
-          class="text-sm font-medium text-text-secondary transition-colors hover:text-text-primary"
+          class="py-3 text-sm font-medium text-text-secondary transition-colors hover:text-text-primary"
           @click.prevent="scrollTo(item.id)"
         >
           {{ item.label }}
