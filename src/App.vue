@@ -7,7 +7,7 @@ import ExpertiseSection from './components/ExpertiseSection.vue';
 import CaseStudiesSection from './components/CaseStudiesSection.vue';
 import InfrastructureSection from './components/InfrastructureSection.vue';
 import CertificationsSection from './components/CertificationsSection.vue';
-import EducationSection from './components/EducationSection.vue';
+import FaqSection from './components/FaqSection.vue';
 import ContactSection from './components/ContactSection.vue';
 </script>
 
@@ -19,11 +19,11 @@ import ContactSection from './components/ContactSection.vue';
       <HeroSection />
       <TechMarquee />
       <AboutSection />
-      <EducationSection />
       <ExpertiseSection />
       <CaseStudiesSection />
       <InfrastructureSection />
       <CertificationsSection />
+      <FaqSection />
       <ContactSection />
     </main>
   </div>

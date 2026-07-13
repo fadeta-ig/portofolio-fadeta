@@ -1,67 +1,70 @@
 <script setup>
 import { ref } from 'vue';
-import { Award, ExternalLink } from 'lucide-vue-next';
+import { Award, Code2, MessageCircle, Network } from '@lucide/vue';
 import { certPdf } from '../data/assets';
 import { useGsapScrollReveal } from '../composables/useGsapScrollReveal';
 
-const contentRef = ref(null);
+const sectionRef = ref(null);
 
-useGsapScrollReveal(contentRef, {
-  y: 40,
-  duration: 1,
-  triggerStart: 'top 78%'
-});
+const principles = [
+  {
+    icon: MessageCircle,
+    title: 'Komunikasi langsung',
+    text: 'Pembahasan dibuat ringkas dan mudah dipahami, tanpa istilah teknis yang tidak perlu.'
+  },
+  {
+    icon: Code2,
+    title: 'Business-first',
+    text: 'Teknologi dipilih setelah tujuan, kebutuhan, dan kemampuan pengelolaan bisnis dipahami.'
+  },
+  {
+    icon: Network,
+    title: 'Pikir sampai belakang layar',
+    text: 'Bukan hanya tampilan; struktur, hosting, keamanan dasar, dan perawatan ikut dipertimbangkan.'
+  }
+];
+
+useGsapScrollReveal(sectionRef, { y: 34, stagger: 0.1, duration: 0.75, once: true });
 </script>
 
 <template>
-  <section id="certifications" class="py-20 md:py-24 relative z-10">
-    <div class="max-w-5xl mx-auto px-6">
+  <section id="studio" class="py-24 md:py-36">
+    <div ref="sectionRef" class="section-shell">
+      <div class="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
+        <div>
+          <p class="section-kicker mb-6">Tentang studio</p>
+          <h2 class="section-heading text-balance">Teknisnya rapi. Komunikasinya tetap <span class="font-display italic text-accent">manusiawi.</span></h2>
 
-      <div class="mb-16 text-center max-w-3xl mx-auto" ref="contentRef">
-        <h2 class="section-label mb-4">Kredensial</h2>
-        <h3 class="text-3xl md:text-5xl font-light text-text-primary leading-tight mb-12 section-heading">
-          <span class="font-medium font-display italic text-gradient">Sertifikasi</span> Profesional
-        </h3>
+          <div class="mt-9 rounded-[1.6rem] border border-border-default bg-bg-secondary p-6 md:p-7">
+            <p class="text-[11px] font-bold uppercase tracking-[0.16em] text-text-tertiary">Di balik Gandiva Labs</p>
+            <p class="mt-4 text-lg font-bold leading-snug text-text-primary">Fadeta Ilhan Gandhi, S.T.</p>
+            <p class="mt-2 text-sm leading-relaxed text-text-secondary">Web developer dengan latar Teknik Komputer dan IT infrastructure. Kombinasi ini membantu melihat website sebagai tampilan sekaligus sistem yang perlu tetap sehat setelah tayang.</p>
 
-        <!-- Certificate Card -->
-        <a :href="certPdf" target="_blank" rel="noopener noreferrer" class="block group w-full max-w-2xl mx-auto">
-          <div class="card relative overflow-hidden transition-all duration-500 group-hover:-translate-y-2 group-hover:border-accent/40 p-8 md:p-12 text-left">
+            <a :href="certPdf" target="_blank" rel="noopener noreferrer" class="mt-5 inline-flex items-center gap-2 text-xs font-bold text-accent hover:underline">
+              <Award class="h-4 w-4" />
+              Kredensial MTCNA
+            </a>
+          </div>
+        </div>
 
-            <!-- Background Award Icon -->
-            <div class="absolute top-0 right-0 p-8 opacity-[0.06] group-hover:opacity-[0.12] transition-opacity duration-500">
-              <Award class="w-32 h-32 text-accent" />
-            </div>
+        <div>
+          <p class="max-w-2xl text-lg leading-relaxed text-text-secondary md:text-xl">
+            Gandiva Labs lahir dari satu keyakinan sederhana: bisnis tidak butuh website yang terasa rumit. Bisnis butuh partner yang bisa menerjemahkan kebutuhan menjadi solusi yang jelas dan bisa dipakai.
+          </p>
 
-            <div class="flex items-center gap-4 mb-6 relative z-10">
-              <div class="p-3.5 rounded-2xl bg-accent-subtle border border-accent/15 text-accent group-hover:scale-110 transition-transform duration-500">
-                <Award class="w-8 h-8" stroke-width="1.5" />
+          <div class="mt-9 divide-y divide-border-default border-y border-border-default">
+            <article v-for="item in principles" :key="item.title" class="grid gap-4 py-6 sm:grid-cols-[auto_1fr] sm:gap-5">
+              <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-accent-subtle text-accent">
+                <component :is="item.icon" class="h-5 w-5" stroke-width="1.7" />
               </div>
               <div>
-                <h4 class="text-2xl font-semibold tracking-tight text-text-primary group-hover:text-accent transition-colors duration-300">MTCNA</h4>
-                <p class="text-sm font-medium text-text-secondary tracking-wide">MikroTik Certified Network Associate</p>
+                <h3 class="text-lg font-bold text-text-primary">{{ item.title }}</h3>
+                <p class="mt-2 max-w-xl text-sm leading-relaxed text-text-secondary md:text-base">{{ item.text }}</p>
               </div>
-            </div>
-
-            <div class="space-y-4 mb-8 relative z-10">
-              <p class="text-text-secondary font-normal leading-relaxed">
-                Sertifikasi resmi yang memvalidasi pengetahuan mendalam tentang perangkat lunak RouterOS dan produk RouterBOARD, perancangan jaringan, implementasi, serta pemecahan masalah tingkat lanjut.
-              </p>
-              <div class="flex items-center gap-6 text-sm text-text-tertiary font-mono">
-                <span>ID: 1911NA1056</span>
-                <span>Diterbitkan: 13-11-2019</span>
-              </div>
-            </div>
-
-            <div class="inline-flex items-center gap-2 text-sm font-medium tracking-wider text-accent group-hover:translate-x-2 transition-transform duration-300 relative z-10">
-              <span>LIHAT SERTIFIKAT ASLI</span>
-              <ExternalLink class="w-4 h-4" />
-            </div>
-
+            </article>
           </div>
-        </a>
-
+        </div>
       </div>
-
     </div>
   </section>
 </template>

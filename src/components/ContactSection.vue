@@ -1,99 +1,79 @@
 <script setup>
-import { ref } from 'vue';
-import { useMagneticHover } from '../composables/useMagneticHover';
-import { Github, Linkedin, Mail, ArrowRight, Download, MessageCircle } from 'lucide-vue-next';
-import { cvPdf } from '../data/assets';
+import { ArrowUpRight, BriefcaseBusiness, GitBranch, Mail, MessageCircle } from '@lucide/vue';
+import LogoMark from './LogoMark.vue';
 
-const btnRef = ref(null);
-const email = 'fadeta287@gmail.com';
 const whatsapp = '6281553821808';
-
-useMagneticHover(btnRef);
+const email = 'fadeta287@gmail.com';
+const message = encodeURIComponent('Halo Gandiva Labs, saya ingin cerita tentang kebutuhan website bisnis saya.');
+const whatsappLink = `https://wa.me/${whatsapp}?text=${message}`;
 </script>
 
 <template>
-  <section id="contact" class="min-h-screen relative z-10 flex flex-col justify-between pt-24 pb-8 border-t border-border-default">
+  <footer id="contact" class="relative overflow-hidden bg-[#171511] text-[#f5f0e7]">
+    <div class="absolute -bottom-48 left-1/2 h-[32rem] w-[32rem] -translate-x-1/2 rounded-full bg-[#c85f32] opacity-[0.16] blur-[150px]" aria-hidden="true" />
+    <div class="noise-overlay opacity-[0.06]" aria-hidden="true" />
 
-    <div class="flex-grow flex flex-col items-center justify-center text-center px-6 max-w-4xl mx-auto w-full">
-      <h2 class="section-label mb-8">Kontak</h2>
+    <div class="section-shell relative z-10 pb-9 pt-24 md:pt-36">
+      <div class="mx-auto max-w-5xl text-center">
+        <p class="mb-7 text-[11px] font-bold uppercase tracking-[0.2em] text-[#ee8859]">Mulai dari obrolan sederhana</p>
+        <h2 class="text-balance text-[clamp(3rem,7vw,7rem)] font-medium leading-[0.9] tracking-[-0.06em]">
+          Sudah punya ide?<br />Kita bikin arahnya <span class="font-display italic text-[#ee8859]">jelas.</span>
+        </h2>
+        <p class="mx-auto mt-8 max-w-2xl text-base leading-relaxed text-[#bcb4a9] md:text-xl">
+          Ceritakan bisnis, masalah, atau website yang Anda bayangkan. Kami bantu melihat langkah yang paling masuk akal—tanpa harus langsung punya brief lengkap.
+        </p>
 
-      <h3 class="text-4xl md:text-7xl font-light text-text-primary mb-12 tracking-tight section-heading">
-        Siap untuk <span class="text-gradient font-medium font-display italic">berkolaborasi</span>?
-      </h3>
+        <div class="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <a
+            :href="whatsappLink"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-track="footer_whatsapp"
+            class="group inline-flex min-h-14 w-full items-center justify-center gap-3 rounded-full bg-[#f5f0e7] px-7 text-sm font-bold text-[#171511] transition-transform hover:-translate-y-1 sm:w-auto"
+          >
+            <MessageCircle class="h-[18px] w-[18px]" />
+            Chat via WhatsApp
+            <ArrowUpRight class="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </a>
+          <a
+            :href="`mailto:${email}`"
+            data-track="footer_email"
+            class="inline-flex min-h-14 w-full items-center justify-center gap-3 rounded-full border border-white/20 px-7 text-sm font-bold text-[#f5f0e7] transition-colors hover:border-white/45 sm:w-auto"
+          >
+            <Mail class="h-[18px] w-[18px]" />
+            Kirim email
+          </a>
+        </div>
 
-      <p class="text-xl md:text-2xl font-normal text-text-secondary leading-relaxed mb-16 max-w-2xl">
-        Baik untuk merancang infrastruktur jaringan maupun membangun aplikasi web, saya siap membantu mewujudkan kebutuhan Anda.
-      </p>
+        <p class="mt-6 text-xs text-[#827a70]">Balasan mengikuti jam operasional · Surabaya, Indonesia</p>
+      </div>
 
-      <div class="flex flex-col sm:flex-row items-center justify-center gap-6">
-        <!-- Primary CTA -->
-        <a
-          :href="'https://wa.me/' + whatsapp"
-          target="_blank"
-          rel="noopener noreferrer"
-          ref="btnRef"
-          class="group relative inline-flex items-center gap-4 px-8 py-4 rounded-full bg-accent text-white font-medium text-lg overflow-hidden transition-all duration-300 hover:bg-accent-hover hover:shadow-lg"
-        >
-          <span class="relative z-10">Kirim Pesan via WhatsApp</span>
-          <ArrowRight class="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform duration-300" />
-        </a>
+      <div class="mt-24 flex flex-col gap-8 border-t border-white/15 pt-8 md:flex-row md:items-end md:justify-between">
+        <div class="flex items-center gap-3">
+          <LogoMark :size="48" variant="light" />
+          <div>
+            <p class="text-sm font-bold">Gandiva Labs</p>
+            <p class="mt-1 text-[10px] font-bold uppercase tracking-[0.16em] text-[#827a70]">Website studio</p>
+          </div>
+        </div>
 
-        <!-- Secondary CTA -->
-        <a
-          :href="cvPdf"
-          target="_blank"
-          class="group relative inline-flex items-center gap-3 px-8 py-4 rounded-full bg-transparent border border-border-default text-text-primary font-medium text-lg hover:border-accent hover:text-accent transition-all duration-300"
-        >
-          <span>Unduh CV</span>
-          <Download class="w-5 h-5 group-hover:-translate-y-1 transition-transform duration-300" />
-        </a>
+        <div class="flex items-center gap-2">
+          <a href="https://github.com/fadeta-ig" target="_blank" rel="noopener noreferrer" class="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 text-[#aaa298] transition-colors hover:border-[#ee8859]/50 hover:text-[#ee8859]" aria-label="GitHub">
+            <GitBranch class="h-5 w-5" />
+          </a>
+          <a href="https://linkedin.com/in/fadetaig" target="_blank" rel="noopener noreferrer" class="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 text-[#aaa298] transition-colors hover:border-[#ee8859]/50 hover:text-[#ee8859]" aria-label="LinkedIn">
+            <BriefcaseBusiness class="h-5 w-5" />
+          </a>
+          <a :href="whatsappLink" target="_blank" rel="noopener noreferrer" class="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 text-[#aaa298] transition-colors hover:border-[#ee8859]/50 hover:text-[#ee8859]" aria-label="WhatsApp">
+            <MessageCircle class="h-5 w-5" />
+          </a>
+          <a :href="`mailto:${email}`" class="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 text-[#aaa298] transition-colors hover:border-[#ee8859]/50 hover:text-[#ee8859]" aria-label="Email">
+            <Mail class="h-5 w-5" />
+          </a>
+        </div>
+
+        <p class="text-xs text-[#827a70]">© {{ new Date().getFullYear() }} Gandiva Labs. Semua hak dilindungi.</p>
       </div>
     </div>
-
-    <!-- Footer -->
-    <div class="mt-24 px-6 md:px-12 w-full max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6 border-t border-border-default pt-8">
-
-      <div class="text-sm font-normal text-text-tertiary">
-        &copy; {{ new Date().getFullYear() }} Fadeta Ilhan Gandhi. Semua hak dilindungi.
-      </div>
-
-      <div class="flex items-center gap-4">
-        <a
-          href="https://github.com/fadeta-ig"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="w-10 h-10 flex items-center justify-center rounded-full text-text-secondary hover:text-accent hover:bg-accent-subtle transition-all duration-300"
-          aria-label="GitHub"
-        >
-          <Github class="w-5 h-5" />
-        </a>
-        <a
-          href="https://linkedin.com/in/fadetaig"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="w-10 h-10 flex items-center justify-center rounded-full text-text-secondary hover:text-accent hover:bg-accent-subtle transition-all duration-300"
-          aria-label="LinkedIn"
-        >
-          <Linkedin class="w-5 h-5" />
-        </a>
-        <a
-          :href="'https://wa.me/' + whatsapp"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="w-10 h-10 flex items-center justify-center rounded-full text-text-secondary hover:text-accent hover:bg-accent-subtle transition-all duration-300"
-          aria-label="WhatsApp"
-        >
-          <MessageCircle class="w-5 h-5" />
-        </a>
-        <a
-          :href="'mailto:' + email"
-          class="w-10 h-10 flex items-center justify-center rounded-full text-text-secondary hover:text-accent hover:bg-accent-subtle transition-all duration-300"
-          aria-label="Email"
-        >
-          <Mail class="w-5 h-5" />
-        </a>
-      </div>
-
-    </div>
-  </section>
+  </footer>
 </template>

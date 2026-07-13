@@ -1,145 +1,76 @@
 <script setup>
 import { ref } from 'vue';
+import { Compass, MessageSquareText, PenTool, Rocket } from '@lucide/vue';
 import { useGsapScrollReveal } from '../composables/useGsapScrollReveal';
-import { infraProjects } from '../data/infraProjects';
 
 const sectionRef = ref(null);
 
-useGsapScrollReveal(sectionRef, {
-  y: 40,
-  stagger: 0.08,
-  duration: 0.8,
-  triggerStart: 'top 78%'
-});
+const steps = [
+  {
+    number: '01',
+    icon: MessageSquareText,
+    title: 'Kenalan & brief',
+    text: 'Kita bahas bisnis, audiens, masalah saat ini, dan hasil yang ingin dicapai.'
+  },
+  {
+    number: '02',
+    icon: Compass,
+    title: 'Arah & struktur',
+    text: 'Kami menyusun halaman, alur informasi, serta pesan utama sebelum masuk ke visual.'
+  },
+  {
+    number: '03',
+    icon: PenTool,
+    title: 'Desain & build',
+    text: 'Tampilan dan website dibangun bertahap, lalu diperiksa di desktop dan mobile.'
+  },
+  {
+    number: '04',
+    icon: Rocket,
+    title: 'Review & tayang',
+    text: 'Setelah revisi disepakati, website disiapkan untuk launch dan serah terima.'
+  }
+];
+
+useGsapScrollReveal(sectionRef, { y: 38, stagger: 0.1, duration: 0.8, once: true });
 </script>
 
 <template>
-  <section id="infrastructure" class="py-24 md:py-32 relative z-10">
-    <div class="max-w-7xl mx-auto px-6" ref="sectionRef">
+  <section id="process" class="relative overflow-hidden bg-[#171511] py-24 text-[#f5f0e7] md:py-36">
+    <div class="absolute inset-0 opacity-[0.12] [background-image:radial-gradient(#f5f0e7_1px,transparent_1px)] [background-size:24px_24px]" aria-hidden="true" />
+    <div class="absolute -right-32 -top-32 h-96 w-96 rounded-full bg-[#c85f32] opacity-15 blur-[130px]" aria-hidden="true" />
 
-      <!-- Section Header -->
-      <div class="mb-16 md:mb-20 text-center max-w-2xl mx-auto">
-        <h2 class="section-label mb-4">Infrastruktur</h2>
-        <h3 class="text-4xl md:text-5xl font-light text-text-primary section-heading leading-tight">
-          Arsitektur <span class="text-gradient font-medium font-display italic">Jaringan & Server</span>
-        </h3>
-      </div>
-
-      <!-- Bento Box Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 auto-rows-[minmax(250px,auto)]">
-        
-        <div
-          v-for="project in infraProjects"
-          :key="project.id"
-          class="group card relative overflow-hidden flex flex-col p-6 md:p-8 transition-all duration-500 hover:-translate-y-1"
-          :class="project.gridClass"
-        >
-          <!-- WIDE LAYOUT -->
-          <template v-if="project.type === 'wide'">
-            <!-- Decorative Background -->
-            <div class="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-               <!-- Animated network gradient -->
-               <div class="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-accent-subtle to-transparent"></div>
-               <!-- Signal dot -->
-               <div class="absolute right-8 top-8 flex items-center justify-center">
-                 <div class="absolute w-4 h-4 rounded-full bg-accent/40 animate-ping"></div>
-                 <div class="relative w-2 h-2 rounded-full bg-accent shadow-[0_0_8px_var(--accent)]"></div>
-               </div>
-            </div>
-
-            <div class="relative z-10 flex flex-col h-full justify-between">
-              <div class="flex items-start justify-between mb-8">
-                <div class="w-12 h-12 rounded-2xl bg-bg-secondary border border-border-default flex items-center justify-center group-hover:border-accent/40 group-hover:bg-accent-subtle transition-all duration-500">
-                  <component :is="project.icon" class="w-6 h-6 text-text-primary group-hover:text-accent transition-colors duration-500" stroke-width="1.5" />
-                </div>
-                <span class="text-xs font-mono text-text-tertiary tracking-widest">{{ project.id }}</span>
-              </div>
-              
-              <div class="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-6 items-end mt-auto">
-                <div>
-                  <h4 class="text-xl md:text-2xl font-semibold text-text-primary mb-3 group-hover:text-accent transition-colors duration-300">
-                    {{ project.title }}
-                  </h4>
-                  <p class="text-sm md:text-base font-normal text-text-secondary leading-relaxed max-w-md">
-                    {{ project.description }}
-                  </p>
-                </div>
-                <div class="flex flex-wrap gap-2 md:flex-col md:items-end">
-                  <span v-for="tag in project.tags" :key="tag" class="tag bg-bg-primary border-border-subtle group-hover:border-accent/30">
-                    {{ tag }}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </template>
-
-          <!-- TALL LAYOUT -->
-          <template v-else-if="project.type === 'tall'">
-            <!-- Decorative Background -->
-            <div class="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-               <div class="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-accent-subtle to-transparent"></div>
-               <!-- Animated grid lines mimicking a server rack -->
-               <div class="absolute inset-0 bg-[linear-gradient(transparent_0px,transparent_39px,var(--color-border-subtle)_39px,var(--color-border-subtle)_40px)] bg-[length:100%_40px]"></div>
-            </div>
-
-            <div class="relative z-10 flex flex-col h-full">
-              <div class="flex justify-between items-start mb-auto">
-                <span class="text-xs font-mono text-text-tertiary tracking-widest">{{ project.id }}</span>
-                <div class="w-12 h-12 rounded-2xl bg-bg-secondary border border-border-default flex items-center justify-center group-hover:border-accent/40 group-hover:bg-accent-subtle transition-all duration-500">
-                  <component :is="project.icon" class="w-6 h-6 text-text-primary group-hover:text-accent transition-colors duration-500" stroke-width="1.5" />
-                </div>
-              </div>
-              
-              <div class="mt-12">
-                <h4 class="text-xl md:text-2xl font-semibold text-text-primary mb-4 group-hover:text-accent transition-colors duration-300">
-                  {{ project.title }}
-                </h4>
-                <p class="text-sm font-normal text-text-secondary leading-relaxed mb-8">
-                  {{ project.description }}
-                </p>
-                <div class="flex flex-wrap gap-2">
-                  <span v-for="tag in project.tags" :key="tag" class="tag bg-bg-primary border-border-subtle group-hover:border-accent/30">
-                    {{ tag }}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </template>
-
-          <!-- SQUARE LAYOUT -->
-          <template v-else>
-            <!-- Decorative Background -->
-            <div class="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-               <div class="absolute -bottom-8 -right-8 w-32 h-32 bg-accent blur-[40px] opacity-[0.15]"></div>
-            </div>
-
-            <div class="relative z-10 flex flex-col h-full">
-              <div class="flex items-center justify-between mb-6">
-                <div class="w-10 h-10 rounded-xl bg-bg-secondary border border-border-default flex items-center justify-center group-hover:border-accent/40 group-hover:bg-accent-subtle transition-all duration-500">
-                  <component :is="project.icon" class="w-5 h-5 text-text-primary group-hover:text-accent transition-colors duration-500" stroke-width="1.5" />
-                </div>
-                <span class="text-[10px] font-mono text-text-tertiary tracking-widest">{{ project.id }}</span>
-              </div>
-              
-              <h4 class="text-lg font-semibold text-text-primary mb-3 group-hover:text-accent transition-colors duration-300">
-                {{ project.title }}
-              </h4>
-              
-              <p class="text-sm font-normal text-text-secondary leading-relaxed mb-auto pb-6">
-                {{ project.description }}
-              </p>
-              
-              <div class="flex flex-wrap gap-1.5 mt-auto">
-                <span v-for="tag in project.tags" :key="tag" class="tag text-[10px] bg-bg-primary border-border-subtle group-hover:border-accent/30">
-                  {{ tag }}
-                </span>
-              </div>
-            </div>
-          </template>
-
+    <div ref="sectionRef" class="section-shell relative z-10">
+      <div class="mb-14 grid gap-8 lg:grid-cols-[1fr_0.62fr] lg:items-end">
+        <div>
+          <p class="section-kicker mb-6 !text-[#ee8859]">Cara kerja</p>
+          <h2 class="text-balance max-w-4xl text-[clamp(2.4rem,5vw,4.8rem)] font-medium leading-[0.98] tracking-[-0.045em]">
+            Prosesnya jelas. Tidak ada fase
+            <span class="font-display italic text-[#ee8859]">“tiba-tiba jadi”.</span>
+          </h2>
         </div>
+        <p class="max-w-xl text-base leading-relaxed text-[#bcb4a9] lg:justify-self-end lg:text-lg">
+          Setiap keputusan punya alasan. Anda tahu apa yang sedang dikerjakan, apa yang perlu disiapkan, dan kapan waktunya memberi masukan.
+        </p>
       </div>
 
+      <div class="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
+        <article v-for="step in steps" :key="step.number" class="group rounded-[1.5rem] border border-white/15 bg-white/[0.035] p-6 transition-colors hover:border-[#ee8859]/45 hover:bg-white/[0.06] md:p-7">
+          <div class="flex items-start justify-between">
+            <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-[#ee8859]/12 text-[#ee8859]">
+              <component :is="step.icon" class="h-5 w-5" stroke-width="1.7" />
+            </div>
+            <span class="text-xs font-bold tracking-[0.16em] text-[#827a70]">{{ step.number }}</span>
+          </div>
+          <h3 class="mt-10 text-xl font-bold tracking-tight">{{ step.title }}</h3>
+          <p class="mt-4 text-sm leading-relaxed text-[#aaa298]">{{ step.text }}</p>
+        </article>
+      </div>
+
+      <div class="mt-8 flex flex-col gap-3 rounded-2xl border border-white/15 bg-white/[0.045] p-5 sm:flex-row sm:items-center sm:justify-between md:p-6">
+        <p class="text-sm text-[#bcb4a9]"><strong class="text-[#f5f0e7]">Scope dan estimasi disepakati di awal.</strong> Jadi arah kerja tetap terukur dari awal sampai tayang.</p>
+        <span class="shrink-0 text-[10px] font-bold uppercase tracking-[0.16em] text-[#ee8859]">Transparan sejak awal</span>
+      </div>
     </div>
   </section>
 </template>

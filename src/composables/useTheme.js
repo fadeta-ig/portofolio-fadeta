@@ -1,6 +1,6 @@
 import { ref, watch, onMounted } from 'vue';
 
-const STORAGE_KEY = 'fadeta-theme';
+const STORAGE_KEY = 'gandiva-theme';
 const DARK_VALUE = 'dark';
 const LIGHT_VALUE = 'light';
 

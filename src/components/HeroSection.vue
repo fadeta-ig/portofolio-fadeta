@@ -1,213 +1,212 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 import gsap from 'gsap';
-import { ArrowDown } from 'lucide-vue-next';
+import { ArrowDown, ArrowUpRight, Check, MessageCircle } from '@lucide/vue';
 
-const heroContainer = ref(null);
+const heroRef = ref(null);
 let ctx;
 
-onMounted(() => {
-  if (!heroContainer.value) return;
+const whatsapp = '6281553821808';
+const message = encodeURIComponent('Halo Gandiva Labs, saya ingin konsultasi tentang pembuatan website.');
+const whatsappLink = `https://wa.me/${whatsapp}?text=${message}`;
 
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (prefersReducedMotion) return;
+onMounted(() => {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   ctx = gsap.context(() => {
-    const tl = gsap.timeline({ delay: 0.15 });
+    gsap.from('.hero-animate', {
+      y: 24,
+      opacity: 0,
+      duration: 0.8,
+      stagger: 0.09,
+      ease: 'power3.out',
+      delay: 0.15
+    });
 
-    tl.fromTo('.hero-label',
-      { y: 16, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out' }
-    )
-    .fromTo('.hero-name',
-      { y: 30, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.9, ease: 'power3.out' },
-      '-=0.4'
-    )
-    .fromTo('.hero-tagline',
-      { y: 16, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out' },
-      '-=0.5'
-    )
-    .fromTo('.hero-roles span',
-      { y: 10, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.5, stagger: 0.08, ease: 'power3.out' },
-      '-=0.4'
-    )
-    .fromTo('.hero-stats > div',
-      { y: 20, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.6, stagger: 0.1, ease: 'power3.out' },
-      '-=0.3'
-    )
-    .fromTo('.hero-cta',
-      { y: 12, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out' },
-      '-=0.3'
-    )
-    .fromTo('.hero-scroll',
-      { opacity: 0 },
-      { opacity: 0.5, duration: 1, ease: 'power2.out' },
-      '-=0.2'
-    );
-  }, heroContainer.value);
+    gsap.from('.hero-preview', {
+      x: 34,
+      opacity: 0,
+      duration: 1,
+      ease: 'power3.out',
+      delay: 0.35
+    });
+  }, heroRef.value);
 });
 
-onUnmounted(() => {
-  ctx?.revert();
-});
+onUnmounted(() => ctx?.revert());
 </script>
 
 <template>
-  <section
-    id="hero"
-    ref="heroContainer"
-    class="relative w-full min-h-[95vh] flex flex-col justify-center items-center overflow-hidden pt-28 pb-28"
-  >
-    <!-- Atmospheric Background -->
-    <div class="hero-bg" aria-hidden="true">
-      <!-- Ambient gradient orbs -->
-      <div class="hero-orb hero-orb--top-left"></div>
-      <div class="hero-orb hero-orb--bottom-right"></div>
-      <!-- Grid overlay -->
-      <div class="hero-grid"></div>
-      <!-- Noise texture -->
-      <div class="noise-overlay"></div>
-    </div>
+  <section id="hero" ref="heroRef" class="relative overflow-hidden pb-20 pt-32 md:pb-28 md:pt-40 lg:min-h-[92vh] lg:flex lg:items-center">
+    <div class="hero-glow hero-glow-one" aria-hidden="true" />
+    <div class="hero-glow hero-glow-two" aria-hidden="true" />
+    <div class="dot-grid absolute inset-0 opacity-30 [mask-image:linear-gradient(to_bottom,black,transparent_78%)]" aria-hidden="true" />
+    <div class="noise-overlay" aria-hidden="true" />
 
-    <!-- Content -->
-    <div class="relative z-10 text-center flex flex-col items-center select-none px-6 max-w-4xl">
-      <!-- Subtitle -->
-      <p class="hero-label section-label mb-6" style="opacity: 0;">
-        Portofolio
-      </p>
-
-      <!-- Name (Serif display) -->
-      <h1
-        class="hero-name font-display italic text-4xl md:text-5xl lg:text-6xl font-normal text-text-primary tracking-wide leading-[1.15] mb-4"
-        style="opacity: 0;"
-      >
-        Fadeta Ilhan Gandhi<span class="text-accent">,</span>
-        <span class="text-2xl md:text-3xl lg:text-4xl text-text-tertiary"> S.T.</span>
-      </h1>
-
-      <!-- Tagline -->
-      <p
-        class="hero-tagline text-sm md:text-base text-text-secondary font-normal leading-relaxed max-w-xl mb-8"
-        style="opacity: 0;"
-      >
-        Merancang infrastruktur jaringan yang tangguh dan membangun solusi digital yang berdampak.
-      </p>
-
-      <!-- Roles -->
-      <div
-        class="hero-roles flex flex-wrap justify-center items-center gap-x-4 gap-y-2 mb-12"
-      >
-        <span class="text-[11px] md:text-xs uppercase tracking-[0.2em] text-text-tertiary font-medium" style="opacity: 0;">
-          Network Engineer
-        </span>
-        <span class="w-1 h-1 rounded-full bg-accent/40 hidden sm:block" style="opacity: 0;"></span>
-        <span class="text-[11px] md:text-xs uppercase tracking-[0.2em] text-text-tertiary font-medium" style="opacity: 0;">
-          IT Infrastructure
-        </span>
-        <span class="w-1 h-1 rounded-full bg-accent/40 hidden sm:block" style="opacity: 0;"></span>
-        <span class="text-[11px] md:text-xs uppercase tracking-[0.2em] text-text-tertiary font-medium" style="opacity: 0;">
-          Web Developer
-        </span>
-      </div>
-
-      <!-- Stats -->
-      <div class="hero-stats flex items-center gap-8 md:gap-12 mb-12">
-        <div class="text-center" style="opacity: 0;">
-          <span class="block text-2xl md:text-3xl font-light text-text-primary tracking-tight">3+</span>
-          <span class="text-[9px] md:text-[10px] uppercase tracking-[0.2em] text-text-tertiary">Tahun</span>
+    <div class="section-shell relative z-10 grid items-center gap-14 lg:grid-cols-[1.08fr_0.92fr] lg:gap-16">
+      <div class="max-w-3xl">
+        <div class="hero-animate mb-7 inline-flex items-center gap-3 rounded-full border border-border-default bg-bg-card/80 px-4 py-2 text-xs font-bold text-text-secondary shadow-sm">
+          <span class="relative flex h-2 w-2">
+            <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-50" />
+            <span class="relative inline-flex h-2 w-2 rounded-full bg-accent" />
+          </span>
+          Menerima proyek website baru
         </div>
-        <div class="w-px h-8 bg-border-default" style="opacity: 0;"></div>
-        <div class="text-center" style="opacity: 0;">
-          <span class="block text-2xl md:text-3xl font-light text-text-primary tracking-tight">7+</span>
-          <span class="text-[9px] md:text-[10px] uppercase tracking-[0.2em] text-text-tertiary">Proyek</span>
+
+        <p class="hero-animate section-kicker mb-6">Website studio untuk bisnis</p>
+
+        <h1 class="hero-animate text-balance max-w-4xl text-[clamp(3.35rem,7.6vw,7.25rem)] font-medium leading-[0.88] tracking-[-0.065em] text-text-primary">
+          Website yang bikin bisnis lebih mudah
+          <span class="font-display italic text-accent">dipercaya.</span>
+        </h1>
+
+        <p class="hero-animate mt-8 max-w-2xl text-base leading-relaxed text-text-secondary md:text-xl">
+          Gandiva Labs membantu bisnis membangun company profile, landing page, dan toko online yang enak dilihat, mudah dipahami, dan punya arah yang jelas.
+        </p>
+
+        <div class="hero-animate mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
+          <a
+            :href="whatsappLink"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-track="hero_whatsapp"
+            class="group inline-flex min-h-14 items-center justify-center gap-3 rounded-full bg-text-primary px-7 text-sm font-bold text-bg-primary transition-transform hover:-translate-y-1"
+          >
+            <MessageCircle class="h-[18px] w-[18px]" />
+            Ceritakan kebutuhan Anda
+            <ArrowUpRight class="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </a>
+
+          <a
+            href="#work"
+            class="group inline-flex min-h-14 items-center justify-center gap-3 rounded-full border border-border-default bg-bg-card/70 px-7 text-sm font-bold text-text-primary transition-colors hover:border-text-tertiary"
+          >
+            Lihat karya pilihan
+            <ArrowDown class="h-4 w-4 transition-transform group-hover:translate-y-1" />
+          </a>
         </div>
-        <div class="w-px h-8 bg-border-default" style="opacity: 0;"></div>
-        <div class="text-center" style="opacity: 0;">
-          <span class="block text-2xl md:text-3xl font-light text-text-primary tracking-tight">2</span>
-          <span class="text-[9px] md:text-[10px] uppercase tracking-[0.2em] text-text-tertiary">Sertifikasi</span>
+
+        <div class="hero-animate mt-9 flex flex-wrap gap-x-6 gap-y-3 text-sm text-text-secondary">
+          <span class="inline-flex items-center gap-2"><Check class="h-4 w-4 text-accent" /> Strategi & copy</span>
+          <span class="inline-flex items-center gap-2"><Check class="h-4 w-4 text-accent" /> Responsif di mobile</span>
+          <span class="inline-flex items-center gap-2"><Check class="h-4 w-4 text-accent" /> Siap dikelola</span>
         </div>
       </div>
 
-      <!-- CTA -->
-      <a
-        class="hero-cta inline-flex items-center gap-2.5 px-7 py-3 text-[11px] uppercase tracking-[0.2em] font-medium text-white bg-accent rounded-full hover:bg-accent-hover transition-all duration-300 group"
-        href="#karya"
-        @click.prevent="
-          document.getElementById('karya')?.scrollIntoView({ behavior: 'smooth' })
-        "
-        style="opacity: 0;"
-      >
-        <span>Lihat Karya</span>
-        <ArrowDown class="w-3.5 h-3.5 group-hover:translate-y-0.5 transition-transform duration-300" />
-      </a>
-    </div>
+      <div class="hero-preview relative mx-auto w-full max-w-xl lg:mx-0">
+        <div class="absolute -inset-5 -rotate-2 rounded-[2.2rem] border border-accent/20 bg-accent-subtle" aria-hidden="true" />
 
-    <!-- Scroll Indicator -->
-    <div class="hero-scroll absolute bottom-8 left-1/2 -translate-x-1/2 z-10 hidden md:flex flex-col items-center" style="opacity: 0;">
-      <span class="text-[9px] uppercase tracking-[0.3em] text-text-tertiary mb-3">Scroll</span>
-      <div class="w-[1px] h-10 bg-gradient-to-b from-border-default to-transparent"></div>
+        <div class="card-surface relative overflow-hidden rounded-[2rem] shadow-[var(--shadow-lg)]">
+          <div class="flex h-12 items-center gap-2 border-b border-border-default bg-bg-secondary px-5">
+            <span class="h-2.5 w-2.5 rounded-full bg-accent/70" />
+            <span class="h-2.5 w-2.5 rounded-full bg-text-tertiary/35" />
+            <span class="h-2.5 w-2.5 rounded-full bg-text-tertiary/25" />
+            <div class="ml-3 h-6 flex-1 rounded-md border border-border-default bg-bg-card" />
+          </div>
+
+          <div class="relative p-6 sm:p-8">
+            <div class="mb-8 flex items-start justify-between gap-5">
+              <div>
+                <span class="text-[10px] font-bold uppercase tracking-[0.18em] text-accent">Gandiva method</span>
+                <h2 class="mt-2 text-2xl font-bold tracking-tight text-text-primary sm:text-3xl">Bukan sekadar jadi.</h2>
+              </div>
+              <span class="rounded-full border border-border-default px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-text-tertiary">Business-first</span>
+            </div>
+
+            <div class="space-y-3">
+              <div class="preview-row">
+                <span class="preview-number">01</span>
+                <div><strong>Arah bisnis</strong><small>Tujuan dan audiens dibuat jelas lebih dulu.</small></div>
+              </div>
+              <div class="preview-row">
+                <span class="preview-number">02</span>
+                <div><strong>Alur informasi</strong><small>Pengunjung tidak dibuat menebak-nebak.</small></div>
+              </div>
+              <div class="preview-row">
+                <span class="preview-number">03</span>
+                <div><strong>Desain & build</strong><small>Tampilan rapi, cepat, dan nyaman dipakai.</small></div>
+              </div>
+            </div>
+
+            <div class="mt-6 flex items-center justify-between rounded-2xl bg-text-primary p-4 text-bg-primary">
+              <span class="text-sm font-bold">Siap jadi rumah digital bisnis Anda.</span>
+              <ArrowUpRight class="h-5 w-5" />
+            </div>
+          </div>
+        </div>
+
+        <div class="absolute -bottom-5 -left-3 rounded-2xl border border-border-default bg-bg-card px-4 py-3 shadow-[var(--shadow-md)] sm:-left-7">
+          <p class="text-[10px] font-bold uppercase tracking-[0.16em] text-text-tertiary">Fokus utama</p>
+          <p class="mt-1 text-sm font-bold text-text-primary">Jelas. Rapi. Siap dipakai.</p>
+        </div>
+      </div>
     </div>
   </section>
 </template>
 
 <style scoped>
-.hero-bg {
+.hero-glow {
   position: absolute;
-  inset: 0;
-  z-index: 0;
-  overflow: hidden;
-}
-
-.hero-orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(100px);
+  border-radius: 999px;
+  background: var(--accent);
+  filter: blur(130px);
+  opacity: 0.1;
   pointer-events: none;
 }
 
-.hero-orb--top-left {
-  width: 500px;
-  height: 500px;
-  top: -150px;
-  left: -150px;
-  background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
-  opacity: 0.08;
-  animation: orb-drift 20s ease-in-out infinite alternate;
+.hero-glow-one {
+  width: 28rem;
+  height: 28rem;
+  top: 5rem;
+  right: -9rem;
 }
 
-.hero-orb--bottom-right {
-  width: 600px;
-  height: 600px;
-  bottom: -200px;
-  right: -200px;
-  background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
-  opacity: 0.06;
-  animation: orb-drift 25s ease-in-out infinite alternate-reverse;
+.hero-glow-two {
+  width: 22rem;
+  height: 22rem;
+  bottom: -8rem;
+  left: -8rem;
+  opacity: 0.07;
 }
 
-.hero-grid {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(var(--border-subtle) 1px, transparent 1px),
-    linear-gradient(90deg, var(--border-subtle) 1px, transparent 1px);
-  background-size: 60px 60px;
-  mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 20%, transparent 80%);
-  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 20%, transparent 80%);
-  opacity: 0.5;
+.preview-row {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem;
+  border: 1px solid var(--border-default);
+  border-radius: 1rem;
+  background: var(--bg-primary);
 }
 
-@keyframes orb-drift {
-  0% {
-    transform: translate(0, 0) scale(1);
-  }
-  100% {
-    transform: translate(30px, -20px) scale(1.1);
-  }
+.preview-number {
+  display: inline-flex;
+  width: 2.5rem;
+  height: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.85rem;
+  background: var(--accent-subtle);
+  color: var(--accent);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.preview-row strong,
+.preview-row small {
+  display: block;
+}
+
+.preview-row strong {
+  color: var(--text-primary);
+  font-size: 0.9rem;
+}
+
+.preview-row small {
+  margin-top: 0.15rem;
+  color: var(--text-secondary);
+  font-size: 0.72rem;
+  line-height: 1.4;
 }
 </style>

@@ -1,40 +1,17 @@
 <script setup>
-import { skills } from '../data/skills';
-import SkillIcon from './SkillIcon.vue';
-
-/** Combine all skills into a flat array, tripled for seamless CSS loop on wide screens */
-const allSkills = [...skills.infrastructure, ...skills.development];
-const duplicatedSkills = [...allSkills, ...allSkills, ...allSkills];
+const audiences = ['Brand baru', 'UKM berkembang', 'Manufaktur & B2B', 'Bisnis jasa', 'Toko online'];
 </script>
 
 <template>
-  <div class="w-full relative overflow-hidden py-10 bg-bg-secondary border-y border-border-default theme-transition">
-    <!-- Fade overlays -->
-    <div class="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-bg-secondary to-transparent z-10 pointer-events-none"></div>
-    <div class="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-bg-secondary to-transparent z-10 pointer-events-none"></div>
-
-    <!-- Scrolling container -->
-    <div class="flex animate-marquee hover:[animation-play-state:paused] items-center">
-      <div
-        v-for="(skill, index) in duplicatedSkills"
-        :key="index"
-        class="flex-shrink-0 mx-8 flex items-center gap-3 text-text-tertiary hover:text-accent transition-colors duration-300"
-      >
-        <SkillIcon :config="skill.iconConfig" size="w-6 h-6" />
-        <span class="text-sm font-medium tracking-wide whitespace-nowrap">{{ skill.name }}</span>
+  <section class="border-y border-border-default bg-bg-secondary/70 py-6" aria-label="Jenis bisnis yang dilayani">
+    <div class="section-shell flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+      <p class="shrink-0 text-[11px] font-bold uppercase tracking-[0.18em] text-text-tertiary">Cocok untuk</p>
+      <div class="flex flex-wrap gap-x-6 gap-y-3 md:justify-end">
+        <span v-for="audience in audiences" :key="audience" class="inline-flex items-center gap-2 text-sm font-bold text-text-secondary">
+          <span class="h-1.5 w-1.5 rounded-full bg-accent" />
+          {{ audience }}
+        </span>
       </div>
     </div>
-  </div>
+  </section>
 </template>
-
-<style scoped>
-@keyframes marquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-33.3333%); }
-}
-
-.animate-marquee {
-  width: max-content;
-  animation: marquee 30s linear infinite;
-}
-</style>

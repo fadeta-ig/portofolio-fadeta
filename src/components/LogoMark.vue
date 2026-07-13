@@ -1,75 +1,70 @@
 <script setup>
-/**
- * Premium "F" monogram logo with copper accent.
- * Theme-adaptive — uses CSS variable colors via currentColor and explicit vars.
- */
 defineProps({
   size: {
     type: Number,
-    default: 36
+    default: 44
+  },
+  variant: {
+    type: String,
+    default: 'auto',
+    validator: (value) => ['auto', 'light', 'dark'].includes(value)
   }
 });
 </script>
 
 <template>
-  <svg
-    :width="size"
-    :height="size"
-    viewBox="0 0 40 40"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
+  <span
     class="logo-mark"
-    aria-label="Fadeta Logo"
+    :data-variant="variant"
+    :style="{ width: `${size}px`, height: `${size}px` }"
+    role="img"
+    aria-label="Logo Gandiva Labs"
   >
-    <defs>
-      <linearGradient id="logoBg" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
-        <stop offset="0%" :stop-color="'var(--accent)'" stop-opacity="0.12" />
-        <stop offset="100%" :stop-color="'var(--accent)'" stop-opacity="0.04" />
-      </linearGradient>
-
-      <linearGradient id="logoLetterGrad" x1="12" y1="8" x2="28" y2="32" gradientUnits="userSpaceOnUse">
-        <stop offset="0%" :stop-color="'var(--text-primary)'" />
-        <stop offset="100%" :stop-color="'var(--accent)'" />
-      </linearGradient>
-
-      <filter id="logoGlow" x="-20%" y="-20%" width="140%" height="140%">
-        <feGaussianBlur stdDeviation="1.2" result="blur" />
-        <feComposite in="SourceGraphic" in2="blur" operator="over" />
-      </filter>
-    </defs>
-
-    <!-- Rounded square background -->
-    <rect
-      x="0.5" y="0.5" width="39" height="39" rx="10"
-      fill="url(#logoBg)"
-      class="logo-bg"
-      stroke="var(--accent)"
-      stroke-opacity="0.2"
-      stroke-width="1"
-    />
-
-    <!-- Stylized "F" letterform -->
-    <g filter="url(#logoGlow)">
-      <rect x="12" y="9" width="17" height="3" rx="1.5" fill="url(#logoLetterGrad)" />
-      <rect x="12" y="9" width="3.5" height="22" rx="1.5" fill="url(#logoLetterGrad)" />
-      <rect x="12" y="18.5" width="12" height="3" rx="1.5" fill="var(--accent)" opacity="0.85" />
-    </g>
-
-    <!-- Accent dot -->
-    <circle cx="32" cy="28" r="2" fill="var(--accent)" opacity="0.35" class="logo-dot" />
-  </svg>
+    <img src="/gandiva-mark-dark.webp" alt="" width="320" height="246" class="mark-image mark-dark" />
+    <img src="/gandiva-mark-light.webp" alt="" width="320" height="246" class="mark-image mark-light" />
+  </span>
 </template>
 
 <style scoped>
 .logo-mark {
-  transition: transform 0.3s ease;
+  position: relative;
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.25s ease;
 }
 
 .logo-mark:hover {
-  transform: scale(1.08);
+  transform: rotate(-2deg) scale(1.04);
 }
 
-.logo-mark:hover .logo-dot {
-  opacity: 0.7;
+.mark-image {
+  position: absolute;
+  width: 95%;
+  height: auto;
+  object-fit: contain;
+}
+
+.mark-light {
+  display: none;
+}
+
+:global([data-theme="dark"]) .logo-mark[data-variant="auto"] .mark-dark,
+.logo-mark[data-variant="light"] .mark-dark {
+  display: none;
+}
+
+:global([data-theme="dark"]) .logo-mark[data-variant="auto"] .mark-light,
+.logo-mark[data-variant="light"] .mark-light {
+  display: block;
+}
+
+.logo-mark[data-variant="dark"] .mark-dark {
+  display: block;
+}
+
+.logo-mark[data-variant="dark"] .mark-light {
+  display: none;
 }
 </style>

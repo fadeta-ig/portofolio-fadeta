@@ -1,33 +1,44 @@
-# Hi, saya Fadeta
+# Gandiva Labs
 
-Selamat datang di profil GitHub saya. Saya adalah seorang profesional di bidang Teknologi Informasi dengan keahlian utama pada **Infrastruktur Jaringan (Network Engineering)** dan ketertarikan yang kuat pada pengembangan **Sistem Digital**. 
+Website jasa pembuatan website untuk bisnis, dibangun dengan Vue 3, Vite, Tailwind CSS 4, dan GSAP.
 
-Fokus saya adalah mengoptimalkan teknologi untuk menciptakan efisiensi sistem, memastikan keandalan jaringan, dan mengeksplorasi solusi otomasi.
+## Tujuan bisnis
 
----
-## Tentang Saya
+Website ini dirancang untuk:
 
-- **Fokus Saat Ini:** Optimalisasi infrastruktur IT dan eksplorasi sistem digital.
-- **Pengalaman Profesional:** - **IT Staff (Industri Manufaktur):** Bertanggung jawab atas operasional IT end-to-end, pengelolaan infrastruktur jaringan, dan dukungan teknis yang melayani ekosistem bisnis B2B serta B2C.
-- **PT Telkom Indonesia:** Memiliki rekam jejak praktis dalam pemeliharaan dan manajemen jaringan telekomunikasi skala besar.
-- **Minat Lainnya:** Di luar ranah teknis, saya aktif mengikuti perkembangan dunia e-sports kompetitif dan sepak bola.
+- Menjelaskan positioning Gandiva Labs dengan cepat.
+- Mengarahkan calon klien ke layanan yang paling relevan.
+- Membangun kepercayaan melalui proyek komersial yang sudah dikerjakan.
+- Mengubah kunjungan menjadi percakapan WhatsApp yang lebih terarah.
 
----
-## Keahlian & Teknologi
+## Struktur halaman
 
-**Infrastruktur & Jaringan:**
-- Routing & Switching, Manajemen VLAN, Konfigurasi Firewall, dan Keamanan Jaringan.
-- Analisis, pemantauan (monitoring), dan pemecahan masalah (troubleshooting) arsitektur IT.
+1. Hero dan proposisi nilai
+2. Segmen bisnis yang dilayani
+3. Masalah dan pendekatan
+4. Layanan
+5. Karya pilihan
+6. Proses kerja
+7. Tentang studio
+8. FAQ
+9. Kontak
 
-**Pengembangan & Eksplorasi AI:**
-- **Bahasa & Ekosistem:** JavaScript, PHP, HTML5, CSS3.
-- **Framework & Library:** React.js, Next.js, Vue.js, GSAP, Laravel, Tailwind CSS.
-- **Tools & Version Control:** Git, GitHub, VS Code, Figma.
+## Menjalankan proyek
 
-## Mari Terhubung
+```bash
+npm install
+npm run dev
+```
 
-Saya selalu terbuka untuk diskusi mengenai arsitektur jaringan, teknologi IT terbaru, maupun peluang kolaborasi proyek.
+Build produksi:
 
-- **Portofolio:** [portofolio-fadeta.vercel.app](https://portofolio-fadeta.vercel.app/)
-- **LinkedIn:** [linkedin.com/in/fadetaig](https://www.linkedin.com/in/fadetaig/)
-- **Email:** [fadeta287@gmail.com](mailto:fadeta287@gmail.com)
+```bash
+npm run build
+```
+
+## Catatan operasional
+
+- Nomor WhatsApp dan email saat ini mengikuti kontak Fadeta yang sudah ada di proyek.
+- CTA memiliki atribut `data-track` agar dapat disambungkan ke analytics setelah ID dan platform tracking ditentukan.
+- Domain produksi belum ditetapkan, sehingga canonical URL dan sitemap belum ditambahkan.
+- File sumber logo beresolusi tinggi disimpan di `src/assets/brand/source`; versi ringan untuk website berada di `public`.

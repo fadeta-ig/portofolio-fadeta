@@ -1,207 +1,102 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ArrowUpRight } from 'lucide-vue-next';
-import { projects } from '../data/projects';
+import { ref } from 'vue';
+import { ArrowRight, ArrowUpRight } from '@lucide/vue';
+import { featuredProjects, labProjects } from '../data/projects';
+import { useGsapScrollReveal } from '../composables/useGsapScrollReveal';
 
 const sectionRef = ref(null);
-const cardsRef = ref([]);
-let ctx;
 
-onMounted(() => {
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  
-  ctx = gsap.context(() => {
-    // Header reveal
-    gsap.from('.section-header-elem', {
-      y: 30, opacity: 0, duration: 1, stagger: 0.1,
-      scrollTrigger: { trigger: sectionRef.value, start: 'top 85%' }
-    });
-
-    if (prefersReducedMotion) return;
-
-    // Stacking Card Effect
-    cardsRef.value.forEach((card, index) => {
-      
-      // Scale down card as the next card overlaps it
-      if (index < cardsRef.value.length - 1) {
-        gsap.to(card, {
-          scale: 0.92,
-          opacity: 0.3,
-          ease: "none",
-          scrollTrigger: {
-            trigger: card,
-            start: "top 12%", 
-            endTrigger: cardsRef.value[index + 1],
-            end: `top 12%+=${index * 12}px`, // Finish when next card hits its specific sticky offset
-            scrub: true,
-          }
-        });
-      }
-      
-      // Content entrance animations
-      const contentElements = card.querySelectorAll('.card-anim');
-      gsap.from(contentElements, {
-        y: 20, opacity: 0, duration: 0.6, stagger: 0.08,
-        scrollTrigger: {
-          trigger: card,
-          start: "top 85%",
-          toggleActions: "play none none reverse"
-        }
-      });
-      
-      // Browser Mockup entrance scale
-      const browser = card.querySelector('.browser-mockup');
-      gsap.from(browser, {
-        y: 40, opacity: 0, duration: 0.8, ease: "power2.out",
-        scrollTrigger: {
-          trigger: card,
-          start: "top 80%",
-          toggleActions: "play none none reverse"
-        }
-      });
-
-      // Browser Image zoom effect
-      const img = card.querySelector('.browser-img');
-      gsap.from(img, {
-        scale: 1.15,
-        duration: 1.2,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: card,
-          start: "top 80%",
-          toggleActions: "play none none reverse"
-        }
-      });
-
-    });
-
-  }, sectionRef.value);
-});
-
-onUnmounted(() => {
-  ctx?.revert();
-});
+useGsapScrollReveal(sectionRef, { y: 36, stagger: 0.1, duration: 0.8, triggerStart: 'top 82%', once: true });
 </script>
 
 <template>
-  <section id="karya" class="py-24 md:py-32 relative z-10" ref="sectionRef">
-    <div class="max-w-7xl mx-auto px-6">
-
-      <!-- Section Header -->
-      <div class="mb-24 text-center max-w-3xl mx-auto">
-        <h2 class="section-label mb-4 section-header-elem">Karya</h2>
-        <h3 class="text-4xl md:text-6xl font-light text-text-primary leading-tight mb-8 section-heading section-header-elem">
-          Editorial <span class="text-gradient font-medium font-display italic">Folio</span>
-        </h3>
-        <p class="text-text-secondary font-normal text-lg section-header-elem">
-          Kumpulan proyek web yang merepresentasikan dedikasi pada performa, estetika fungsional, dan inovasi visual.
+  <section id="work" class="py-24 md:py-36">
+    <div ref="sectionRef" class="section-shell">
+      <div class="mb-14 grid gap-8 lg:grid-cols-[1fr_0.65fr] lg:items-end">
+        <div>
+          <p class="section-kicker mb-6">Karya pilihan</p>
+          <h2 class="section-heading text-balance max-w-4xl">Bukti kerja, bukan sekadar <span class="font-display italic text-accent">janji.</span></h2>
+        </div>
+        <p class="max-w-xl text-base leading-relaxed text-text-secondary lg:justify-self-end lg:text-lg">
+          Beberapa website yang dibangun untuk kebutuhan bisnis nyata—mulai dari memperkenalkan layanan sampai menjual produk.
         </p>
       </div>
 
-      <!-- Sticky Stacking Container -->
-      <!-- Added extra padding bottom to allow scrolling past the last card smoothly -->
-      <div class="relative w-full pb-[15vh]">
-        <div
-          v-for="(project, index) in projects"
-          :key="project.id"
-          class="project-card sticky w-full mb-[20vh] last:mb-0 transform-gpu origin-top"
-          :style="{ top: `calc(12vh + ${index * 12}px)` }"
-          :ref="el => { if (el) cardsRef.push(el) }"
+      <div class="space-y-6">
+        <article
+          v-for="(project, index) in featuredProjects"
+          :key="project.title"
+          class="group grid overflow-hidden rounded-[2rem] border border-border-default bg-bg-card shadow-[var(--shadow-sm)] transition-shadow hover:shadow-[var(--shadow-md)] lg:grid-cols-2"
         >
-          <!-- Card Body -->
-          <div class="w-full flex flex-col lg:flex-row bg-bg-primary border border-border-default shadow-[0_30px_60px_rgba(0,0,0,0.08)] dark:shadow-[0_30px_60px_rgba(0,0,0,0.4)] rounded-[2rem] overflow-hidden">
-            
-            <!-- Left: Text Content -->
-            <div class="w-full lg:w-[45%] p-8 md:p-12 lg:p-16 flex flex-col justify-center relative z-10 bg-bg-primary">
-              <div class="card-anim mb-6 flex items-center gap-4">
-                <span class="text-2xl md:text-3xl font-light text-text-tertiary tracking-widest font-mono">
-                  {{ project.id }}
-                </span>
-                <div class="w-12 h-[1px] bg-border-default"></div>
-                <span class="text-[10px] uppercase tracking-[0.2em] text-accent font-medium">
-                  {{ project.category }}
-                </span>
-              </div>
-
-              <h4 class="card-anim text-3xl md:text-4xl lg:text-5xl font-semibold text-text-primary mb-6 tracking-tight leading-tight">
-                {{ project.title }}
-              </h4>
-
-              <p class="card-anim text-text-secondary font-normal leading-relaxed mb-8 text-sm md:text-base">
-                {{ project.description }}
-              </p>
-
-              <div class="card-anim flex flex-wrap gap-2 mb-12">
-                <span
-                  v-for="(tech, i) in project.tech.split(',')"
-                  :key="i"
-                  class="tag font-mono border-border-subtle"
-                >
-                  {{ tech.trim() }}
-                </span>
-              </div>
-
-              <a
-                :href="project.link"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="card-anim inline-flex items-center gap-3 w-fit text-xs uppercase tracking-widest text-text-primary group/btn hover:text-accent transition-colors duration-300"
-              >
-                <span>Kunjungi Website</span>
-                <span class="w-8 h-8 rounded-full border border-border-default flex items-center justify-center group-hover/btn:border-accent/50 group-hover/btn:bg-accent-subtle transition-all duration-300">
-                  <ArrowUpRight class="w-4 h-4 group-hover/btn:rotate-45 transition-transform duration-300" />
-                </span>
-              </a>
-            </div>
-
-            <!-- Right: Browser Mockup -->
-            <div class="w-full lg:w-[55%] p-6 md:p-10 lg:p-12 bg-bg-secondary border-t lg:border-t-0 lg:border-l border-border-default flex items-center justify-center relative">
-              
-              <!-- Subtle ambient glow -->
-              <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-                 <div class="w-3/4 h-3/4 bg-accent blur-[100px] opacity-[0.08] dark:opacity-[0.12] rounded-full"></div>
-              </div>
-
-              <!-- Browser Frame -->
-              <div class="browser-mockup relative w-full rounded-xl overflow-hidden border border-border-default shadow-2xl bg-bg-primary group/browser transition-transform duration-700 hover:-translate-y-2">
-                
-                <!-- macOS Style Header -->
-                <div class="h-8 md:h-10 flex items-center px-4 gap-2 bg-bg-tertiary border-b border-border-default">
-                   <!-- Dots -->
-                   <div class="w-2.5 h-2.5 rounded-full bg-border-default group-hover/browser:bg-red-400/90 transition-colors duration-300"></div>
-                   <div class="w-2.5 h-2.5 rounded-full bg-border-default group-hover/browser:bg-amber-400/90 transition-colors duration-300"></div>
-                   <div class="w-2.5 h-2.5 rounded-full bg-border-default group-hover/browser:bg-emerald-400/90 transition-colors duration-300"></div>
-                   
-                   <!-- Fake URL Bar -->
-                   <div class="ml-3 flex-1 h-5 md:h-6 rounded-md bg-bg-primary border border-border-subtle flex items-center justify-center overflow-hidden">
-                      <span class="text-[9px] md:text-[10px] text-text-tertiary font-mono tracking-wider opacity-0 group-hover/browser:opacity-100 transition-opacity duration-300 translate-y-1 group-hover/browser:translate-y-0">
-                        {{ project.title.toLowerCase().replace(/\s+/g, '-') }}.com
-                      </span>
-                   </div>
-                </div>
-
-                <!-- Browser Image -->
-                <div class="relative w-full aspect-[16/10] bg-bg-secondary overflow-hidden">
-                  <!-- Dark overlay that fades on hover to draw focus to content initially -->
-                  <div class="absolute inset-0 bg-gradient-to-t from-bg-primary/50 to-transparent opacity-100 group-hover/browser:opacity-0 transition-opacity duration-700 z-10 pointer-events-none"></div>
-                  
-                  <img
-                    :src="project.image"
-                    :alt="project.title"
-                    class="browser-img w-full h-full object-cover"
-                    loading="lazy"
-                  />
-                </div>
-              </div>
-
-            </div>
-
+          <div class="relative min-h-[17rem] overflow-hidden bg-bg-secondary lg:min-h-[29rem]" :class="index % 2 === 1 ? 'lg:order-2' : ''">
+            <div class="absolute inset-0 z-10 bg-gradient-to-t from-black/35 via-transparent to-transparent opacity-60 transition-opacity duration-500 group-hover:opacity-25" />
+            <img
+              :src="project.image"
+              :alt="`Tampilan website ${project.title}`"
+              :width="project.width"
+              :height="project.height"
+              loading="lazy"
+              decoding="async"
+              class="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.025]"
+            />
+            <span class="absolute bottom-5 left-5 z-20 rounded-full border border-white/30 bg-black/35 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-white backdrop-blur-md">{{ project.category }}</span>
           </div>
-        </div>
+
+          <div class="flex flex-col justify-center p-7 md:p-10 lg:p-14" :class="index % 2 === 1 ? 'lg:order-1' : ''">
+            <div class="mb-10 flex items-center gap-4">
+              <span class="text-xs font-bold tracking-[0.18em] text-accent">PROJECT {{ project.id }}</span>
+              <span class="h-px flex-1 bg-border-default" />
+            </div>
+
+            <h3 class="text-3xl font-bold tracking-[-0.04em] text-text-primary md:text-5xl">{{ project.title }}</h3>
+            <p class="mt-6 text-base leading-relaxed text-text-secondary md:text-lg">{{ project.description }}</p>
+
+            <div class="mt-8 flex flex-wrap gap-2">
+              <span v-for="item in project.contribution" :key="item" class="tag">{{ item }}</span>
+            </div>
+
+            <a
+              :href="project.link"
+              target="_blank"
+              rel="noopener noreferrer"
+              :data-track="`portfolio_${project.id}`"
+              class="mt-10 inline-flex w-fit items-center gap-3 text-sm font-bold text-text-primary transition-colors hover:text-accent"
+            >
+              Kunjungi website
+              <span class="flex h-9 w-9 items-center justify-center rounded-full border border-border-default transition-colors group-hover:border-accent/40">
+                <ArrowUpRight class="h-4 w-4" />
+              </span>
+            </a>
+          </div>
+        </article>
       </div>
 
+      <div class="mt-14 border-t border-border-default pt-9">
+        <div class="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p class="text-[11px] font-bold uppercase tracking-[0.16em] text-text-tertiary">Eksperimen & produk digital</p>
+            <h3 class="mt-2 text-2xl font-bold tracking-tight text-text-primary">Yang juga pernah dibangun di lab.</h3>
+          </div>
+          <p class="text-sm text-text-secondary">Ruang untuk menguji ide, interaksi, dan solusi web.</p>
+        </div>
+
+        <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <a
+            v-for="project in labProjects"
+            :key="project.title"
+            :href="project.link"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group flex min-h-28 flex-col justify-between rounded-2xl border border-border-default bg-bg-secondary/60 p-5 transition-all hover:-translate-y-1 hover:bg-bg-card"
+          >
+            <div class="flex items-start justify-between gap-4">
+              <span class="text-[10px] font-bold uppercase tracking-[0.14em] text-text-tertiary">{{ project.category }}</span>
+              <ArrowRight class="h-4 w-4 text-text-tertiary transition-transform group-hover:translate-x-1 group-hover:text-accent" />
+            </div>
+            <span class="mt-5 font-bold text-text-primary">{{ project.title }}</span>
+          </a>
+        </div>
+      </div>
     </div>
   </section>
 </template>
