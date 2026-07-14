@@ -95,11 +95,6 @@ onUnmounted(() => {
           <div class="screen-glow" aria-hidden="true" />
           <div class="screen-grid" aria-hidden="true" />
 
-          <div class="screen-meta screen-meta-top" aria-hidden="true">
-            <span class="screen-brand"><i>G</i> Gandiva Labs</span>
-            <span>Business-first web studio</span>
-          </div>
-
           <div class="hero-content">
             <div class="hero-content-item availability-pill">
               <span class="availability-dot" aria-hidden="true"><span /></span>
@@ -215,6 +210,19 @@ onUnmounted(() => {
 }
 
 .hero-screen {
+  --screen-bg:
+    radial-gradient(circle at 50% -12%, rgba(200, 95, 50, 0.18), transparent 42%),
+    linear-gradient(180deg, #ead8ca 0%, #f5f0e7 46%, #e8dfd3 100%);
+  --screen-primary: #171511;
+  --screen-secondary: rgba(23, 21, 17, 0.68);
+  --screen-tertiary: rgba(23, 21, 17, 0.54);
+  --screen-border: rgba(23, 21, 17, 0.15);
+  --screen-surface: rgba(255, 255, 255, 0.42);
+  --screen-surface-hover: rgba(255, 255, 255, 0.62);
+  --screen-grid-dot: rgba(23, 21, 17, 0.28);
+  --screen-sheen: rgba(255, 255, 255, 0.14);
+  --screen-button-bg: #171511;
+  --screen-button-fg: #f5f0e7;
   position: absolute;
   z-index: 1;
   top: 1.25%;
@@ -223,16 +231,31 @@ onUnmounted(() => {
   left: 8.55%;
   overflow: hidden;
   border-radius: 2.8% 2.8% 0.65rem 0.65rem;
-  background:
+  background: var(--screen-bg);
+  color: var(--screen-primary);
+  transition: background 0.45s ease, color 0.35s ease;
+}
+
+:global([data-theme="dark"]) .hero-screen {
+  --screen-bg:
     radial-gradient(circle at 50% -12%, rgba(238, 136, 89, 0.2), transparent 42%),
     linear-gradient(180deg, #2b1a12 0%, #141516 44%, #08090a 100%);
-  color: #f5f0e7;
+  --screen-primary: #f5f0e7;
+  --screen-secondary: rgba(245, 240, 231, 0.66);
+  --screen-tertiary: rgba(245, 240, 231, 0.52);
+  --screen-border: rgba(245, 240, 231, 0.2);
+  --screen-surface: rgba(245, 240, 231, 0.055);
+  --screen-surface-hover: rgba(245, 240, 231, 0.09);
+  --screen-grid-dot: rgba(245, 240, 231, 0.42);
+  --screen-sheen: rgba(255, 255, 255, 0.025);
+  --screen-button-bg: #f5f0e7;
+  --screen-button-fg: #171511;
 }
 
 .hero-screen::after {
   position: absolute;
   inset: 0;
-  background: linear-gradient(110deg, transparent 20%, rgba(255, 255, 255, 0.025) 44%, transparent 62%);
+  background: linear-gradient(110deg, transparent 20%, var(--screen-sheen) 44%, transparent 62%);
   content: '';
   pointer-events: none;
 }
@@ -244,7 +267,7 @@ onUnmounted(() => {
   width: 56%;
   aspect-ratio: 1;
   border-radius: 50%;
-  background: #ee8859;
+  background: var(--accent);
   filter: blur(110px);
   opacity: 0.16;
   pointer-events: none;
@@ -254,7 +277,7 @@ onUnmounted(() => {
   position: absolute;
   inset: 0;
   opacity: 0.12;
-  background-image: radial-gradient(rgba(245, 240, 231, 0.42) 0.7px, transparent 0.7px);
+  background-image: radial-gradient(var(--screen-grid-dot) 0.7px, transparent 0.7px);
   background-size: 20px 20px;
   -webkit-mask-image: linear-gradient(to bottom, #000, transparent 72%);
   mask-image: linear-gradient(to bottom, #000, transparent 72%);
@@ -269,41 +292,21 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: rgba(245, 240, 231, 0.52);
+  color: var(--screen-tertiary);
   font-size: clamp(0.38rem, 0.65vw, 0.68rem);
   font-weight: 700;
   letter-spacing: 0.13em;
   text-transform: uppercase;
 }
 
-.screen-meta-top {
-  top: 8.5%;
-}
-
 .screen-meta-bottom {
   bottom: 6.5%;
 }
 
-.screen-brand,
 .screen-meta-bottom span:first-child {
   display: flex;
   align-items: center;
   gap: 0.55rem;
-}
-
-.screen-brand i {
-  display: inline-flex;
-  width: clamp(1.15rem, 2vw, 1.8rem);
-  aspect-ratio: 1;
-  align-items: center;
-  justify-content: center;
-  border-radius: 38%;
-  background: #f5f0e7;
-  color: #171511;
-  font-family: var(--font-serif);
-  font-size: clamp(0.68rem, 1.1vw, 1rem);
-  font-style: italic;
-  letter-spacing: 0;
 }
 
 .status-dot {
@@ -318,7 +321,7 @@ onUnmounted(() => {
 .hero-content {
   position: absolute;
   z-index: 2;
-  inset: 13% 7% 10%;
+  inset: 9% 7% 10%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -332,10 +335,10 @@ onUnmounted(() => {
   padding: 0.3rem clamp(0.55rem, 1.2vw, 0.95rem);
   align-items: center;
   gap: clamp(0.35rem, 0.65vw, 0.6rem);
-  border: 1px solid rgba(245, 240, 231, 0.17);
+  border: 1px solid var(--screen-border);
   border-radius: 999px;
-  background: rgba(8, 9, 10, 0.35);
-  color: rgba(245, 240, 231, 0.76);
+  background: var(--screen-surface);
+  color: var(--screen-secondary);
   font-size: clamp(0.42rem, 0.78vw, 0.78rem);
   font-weight: 700;
   -webkit-backdrop-filter: blur(12px);
@@ -354,7 +357,7 @@ onUnmounted(() => {
   position: absolute;
   inset: 0;
   border-radius: 999px;
-  background: #ee8859;
+  background: var(--accent);
   content: '';
 }
 
@@ -364,7 +367,7 @@ onUnmounted(() => {
 
 .hero-title {
   margin-top: clamp(0.65rem, 1.6vw, 1.45rem);
-  color: #f5f0e7;
+  color: var(--screen-primary);
   font-size: clamp(1.55rem, 4.45vw, 4.65rem);
   font-weight: 500;
   letter-spacing: -0.058em;
@@ -376,7 +379,7 @@ onUnmounted(() => {
 }
 
 .hero-title em {
-  color: #ee8859;
+  color: var(--accent);
   font-family: var(--font-serif);
   font-weight: 400;
 }
@@ -384,7 +387,7 @@ onUnmounted(() => {
 .hero-description {
   max-width: 43rem;
   margin-top: clamp(0.55rem, 1.4vw, 1.25rem);
-  color: rgba(245, 240, 231, 0.66);
+  color: var(--screen-secondary);
   font-size: clamp(0.48rem, 1.05vw, 1rem);
   line-height: 1.6;
 }
@@ -415,21 +418,21 @@ onUnmounted(() => {
 }
 
 .hero-button-primary {
-  background: #f5f0e7;
-  color: #171511;
+  background: var(--screen-button-bg);
+  color: var(--screen-button-fg);
 }
 
 .hero-button-secondary {
-  border: 1px solid rgba(245, 240, 231, 0.2);
-  background: rgba(245, 240, 231, 0.055);
-  color: #f5f0e7;
+  border: 1px solid var(--screen-border);
+  background: var(--screen-surface);
+  color: var(--screen-primary);
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
 }
 
 .hero-button-secondary:hover {
-  border-color: rgba(245, 240, 231, 0.42);
-  background: rgba(245, 240, 231, 0.09);
+  border-color: var(--screen-tertiary);
+  background: var(--screen-surface-hover);
 }
 
 .hero-button-icon {
@@ -448,7 +451,7 @@ onUnmounted(() => {
   flex-wrap: wrap;
   justify-content: center;
   gap: 0.4rem clamp(0.65rem, 1.4vw, 1.25rem);
-  color: rgba(245, 240, 231, 0.54);
+  color: var(--screen-tertiary);
   font-size: clamp(0.38rem, 0.68vw, 0.68rem);
 }
 
@@ -461,7 +464,7 @@ onUnmounted(() => {
 .hero-proof svg {
   width: clamp(0.48rem, 0.85vw, 0.85rem);
   height: clamp(0.48rem, 0.85vw, 0.85rem);
-  color: #ee8859;
+  color: var(--accent);
 }
 
 .hero-aura {
@@ -503,28 +506,116 @@ onUnmounted(() => {
   75%, 100% { opacity: 0; transform: scale(2.45); }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 767px), (min-width: 768px) and (max-width: 1100px) and (orientation: portrait) {
   .hero-section {
     min-height: auto;
-    padding: 6.4rem 0 3.5rem;
+    padding: 6.75rem 0 4.5rem;
   }
 
   .hero-shell {
-    width: calc(100vw - 1rem);
+    width: min(100%, 64rem);
+    padding-inline: 1.5rem;
+    perspective: none;
   }
 
+  .hero-shell::after,
+  .macbook-frame,
+  .screen-glow,
+  .screen-grid,
   .screen-meta {
-    right: 6%;
-    left: 6%;
+    display: none;
+  }
+
+  .hero-device {
+    aspect-ratio: auto;
+    transform: none !important;
+    will-change: auto;
+  }
+
+  .hero-screen {
+    --screen-primary: var(--text-primary);
+    --screen-secondary: var(--text-secondary);
+    --screen-tertiary: var(--text-tertiary);
+    --screen-border: var(--border-default);
+    --screen-surface: color-mix(in srgb, var(--bg-card) 72%, transparent);
+    --screen-surface-hover: var(--bg-card);
+    --screen-button-bg: var(--text-primary);
+    --screen-button-fg: var(--bg-primary);
+    position: relative;
+    inset: auto;
+    min-height: clamp(40rem, 72svh, 52rem);
+    overflow: visible;
+    border-radius: 0;
+    background: transparent;
+    color: var(--text-primary);
+  }
+
+  .hero-screen::after {
+    display: none;
   }
 
   .hero-content {
-    inset: 10% 8% 7%;
+    position: relative;
+    inset: auto;
+    min-height: inherit;
+    padding: 3rem 2rem;
+  }
+
+  .availability-pill {
+    min-height: 2.2rem;
+    padding: 0.38rem 0.9rem;
+    gap: 0.6rem;
+    font-size: 0.75rem;
+  }
+
+  .availability-dot {
+    width: 0.48rem;
+    height: 0.48rem;
+  }
+
+  .hero-title {
+    margin-top: 1.35rem;
+    font-size: clamp(3.8rem, 9vw, 6.4rem);
   }
 
   .hero-description {
-    max-width: 17rem;
-    line-height: 1.45;
+    max-width: 43rem;
+    margin-top: 1.35rem;
+    font-size: clamp(1rem, 2vw, 1.15rem);
+    line-height: 1.65;
+  }
+
+  .hero-actions {
+    margin-top: 1.8rem;
+    gap: 0.75rem;
+  }
+
+  .hero-button {
+    min-height: 3.15rem;
+    padding: 0.75rem 1.35rem;
+    gap: 0.65rem;
+    font-size: 0.875rem;
+  }
+
+  .hero-button-icon {
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+
+  .hero-button-arrow {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .hero-proof {
+    margin-top: 1.2rem;
+    gap: 0.5rem 1.2rem;
+    font-size: 0.75rem;
+  }
+
+  .hero-proof svg {
+    width: 0.85rem;
+    height: 0.85rem;
   }
 
   .hero-button:hover {
@@ -532,57 +623,52 @@ onUnmounted(() => {
   }
 }
 
-@media (max-width: 520px) {
-  .screen-meta,
-  .hero-proof {
-    display: none;
+@media (max-width: 767px) {
+  .hero-section {
+    padding: 6.25rem 0 3.75rem;
   }
 
-  .hero-content {
-    inset: 8% 9% 6%;
+  .hero-shell {
+    padding-inline: 1.25rem;
   }
 
-  .availability-pill {
-    min-height: 1.2rem;
-    padding: 0.18rem 0.46rem;
-    font-size: 0.34rem;
+  .hero-screen {
+    min-height: 37rem;
   }
 
   .hero-title {
-    margin-top: 0.42rem;
-    font-size: clamp(1.18rem, 6vw, 1.65rem);
+    font-size: clamp(3rem, 13.5vw, 4.8rem);
   }
 
   .hero-description {
-    max-width: 15.5rem;
-    margin-top: 0.38rem;
-    font-size: clamp(0.39rem, 1.9vw, 0.52rem);
+    max-width: 36rem;
+    font-size: 0.98rem;
+  }
+}
+
+@media (max-width: 560px) {
+  .hero-content {
+    padding: 2.5rem 0;
   }
 
   .hero-actions {
-    margin-top: 0.48rem;
+    width: 100%;
+    max-width: 22rem;
+    flex-direction: column;
   }
 
   .hero-button {
-    min-height: 1.42rem;
-    padding: 0.28rem 0.58rem;
-    font-size: 0.38rem;
-  }
-
-  .hero-button-icon,
-  .hero-button-arrow {
-    width: 0.56rem;
-    height: 0.56rem;
+    width: 100%;
   }
 }
 
 @media (max-width: 380px) {
-  .hero-description {
-    display: none;
+  .hero-screen {
+    min-height: 38rem;
   }
 
   .hero-title {
-    font-size: 1.15rem;
+    font-size: 2.85rem;
   }
 }
 </style>
