@@ -186,7 +186,7 @@ onUnmounted(() => {
   content: '';
 }
 
-:global([data-theme="dark"]) .hero-shell::after {
+:global([data-theme="dark"] .hero-shell::after) {
   background: rgba(0, 0, 0, 0.38);
 }
 
@@ -236,7 +236,7 @@ onUnmounted(() => {
   transition: background 0.45s ease, color 0.35s ease;
 }
 
-:global([data-theme="dark"]) .hero-screen {
+:global([data-theme="dark"] .hero-screen) {
   --screen-bg:
     radial-gradient(circle at 50% -12%, rgba(238, 136, 89, 0.2), transparent 42%),
     linear-gradient(180deg, #2b1a12 0%, #141516 44%, #08090a 100%);
