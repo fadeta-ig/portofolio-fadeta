@@ -1,5 +1,5 @@
 <script setup>
-import { ArrowUpRight, BriefcaseBusiness, GitBranch, Mail, MessageCircle } from '@lucide/vue';
+import { ArrowUpRight, BriefcaseBusiness, ClipboardPenLine, GitBranch, Mail, MessageCircle } from '@lucide/vue';
 import LogoMark from './LogoMark.vue';
 
 const whatsapp = '6281553821808';
@@ -35,14 +35,14 @@ const whatsappLink = `https://wa.me/${whatsapp}?text=${message}`;
             Chat via WhatsApp
             <ArrowUpRight class="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </a>
-          <a
-            :href="`mailto:${email}`"
-            data-track="footer_email"
+          <RouterLink
+            to="/konsultasi"
+            data-track="footer_consultation"
             class="inline-flex min-h-14 w-full items-center justify-center gap-3 rounded-full border border-white/20 px-7 text-sm font-bold text-[#f5f0e7] transition-colors hover:border-white/45 sm:w-auto"
           >
-            <Mail class="h-[18px] w-[18px]" />
-            Kirim email
-          </a>
+            <ClipboardPenLine class="h-[18px] w-[18px]" />
+            Isi form konsultasi
+          </RouterLink>
         </div>
 
         <p class="mt-6 text-xs text-[#827a70]">Balasan mengikuti jam operasional · Surabaya, Indonesia</p>

@@ -14,10 +14,6 @@ const navRef = ref(null);
 const isMobileMenuOpen = ref(false);
 let ctx;
 
-const whatsapp = '6281553821808';
-const whatsappMessage = encodeURIComponent('Halo Gandiva Labs, saya ingin konsultasi tentang pembuatan website.');
-const whatsappLink = `https://wa.me/${whatsapp}?text=${whatsappMessage}`;
-
 const navItems = [
   { label: 'Layanan', id: 'services' },
   { label: 'Portofolio', path: '/portfolio' },
@@ -117,16 +113,14 @@ onUnmounted(() => {
           <Moon v-else class="h-[18px] w-[18px]" />
         </button>
 
-        <a
-          :href="whatsappLink"
-          target="_blank"
-          rel="noopener noreferrer"
-          data-track="nav_whatsapp"
+        <RouterLink
+          to="/konsultasi"
+          data-track="nav_consultation"
           class="hidden min-h-11 items-center gap-2 rounded-full bg-text-primary px-5 text-sm font-bold text-bg-primary transition-transform hover:-translate-y-0.5 sm:inline-flex"
         >
           <MessageCircle class="h-4 w-4" />
           Konsultasi
-        </a>
+        </RouterLink>
 
         <button
           type="button"
@@ -182,16 +176,15 @@ onUnmounted(() => {
           </a>
         </div>
 
-        <a
-          :href="whatsappLink"
-          target="_blank"
-          rel="noopener noreferrer"
-          data-track="mobile_menu_whatsapp"
+        <RouterLink
+          to="/konsultasi"
+          data-track="mobile_menu_consultation"
           class="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-text-primary px-5 text-sm font-bold text-bg-primary"
+          @click="isMobileMenuOpen = false"
         >
           <MessageCircle class="h-4 w-4" />
           Ceritakan kebutuhan Anda
-        </a>
+        </RouterLink>
       </aside>
     </Transition>
   </Teleport>

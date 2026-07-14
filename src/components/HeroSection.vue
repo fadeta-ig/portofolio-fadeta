@@ -8,10 +8,6 @@ const deviceRef = ref(null);
 let ctx;
 let removeTiltListeners;
 
-const whatsapp = '6281553821808';
-const message = encodeURIComponent('Halo Gandiva Labs, saya ingin konsultasi tentang pembuatan website.');
-const whatsappLink = `https://wa.me/${whatsapp}?text=${message}`;
-
 onMounted(() => {
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reduceMotion) return;
@@ -111,17 +107,15 @@ onUnmounted(() => {
             </p>
 
             <div class="hero-content-item hero-actions">
-              <a
-                :href="whatsappLink"
-                target="_blank"
-                rel="noopener noreferrer"
-                data-track="hero_whatsapp"
+              <RouterLink
+                to="/konsultasi"
+                data-track="hero_consultation"
                 class="hero-button hero-button-primary group"
               >
                 <MessageCircle class="hero-button-icon" />
                 Ceritakan kebutuhan Anda
                 <ArrowUpRight class="hero-button-arrow transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </a>
+              </RouterLink>
 
               <RouterLink to="/portfolio" class="hero-button hero-button-secondary group">
                 Lihat portofolio

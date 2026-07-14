@@ -6,6 +6,7 @@ import ExpertiseSection from '../components/ExpertiseSection.vue';
 import CaseStudiesSection from '../components/CaseStudiesSection.vue';
 import InfrastructureSection from '../components/InfrastructureSection.vue';
 import CertificationsSection from '../components/CertificationsSection.vue';
+import LeadFormSection from '../components/LeadFormSection.vue';
 import FaqSection from '../components/FaqSection.vue';
 import ContactSection from '../components/ContactSection.vue';
 </script>
@@ -19,6 +20,7 @@ import ContactSection from '../components/ContactSection.vue';
     <CaseStudiesSection />
     <InfrastructureSection />
     <CertificationsSection />
+    <LeadFormSection />
     <FaqSection />
     <ContactSection />
   </main>

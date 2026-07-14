@@ -255,10 +255,10 @@ onUnmounted(() => window.removeEventListener('scroll', updateScrollProgress));
               <p class="text-[10px] font-bold uppercase tracking-[0.16em] text-accent">Punya kebutuhan serupa?</p>
               <h2 class="mt-3 max-w-2xl text-2xl font-bold tracking-[-0.035em] text-text-primary md:text-4xl">Ceritakan konteksnya. Kita cari bentuk website atau sistem yang paling masuk akal.</h2>
             </div>
-            <a href="#contact" class="group mt-7 inline-flex min-h-12 shrink-0 items-center justify-center gap-3 rounded-full bg-text-primary px-6 text-sm font-bold text-bg-primary md:mt-0">
+            <RouterLink to="/konsultasi" class="group mt-7 inline-flex min-h-12 shrink-0 items-center justify-center gap-3 rounded-full bg-text-primary px-6 text-sm font-bold text-bg-primary md:mt-0">
               Mulai konsultasi
               <ArrowRight class="h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </a>
+            </RouterLink>
           </div>
         </div>
       </Transition>
