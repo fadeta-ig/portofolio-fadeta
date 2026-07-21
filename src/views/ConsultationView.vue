@@ -1,7 +1,6 @@
 <script setup>
 import { CheckCircle2, FileSearch, Route, Send } from '@lucide/vue';
 import ConsultationForm from '../components/ConsultationForm.vue';
-import ContactSection from '../components/ContactSection.vue';
 
 const process = [
   {
@@ -74,7 +73,5 @@ const process = [
         </div>
       </div>
     </section>
-
-    <ContactSection />
   </main>
 </template>

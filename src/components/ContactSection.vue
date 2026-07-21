@@ -30,7 +30,7 @@ const whatsappLink = createWhatsAppLink('Halo Gandiva Labs, saya ingin bercerita
             class="group inline-flex min-h-14 w-full items-center justify-center gap-3 rounded-full bg-[#f5f0e7] px-7 text-sm font-bold text-[#171511] transition-transform hover:-translate-y-1 sm:w-auto"
           >
             <MessageCircle class="h-[18px] w-[18px]" />
-            Chat {{ contact.whatsappDisplay }}
+            Chat via WhatsApp
             <ArrowUpRight class="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </a>
           <RouterLink
