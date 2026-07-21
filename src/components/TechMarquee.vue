@@ -1,5 +1,5 @@
 <script setup>
-const audiences = ['Brand yang mulai tumbuh', 'UKM', 'Manufaktur & B2B', 'Bisnis jasa', 'Tim operasional'];
+const audiences = ['Brand yang mulai tumbuh', 'UMKM', 'Manufaktur & B2B', 'Bisnis jasa', 'Tim operasional'];
 </script>
 
 <template>

@@ -48,7 +48,7 @@ Audit dilakukan melalui:
 ### Target audiens
 
 - `[ESTIMATED]` Utama: pemilik bisnis lokal, brand, tim marketing, dan perusahaan B2B yang perlu company profile, landing page, atau toko online.
-- `[ESTIMATED]` Prioritas awal: beauty, manufaktur, bisnis jasa, dan UKM berkembang karena paling dekat dengan bukti kerja yang tersedia.
+- `[ESTIMATED]` Prioritas awal: beauty, manufaktur, bisnis jasa, dan UMKM berkembang karena paling dekat dengan bukti kerja yang tersedia.
 - `[ESTIMATED]` Sekunder: bisnis yang sudah punya website tetapi perlu redesign, perapian struktur, atau maintenance.
 
 Asumsi target ini perlu divalidasi dari data lead nyata. Belum ada analytics, CRM, atau riwayat penjualan terstruktur di repository.
@@ -154,4 +154,3 @@ Semua CTA utama sudah memiliki atribut `data-track` agar event dapat dipasang se
 5. Pasang analytics yang privacy-conscious dan event tracking pada atribut `data-track`.
 6. Tambahkan canonical, sitemap, WebSite/Organization structured data, dan OG image setelah domain final tersedia.
 7. Jalankan Lighthouse dan pengukuran Core Web Vitals setelah deployment.
-
