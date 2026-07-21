@@ -1,7 +1,6 @@
 {
+  "cleanUrls": true,
   "rewrites": [
-    { "source": "/portfolio", "destination": "/index.html" },
-    { "source": "/konsultasi", "destination": "/index.html" },
     { "source": "/terima-kasih", "destination": "/index.html" }
   ],
   "headers": [
@@ -18,9 +17,57 @@
       ]
     },
     {
+      "source": "/solusi/company-profile",
+      "headers": [
+        { "key": "Link", "value": "<https://www.gandivalabs.my.id/solusi/company-profile>; rel=\"canonical\"" }
+      ]
+    },
+    {
+      "source": "/solusi/landing-page",
+      "headers": [
+        { "key": "Link", "value": "<https://www.gandivalabs.my.id/solusi/landing-page>; rel=\"canonical\"" }
+      ]
+    },
+    {
+      "source": "/solusi/toko-online",
+      "headers": [
+        { "key": "Link", "value": "<https://www.gandivalabs.my.id/solusi/toko-online>; rel=\"canonical\"" }
+      ]
+    },
+    {
+      "source": "/solusi/website-custom",
+      "headers": [
+        { "key": "Link", "value": "<https://www.gandivalabs.my.id/solusi/website-custom>; rel=\"canonical\"" }
+      ]
+    },
+    {
+      "source": "/hasil/shinyoung-beauty",
+      "headers": [
+        { "key": "Link", "value": "<https://www.gandivalabs.my.id/hasil/shinyoung-beauty>; rel=\"canonical\"" }
+      ]
+    },
+    {
+      "source": "/hasil/mahakarya-kosmetika",
+      "headers": [
+        { "key": "Link", "value": "<https://www.gandivalabs.my.id/hasil/mahakarya-kosmetika>; rel=\"canonical\"" }
+      ]
+    },
+    {
+      "source": "/hasil/wijaya-inovasi",
+      "headers": [
+        { "key": "Link", "value": "<https://www.gandivalabs.my.id/hasil/wijaya-inovasi>; rel=\"canonical\"" }
+      ]
+    },
+    {
       "source": "/konsultasi",
       "headers": [
         { "key": "Link", "value": "<https://www.gandivalabs.my.id/konsultasi>; rel=\"canonical\"" }
+      ]
+    },
+    {
+      "source": "/privasi",
+      "headers": [
+        { "key": "Link", "value": "<https://www.gandivalabs.my.id/privasi>; rel=\"canonical\"" }
       ]
     },
     {

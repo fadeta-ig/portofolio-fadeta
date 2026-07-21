@@ -15,11 +15,10 @@ const isMobileMenuOpen = ref(false);
 let ctx;
 
 const navItems = [
-  { label: 'Layanan', id: 'services' },
-  { label: 'Portofolio', path: '/portfolio' },
-  { label: 'Proses', id: 'process' },
-  { label: 'Tentang', id: 'studio' },
-  { label: 'FAQ', id: 'faq' }
+  { label: 'Solusi', id: 'services' },
+  { label: 'Hasil', path: '/portfolio' },
+  { label: 'Cara kerja', id: 'process' },
+  { label: 'Tentang', id: 'studio' }
 ];
 
 function hrefFor(item) {
@@ -119,7 +118,7 @@ onUnmounted(() => {
           class="hidden min-h-11 items-center gap-2 rounded-full bg-text-primary px-5 text-sm font-bold text-bg-primary transition-transform hover:-translate-y-0.5 sm:inline-flex"
         >
           <MessageCircle class="h-4 w-4" />
-          Konsultasi
+          Ceritakan masalah
         </RouterLink>
 
         <button
@@ -183,7 +182,7 @@ onUnmounted(() => {
           @click="isMobileMenuOpen = false"
         >
           <MessageCircle class="h-4 w-4" />
-          Ceritakan kebutuhan Anda
+          Ceritakan masalah
         </RouterLink>
       </aside>
     </Transition>

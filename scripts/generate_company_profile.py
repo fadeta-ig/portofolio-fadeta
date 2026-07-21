@@ -941,16 +941,16 @@ def closing(c: canvas.Canvas) -> None:
     bullets(c, checklist, M + 18, 469, 294, IVORY, ACCENT_LIGHT, 8, 11.3, 4)
 
     rounded_rect(c, 392, 370, 161, 154, 16, IVORY)
-    qr_code(c, "https://wa.me/6281553821808?text=Halo%20Gandiva%20Labs%2C%20saya%20ingin%20konsultasi%20website%20bisnis.", 417, 403, 102, INK, IVORY)
+    qr_code(c, "https://wa.me/6285117148742?text=Halo%20Gandiva%20Labs%2C%20saya%20ingin%20konsultasi%20website%20bisnis.", 417, 403, 102, INK, IVORY)
     c.setFillColor(INK)
     c.setFont("GLSansBold", 7.5)
     c.drawCentredString(472.5, 386, "SCAN TO WHATSAPP")
-    add_url(c, "https://wa.me/6281553821808", 392, 370, 161, 154)
+    add_url(c, "https://wa.me/6285117148742", 392, 370, 161, 154)
 
     rounded_rect(c, M, 174, W - 2 * M, 193, 16, HexColor("#241B17"), HexColor("#4A382F"))
     label(c, "Contact", M + 18, 336, ACCENT_LIGHT)
     contact_rows = [
-        ("WhatsApp", "+62 815-5382-1808", "https://wa.me/6281553821808"),
+        ("WhatsApp", "+62 851-1714-8742", "https://wa.me/6285117148742"),
         ("Email", "fadeta287@gmail.com", "mailto:fadeta287@gmail.com"),
         ("LinkedIn", "linkedin.com/in/fadetaig", "https://linkedin.com/in/fadetaig"),
         ("GitHub", "github.com/fadeta-ig", "https://github.com/fadeta-ig"),

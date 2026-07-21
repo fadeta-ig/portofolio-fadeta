@@ -24,10 +24,10 @@ useGsapScrollReveal(sectionRef, { y: 32, stagger: 0.08, duration: 0.75, once: tr
       <div class="lg:sticky lg:top-28">
         <p class="section-kicker mb-6">Mulai dengan brief singkat</p>
         <h2 class="section-heading text-balance">
-          Ceritakan targetnya. Kami bantu susun <span class="font-display italic text-accent">jalannya.</span>
+          Mulai dari masalahnya. Bentuk solusi bisa dibahas <span class="font-display italic text-accent">setelahnya.</span>
         </h2>
         <p class="mt-7 max-w-xl text-base leading-relaxed text-text-secondary md:text-lg">
-          Form ini membantu kami memahami konteks lebih dulu, sehingga pembicaraan berikutnya langsung membahas hal yang relevan untuk bisnis Anda.
+          Form ini membantu kami membaca konteks lebih dulu, supaya pembicaraan berikutnya tidak habis untuk menebak kebutuhan dasarnya.
         </p>
 
         <div class="mt-8 grid gap-3">
@@ -47,7 +47,7 @@ useGsapScrollReveal(sectionRef, { y: 32, stagger: 0.08, duration: 0.75, once: tr
         <div class="mb-7 flex items-start justify-between gap-5 border-b border-border-default pb-6">
           <div>
             <p class="text-[10px] font-bold uppercase tracking-[0.16em] text-accent">Brief awal</p>
-            <h3 class="mt-2 text-xl font-bold tracking-[-0.025em] text-text-primary md:text-2xl">Apa yang sedang ingin Anda bangun?</h3>
+            <h3 class="mt-2 text-xl font-bold tracking-[-0.025em] text-text-primary md:text-2xl">Apa yang sedang ingin Anda perbaiki?</h3>
           </div>
           <span class="hidden rounded-full border border-border-default bg-bg-primary px-3 py-1 text-[10px] font-bold uppercase tracking-[0.1em] text-text-tertiary sm:inline-flex">Tanpa komitmen</span>
         </div>

@@ -31,13 +31,13 @@ useGsapScrollReveal(sectionRef, { y: 34, stagger: 0.1, duration: 0.75, once: tru
     <div ref="sectionRef" class="section-shell">
       <div class="grid gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:gap-20">
         <div>
-          <p class="section-kicker mb-6">Yang sebenarnya dibutuhkan</p>
-          <h2 class="section-heading text-balance">Calon pelanggan tidak punya waktu untuk <span class="font-display italic text-accent">menebak.</span></h2>
+          <p class="section-kicker mb-6">Masalah yang sering terjadi</p>
+          <h2 class="section-heading text-balance">Website ada, tetapi orang masih harus <span class="font-display italic text-accent">menebak.</span></h2>
         </div>
 
         <div class="lg:pt-3">
           <p class="max-w-2xl text-lg leading-relaxed text-text-secondary md:text-xl">
-            Website yang bagus bukan yang paling ramai. Yang dibutuhkan adalah pesan yang cepat dipahami, bukti yang cukup, dan jalur kontak yang terasa mudah.
+            Tampilan yang rapi belum cukup jika pengunjung tidak segera memahami bisnisnya. Pesan, bukti, dan jalur tindakan perlu bekerja sebagai satu alur.
           </p>
 
           <div class="mt-10 grid gap-4 sm:grid-cols-3">

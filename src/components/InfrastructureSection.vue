@@ -44,13 +44,10 @@ useGsapScrollReveal(sectionRef, { y: 38, stagger: 0.1, duration: 0.8, once: true
       <div class="mb-14 grid gap-8 lg:grid-cols-[1fr_0.62fr] lg:items-end">
         <div>
           <p class="section-kicker mb-6 !text-[#ee8859]">Cara kerja</p>
-          <h2 class="text-balance max-w-4xl text-[clamp(2.4rem,5vw,4.8rem)] font-medium leading-[0.98] tracking-[-0.045em]">
-            Prosesnya jelas. Tidak ada fase
-            <span class="font-display italic text-[#ee8859]">“tiba-tiba jadi”.</span>
-          </h2>
+          <h2 class="text-balance max-w-4xl text-[clamp(2.4rem,5vw,4.8rem)] font-medium leading-[0.98] tracking-[-0.045em]">Anda tahu apa yang diputuskan, kapan memberi masukan, dan <span class="font-display italic text-[#ee8859]">kenapa.</span></h2>
         </div>
         <p class="max-w-xl text-base leading-relaxed text-[#bcb4a9] lg:justify-self-end lg:text-lg">
-          Setiap keputusan punya alasan. Anda tahu apa yang sedang dikerjakan, apa yang perlu disiapkan, dan kapan waktunya memberi masukan.
+          Proses dibuat bertahap agar keputusan penting tidak tenggelam di akhir pengerjaan. Scope, materi, review, dan target tayang dibicarakan sejak awal.
         </p>
       </div>
 

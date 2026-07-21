@@ -2,6 +2,7 @@
 import { computed, nextTick, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { ArrowRight, Check, LoaderCircle, LockKeyhole } from '@lucide/vue';
+import { trackEvent } from '../lib/analytics';
 
 const props = defineProps({
   variant: {
@@ -117,6 +118,7 @@ async function submitForm() {
       // The thank-you route remains accessible when browser storage is unavailable.
     }
 
+    trackEvent('generate_lead', { form_source: props.source, form_variant: props.variant, service: form.service });
     await router.push({ name: 'thank-you' });
   } catch (error) {
     submitError.value = error.message || 'Terjadi kendala saat mengirim form. Silakan coba kembali.';
@@ -270,7 +272,7 @@ async function submitForm() {
           @change="clearError('consent')"
         >
         <span class="consent-box" aria-hidden="true"><Check /></span>
-        <span>Saya setuju Gandiva Labs menghubungi saya terkait kebutuhan yang dikirimkan.</span>
+        <span>Saya setuju Gandiva Labs menghubungi saya terkait kebutuhan yang dikirimkan. Baca <RouterLink to="/privasi" class="font-bold text-text-primary underline decoration-border-default underline-offset-2">privasi data</RouterLink>.</span>
       </label>
       <span v-if="errors.consent" id="consultation-consent-error" class="field-error mt-2 block">{{ errors.consent }}</span>
     </div>

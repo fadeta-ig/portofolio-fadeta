@@ -49,7 +49,7 @@ useGsapScrollReveal(sectionRef, { y: 34, stagger: 0.1, duration: 0.75, once: tru
 
         <div>
           <p class="max-w-2xl text-lg leading-relaxed text-text-secondary md:text-xl">
-            Gandiva Labs lahir dari satu keyakinan sederhana: bisnis tidak butuh website yang terasa rumit. Bisnis butuh partner yang bisa menerjemahkan kebutuhan menjadi solusi yang jelas dan bisa dipakai.
+            Gandiva Labs membantu menerjemahkan kebutuhan bisnis menjadi website yang dapat dipahami pengguna dan tetap masuk akal untuk dikelola. Jika solusi yang dibutuhkan lebih sederhana dari rencana awal, pembahasannya akan diarahkan ke sana.
           </p>
 
           <div class="mt-9 divide-y divide-border-default border-y border-border-default">

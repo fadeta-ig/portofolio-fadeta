@@ -63,15 +63,15 @@ onUnmounted(() => window.removeEventListener('scroll', updateScrollProgress));
 
         <div class="grid gap-10 lg:grid-cols-[1fr_0.46fr] lg:items-end">
           <div class="max-w-5xl">
-            <p class="section-kicker mb-6">Arsip karya Gandiva Labs</p>
+            <p class="section-kicker mb-6">Hasil kerja Gandiva Labs</p>
             <h1 class="text-balance text-[clamp(3.25rem,7.5vw,7.6rem)] font-medium leading-[0.88] tracking-[-0.06em] text-text-primary">
-              Sistem digital untuk kebutuhan yang <span class="font-display italic text-accent">nyata.</span>
+              Bukan galeri tampilan. Setiap karya punya <span class="font-display italic text-accent">konteks.</span>
             </h1>
           </div>
 
           <div class="max-w-xl lg:pb-2">
             <p class="text-base leading-relaxed text-text-secondary md:text-lg">
-              Dari website yang bertemu langsung dengan pelanggan hingga sistem yang bekerja diam-diam di balik operasional bisnis.
+              Dari website yang bertemu langsung dengan pelanggan hingga sistem yang membantu proses internal bisnis.
             </p>
             <p class="mt-4 text-sm leading-relaxed text-text-tertiary">
               Sebagian proyek dapat dilihat langsung. Sebagian lainnya hanya dijelaskan secara garis besar karena bersifat internal.
@@ -135,7 +135,7 @@ onUnmounted(() => window.removeEventListener('scroll', updateScrollProgress));
                 :key="project.id"
                 class="group grid overflow-hidden rounded-[1.75rem] border border-border-default bg-bg-card shadow-[var(--shadow-sm)] lg:grid-cols-[1.08fr_0.92fr]"
               >
-                <a :href="project.link" target="_blank" rel="noopener noreferrer" class="relative min-h-64 overflow-hidden bg-bg-secondary lg:min-h-[30rem]" :class="index % 2 ? 'lg:order-2' : ''" :aria-label="`Kunjungi website ${project.title}`">
+                <RouterLink :to="`/hasil/${project.slug}`" class="relative min-h-64 overflow-hidden bg-bg-secondary lg:min-h-[30rem]" :class="index % 2 ? 'lg:order-2' : ''" :aria-label="`Baca studi kasus ${project.title}`">
                   <img
                     :src="project.image"
                     :alt="`Tampilan website ${project.title}`"
@@ -145,8 +145,8 @@ onUnmounted(() => window.removeEventListener('scroll', updateScrollProgress));
                     decoding="async"
                     class="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.025]"
                   />
-                  <span class="absolute bottom-4 left-4 rounded-full border border-white/20 bg-black/55 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-white backdrop-blur">Buka website</span>
-                </a>
+                  <span class="absolute bottom-4 left-4 rounded-full border border-white/20 bg-black/55 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-white backdrop-blur">Baca studi kasus</span>
+                </RouterLink>
 
                 <div class="flex flex-col justify-center p-7 md:p-10 lg:p-12" :class="index % 2 ? 'lg:order-1' : ''">
                   <div class="flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.16em] text-text-tertiary">
@@ -155,14 +155,14 @@ onUnmounted(() => window.removeEventListener('scroll', updateScrollProgress));
                     {{ project.category }}
                   </div>
                   <h3 class="mt-6 text-3xl font-bold tracking-[-0.04em] text-text-primary md:text-5xl">{{ project.title }}</h3>
-                  <p class="mt-5 text-base leading-relaxed text-text-secondary">{{ project.description }}</p>
+                  <p class="mt-5 text-base leading-relaxed text-text-secondary">{{ project.need }}</p>
                   <div class="mt-7 flex flex-wrap gap-2">
                     <span v-for="item in project.contribution" :key="item" class="tag">{{ item }}</span>
                   </div>
-                  <a :href="project.link" target="_blank" rel="noopener noreferrer" :data-track="`portfolio_${project.id}`" class="mt-9 inline-flex w-fit items-center gap-2 text-sm font-bold text-text-primary transition-colors hover:text-accent">
-                    Lihat website
-                    <ArrowUpRight class="h-4 w-4" />
-                  </a>
+                  <div class="mt-9 flex flex-wrap items-center gap-5">
+                    <RouterLink :to="`/hasil/${project.slug}`" :data-track="`portfolio_case_${project.slug}`" class="inline-flex w-fit items-center gap-2 text-sm font-bold text-text-primary transition-colors hover:text-accent">Baca ringkasan proyek <ArrowRight class="h-4 w-4" /></RouterLink>
+                    <a :href="project.link" target="_blank" rel="noopener noreferrer" :data-track="`portfolio_visit_${project.slug}`" class="inline-flex w-fit items-center gap-2 text-xs font-bold text-text-tertiary transition-colors hover:text-accent">Kunjungi website <ArrowUpRight class="h-3.5 w-3.5" /></a>
+                  </div>
                 </div>
               </article>
             </div>

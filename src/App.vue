@@ -1,5 +1,8 @@
 <script setup>
 import NavBar from './components/NavBar.vue';
+import { useSeo } from './composables/useSeo';
+
+useSeo();
 </script>
 
 <template>

@@ -2,6 +2,7 @@
 import HeroSection from '../components/HeroSection.vue';
 import TechMarquee from '../components/TechMarquee.vue';
 import AboutSection from '../components/AboutSection.vue';
+import MethodSection from '../components/MethodSection.vue';
 import ExpertiseSection from '../components/ExpertiseSection.vue';
 import CaseStudiesSection from '../components/CaseStudiesSection.vue';
 import InfrastructureSection from '../components/InfrastructureSection.vue';
@@ -16,6 +17,7 @@ import ContactSection from '../components/ContactSection.vue';
     <HeroSection />
     <TechMarquee />
     <AboutSection />
+    <MethodSection />
     <ExpertiseSection />
     <CaseStudiesSection />
     <InfrastructureSection />

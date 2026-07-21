@@ -1,9 +1,8 @@
 <script setup>
 import { ArrowRight, Check, CheckCircle2, MessageCircle } from '@lucide/vue';
+import { createWhatsAppLink } from '../data/contact';
 
-const whatsapp = '6281553821808';
-const message = encodeURIComponent('Halo Gandiva Labs, saya baru saja mengirim brief melalui website.');
-const whatsappLink = `https://wa.me/${whatsapp}?text=${message}`;
+const whatsappLink = createWhatsAppLink('Halo Gandiva Labs, saya baru saja mengirim brief melalui website.');
 
 const nextSteps = [
   'Brief diperiksa untuk memahami tujuan dan konteks bisnis.',

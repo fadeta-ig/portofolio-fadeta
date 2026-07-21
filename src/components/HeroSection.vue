@@ -10,7 +10,8 @@ let removeTiltListeners;
 
 onMounted(() => {
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduceMotion) return;
+  const compactLayout = window.matchMedia('(max-width: 767px), (min-width: 768px) and (max-width: 1100px) and (orientation: portrait)').matches;
+  if (reduceMotion || compactLayout) return;
 
   ctx = gsap.context(() => {
     const timeline = gsap.timeline({ defaults: { ease: 'power3.out' } });
@@ -98,12 +99,12 @@ onUnmounted(() => {
             </div>
 
             <h1 class="hero-content-item hero-title text-balance">
-              Website yang bikin
-              <span>bisnis lebih mudah <em>dipercaya.</em></span>
+              Website yang masuk akal
+              <span>untuk <em>bisnis.</em></span>
             </h1>
 
             <p class="hero-content-item hero-description">
-              Gandiva Labs merancang website bisnis yang jelas, meyakinkan, dan mudah digunakan—dari impresi pertama sampai calon pelanggan menghubungi Anda.
+              Dimulai dari masalah nyata, disusun agar mudah dipahami, dan dibangun supaya dapat berkembang bersama kebutuhan bisnis Anda.
             </p>
 
             <div class="hero-content-item hero-actions">
@@ -113,26 +114,26 @@ onUnmounted(() => {
                 class="hero-button hero-button-primary group"
               >
                 <MessageCircle class="hero-button-icon" />
-                Ceritakan kebutuhan Anda
+                Ceritakan masalah Anda
                 <ArrowUpRight class="hero-button-arrow transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </RouterLink>
 
               <RouterLink to="/portfolio" class="hero-button hero-button-secondary group">
-                Lihat portofolio
+                Lihat hasil kerja
                 <ArrowRight class="hero-button-arrow transition-transform group-hover:translate-x-1" />
               </RouterLink>
             </div>
 
             <div class="hero-content-item hero-proof" aria-label="Keunggulan layanan">
-              <span><Check /> Strategi & copy</span>
-              <span><Check /> Responsif di mobile</span>
-              <span><Check /> Siap dikelola</span>
+              <span><Check /> Arah sebelum fitur</span>
+              <span><Check /> Jelas di setiap layar</span>
+              <span><Check /> Mudah dilanjutkan</span>
             </div>
           </div>
 
           <div class="screen-meta screen-meta-bottom" aria-hidden="true">
-            <span><i class="status-dot" /> Gandiva-labs.id</span>
-            <span>Crafted for clarity</span>
+            <span><i class="status-dot" /> gandivalabs.my.id</span>
+            <span>Built around real needs</span>
           </div>
         </div>
 
