@@ -1,5 +1,47 @@
 {
   "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+    { "source": "/portfolio", "destination": "/index.html" },
+    { "source": "/konsultasi", "destination": "/index.html" },
+    { "source": "/terima-kasih", "destination": "/index.html" }
+  ],
+  "headers": [
+    {
+      "source": "/",
+      "headers": [
+        { "key": "Link", "value": "<https://www.gandivalabs.my.id/>; rel=\"canonical\"" }
+      ]
+    },
+    {
+      "source": "/portfolio",
+      "headers": [
+        { "key": "Link", "value": "<https://www.gandivalabs.my.id/portfolio>; rel=\"canonical\"" }
+      ]
+    },
+    {
+      "source": "/konsultasi",
+      "headers": [
+        { "key": "Link", "value": "<https://www.gandivalabs.my.id/konsultasi>; rel=\"canonical\"" }
+      ]
+    },
+    {
+      "source": "/terima-kasih",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive" }
+      ]
+    },
+    {
+      "source": "/robots.txt",
+      "headers": [
+        { "key": "Content-Type", "value": "text/plain; charset=utf-8" },
+        { "key": "Cache-Control", "value": "public, max-age=0, s-maxage=3600" }
+      ]
+    },
+    {
+      "source": "/sitemap.xml",
+      "headers": [
+        { "key": "Content-Type", "value": "application/xml; charset=utf-8" },
+        { "key": "Cache-Control", "value": "public, max-age=0, s-maxage=3600" }
+      ]
+    }
   ]
 }

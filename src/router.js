@@ -4,7 +4,10 @@ const PortfolioView = () => import('./views/PortfolioView.vue');
 const ConsultationView = () => import('./views/ConsultationView.vue');
 const ThankYouView = () => import('./views/ThankYouView.vue');
 
-const defaultDescription = 'Gandiva Labs membantu bisnis membangun website yang jelas, mudah dipercaya, dan siap dipakai untuk bertumbuh.';
+const siteUrl = 'https://www.gandivalabs.my.id';
+const defaultImage = `${siteUrl}/favicon.png`;
+const defaultDescription = 'Gandiva Labs adalah studio website di Surabaya untuk company profile, landing page, toko online, dan website custom yang jelas, profesional, dan mudah digunakan.';
+const defaultRobots = 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -14,8 +17,9 @@ const router = createRouter({
       name: 'home',
       component: HomeView,
       meta: {
-        title: 'Gandiva Labs — Website untuk bisnis yang ingin lebih dipercaya',
-        description: defaultDescription
+        title: 'Jasa Pembuatan Website untuk Bisnis | Gandiva Labs',
+        description: defaultDescription,
+        canonicalPath: '/'
       }
     },
     {
@@ -23,8 +27,9 @@ const router = createRouter({
       name: 'portfolio',
       component: PortfolioView,
       meta: {
-        title: 'Portofolio — Gandiva Labs',
-        description: 'Kumpulan website bisnis, sistem internal, dan eksperimen digital yang pernah dibangun oleh Gandiva Labs.'
+        title: 'Portofolio Website Bisnis & Sistem Internal | Gandiva Labs',
+        description: 'Lihat portofolio website bisnis, company profile, toko online, sistem internal, dan eksperimen digital yang dibangun oleh Gandiva Labs.',
+        canonicalPath: '/portfolio'
       }
     },
     {
@@ -32,8 +37,9 @@ const router = createRouter({
       name: 'consultation',
       component: ConsultationView,
       meta: {
-        title: 'Konsultasi Website - Gandiva Labs',
-        description: 'Ceritakan tujuan bisnis, kebutuhan website, dan target waktu Anda melalui form konsultasi Gandiva Labs.'
+        title: 'Konsultasi Pembuatan Website | Gandiva Labs',
+        description: 'Konsultasikan kebutuhan company profile, landing page, toko online, atau website custom bersama Gandiva Labs.',
+        canonicalPath: '/konsultasi'
       }
     },
     {
@@ -43,7 +49,8 @@ const router = createRouter({
       meta: {
         title: 'Brief Berhasil Dikirim - Gandiva Labs',
         description: 'Brief konsultasi Anda telah diterima oleh Gandiva Labs.',
-        robots: 'noindex, nofollow'
+        robots: 'noindex, nofollow, noarchive',
+        canonicalPath: '/terima-kasih'
       }
     },
     { path: '/:pathMatch(.*)*', redirect: '/' }
@@ -55,24 +62,44 @@ const router = createRouter({
   }
 });
 
+function setMeta(selector, attribute, value) {
+  let element = document.head.querySelector(selector);
+  if (!element) {
+    element = document.createElement('meta');
+    const [key, selectorValue] = attribute;
+    element.setAttribute(key, selectorValue);
+    document.head.appendChild(element);
+  }
+  element.setAttribute('content', value);
+}
+
+function setCanonical(url) {
+  let canonical = document.head.querySelector('link[rel="canonical"]');
+  if (!canonical) {
+    canonical = document.createElement('link');
+    canonical.setAttribute('rel', 'canonical');
+    document.head.appendChild(canonical);
+  }
+  canonical.setAttribute('href', url);
+}
+
 router.afterEach((to) => {
-  document.title = to.meta.title ?? 'Gandiva Labs';
+  const title = to.meta.title ?? 'Gandiva Labs';
+  const description = to.meta.description ?? defaultDescription;
+  const canonicalUrl = new URL(to.meta.canonicalPath ?? to.path, `${siteUrl}/`).href;
 
-  let description = document.querySelector('meta[name="description"]');
-  if (!description) {
-    description = document.createElement('meta');
-    description.setAttribute('name', 'description');
-    document.head.appendChild(description);
-  }
-  description.setAttribute('content', to.meta.description ?? defaultDescription);
+  document.title = title;
+  setCanonical(canonicalUrl);
 
-  let robots = document.querySelector('meta[name="robots"]');
-  if (!robots) {
-    robots = document.createElement('meta');
-    robots.setAttribute('name', 'robots');
-    document.head.appendChild(robots);
-  }
-  robots.setAttribute('content', to.meta.robots ?? 'index, follow');
+  setMeta('meta[name="description"]', ['name', 'description'], description);
+  setMeta('meta[name="robots"]', ['name', 'robots'], to.meta.robots ?? defaultRobots);
+  setMeta('meta[property="og:title"]', ['property', 'og:title'], title);
+  setMeta('meta[property="og:description"]', ['property', 'og:description'], description);
+  setMeta('meta[property="og:url"]', ['property', 'og:url'], canonicalUrl);
+  setMeta('meta[property="og:image"]', ['property', 'og:image'], defaultImage);
+  setMeta('meta[name="twitter:title"]', ['name', 'twitter:title'], title);
+  setMeta('meta[name="twitter:description"]', ['name', 'twitter:description'], description);
+  setMeta('meta[name="twitter:image"]', ['name', 'twitter:image'], defaultImage);
 });
 
 export default router;
