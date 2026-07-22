@@ -16,43 +16,53 @@ useGsapScrollReveal(sectionRef, { y: 36, stagger: 0.08, duration: 0.75, once: tr
 </script>
 
 <template>
-  <section id="services" class="py-24 md:py-36">
+  <section id="services" class="py-20 md:py-24">
     <div ref="sectionRef" class="section-shell">
-      <div class="mb-14 grid gap-8 lg:grid-cols-[1fr_0.72fr] lg:items-end">
+      <div class="mb-10 grid gap-6 lg:grid-cols-[1.1fr_0.45fr] lg:items-end">
         <div>
-          <p class="section-kicker mb-6">Bentuk solusi</p>
-          <h2 class="section-heading text-balance max-w-4xl">Pilih berdasarkan masalahnya, bukan nama <span class="font-display italic text-accent">paketnya.</span></h2>
+          <p class="section-kicker mb-5">Bentuk solusi</p>
+          <h2 class="section-heading max-w-4xl text-balance lg:text-[clamp(2.6rem,4.2vw,4.2rem)]">Pilih berdasarkan masalahnya, bukan nama <span class="font-display italic text-accent">paketnya.</span></h2>
         </div>
-        <p class="max-w-xl text-base leading-relaxed text-text-secondary lg:justify-self-end lg:text-lg">
+        <p class="max-w-xl text-sm leading-relaxed text-text-secondary lg:justify-self-end lg:text-base">
           Nama layanan membantu memberi gambaran awal. Scope akhirnya tetap mengikuti tujuan, kondisi, dan cara bisnis Anda bekerja.
         </p>
       </div>
 
-      <div class="grid gap-4 md:grid-cols-2">
-        <article v-for="service in services" :key="service.slug" class="group relative flex flex-col overflow-hidden rounded-[1.75rem] border border-border-default bg-bg-card p-6 transition-all duration-300 hover:-translate-y-1 hover:border-accent/40 hover:shadow-[var(--shadow-md)] md:p-8">
-          <div class="absolute -right-12 -top-12 h-36 w-36 rounded-full bg-accent-subtle opacity-0 blur-2xl transition-opacity group-hover:opacity-100" />
-          <div class="relative flex items-start justify-between gap-5">
-            <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-text-primary text-bg-primary"><component :is="iconMap[service.slug]" class="h-5 w-5" stroke-width="1.7" /></div>
-            <span class="text-xs font-bold tracking-[0.16em] text-text-tertiary">{{ service.number }}</span>
-          </div>
+      <div class="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
+        <article v-for="service in services" :key="service.slug" class="group relative min-w-0 overflow-hidden rounded-[1.4rem] border border-border-default bg-bg-card transition-all duration-300 hover:-translate-y-1 hover:border-accent/45 hover:shadow-[var(--shadow-md)]">
+          <RouterLink :to="`/solusi/${service.slug}`" :data-track="`service_${service.slug}`" class="relative flex h-full flex-col p-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent/60 lg:p-6" :aria-label="`Lihat pendekatan ${service.name}`">
+            <span class="absolute inset-x-6 top-0 h-px origin-left scale-x-0 bg-accent transition-transform duration-500 group-hover:scale-x-100 group-focus-within:scale-x-100" aria-hidden="true" />
 
-          <div class="relative mt-9 flex flex-1 flex-col">
-            <p class="max-w-lg text-[11px] font-bold uppercase leading-relaxed tracking-[0.12em] text-accent">{{ service.problem }}</p>
-            <h3 class="mt-4 text-2xl font-bold tracking-[-0.03em] text-text-primary md:text-3xl">{{ service.name }}</h3>
-            <p class="mt-4 max-w-xl leading-relaxed text-text-secondary">{{ service.summary }}</p>
-            <div class="mt-7 flex flex-wrap gap-2">
-              <span v-for="item in service.scope.slice(0, 3)" :key="item" class="tag">{{ item }}</span>
+            <div class="flex items-center justify-between gap-5">
+              <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-text-primary text-bg-primary shadow-[var(--shadow-sm)]">
+                <component :is="iconMap[service.slug]" class="h-[18px] w-[18px]" stroke-width="1.7" />
+              </span>
+              <span class="text-[10px] font-bold tabular-nums tracking-[0.18em] text-text-tertiary">{{ service.number }}</span>
             </div>
-            <RouterLink :to="`/solusi/${service.slug}`" :data-track="`service_${service.slug}`" class="mt-8 inline-flex w-fit items-center gap-2 text-sm font-bold text-text-primary transition-colors hover:text-accent">
-              Lihat pendekatannya <ArrowRight class="h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </RouterLink>
-          </div>
+
+            <div class="mt-6">
+              <h3 class="text-xl font-bold tracking-[-0.035em] text-text-primary lg:text-[1.35rem]">{{ service.name }}</h3>
+              <p class="mt-3 line-clamp-3 text-xs font-semibold leading-relaxed text-accent">{{ service.problem }}</p>
+              <p class="mt-3 line-clamp-3 text-sm leading-relaxed text-text-secondary">{{ service.summary }}</p>
+            </div>
+
+            <div class="mb-5 mt-5 flex flex-wrap gap-1.5">
+              <span v-for="item in service.scope.slice(0, 2)" :key="item" class="rounded-full border border-border-default bg-bg-secondary/70 px-2.5 py-1 text-[9px] font-bold text-text-tertiary">{{ item }}</span>
+            </div>
+
+            <div class="mt-auto flex items-center justify-between border-t border-border-subtle pt-5 text-xs font-bold text-text-primary">
+              <span>Lihat pendekatan</span>
+              <span class="flex h-8 w-8 items-center justify-center rounded-full border border-border-default transition-colors duration-300 group-hover:border-accent group-hover:bg-accent group-hover:text-white">
+                <ArrowRight class="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
+              </span>
+            </div>
+          </RouterLink>
         </article>
       </div>
 
-      <div class="mt-8 flex flex-col gap-4 rounded-2xl border border-border-default bg-bg-secondary p-5 sm:flex-row sm:items-center sm:justify-between md:p-6">
+      <div class="mt-5 flex flex-col gap-3 rounded-2xl border border-border-default bg-bg-secondary px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
         <p class="text-sm font-medium text-text-secondary"><strong class="text-text-primary">Belum tahu bentuk yang tepat?</strong> Itu wajar. Cukup jelaskan hal yang ingin diperbaiki.</p>
-        <RouterLink to="/konsultasi" data-track="services_consultation" class="inline-flex min-h-11 shrink-0 items-center justify-center rounded-full border border-text-primary px-5 text-sm font-bold text-text-primary transition-colors hover:bg-text-primary hover:text-bg-primary">Ceritakan masalah</RouterLink>
+        <RouterLink to="/konsultasi" data-track="services_consultation" class="inline-flex min-h-10 shrink-0 items-center justify-center rounded-full border border-text-primary px-5 text-xs font-bold text-text-primary transition-colors hover:bg-text-primary hover:text-bg-primary">Ceritakan masalah</RouterLink>
       </div>
     </div>
   </section>
