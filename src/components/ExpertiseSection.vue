@@ -50,18 +50,16 @@ function handleServiceKeydown(event, index) {
 
 <template>
   <section id="services" class="py-20 md:py-24">
-    <div ref="sectionRef" class="section-shell">
-      <div class="mb-10 grid gap-6 lg:grid-cols-[1.1fr_0.45fr] lg:items-end">
-        <div>
-          <p class="section-kicker mb-5">Bentuk solusi</p>
-          <h2 class="section-heading max-w-4xl text-balance lg:text-[clamp(2.6rem,4.2vw,4.2rem)]">Pilih berdasarkan masalahnya, bukan nama <span class="font-display italic text-accent">paketnya.</span></h2>
-        </div>
-        <p class="max-w-xl text-sm leading-relaxed text-text-secondary lg:justify-self-end lg:text-base">
+    <div ref="sectionRef" class="section-shell grid gap-8 lg:grid-cols-[minmax(0,0.72fr)_minmax(0,1.28fr)] lg:grid-rows-[1fr_auto] lg:gap-x-10 lg:gap-y-6 xl:grid-cols-[minmax(0,0.68fr)_minmax(0,1.32fr)] xl:gap-x-14">
+      <div class="lg:pr-2">
+        <p class="section-kicker mb-5">Bentuk solusi</p>
+        <h2 class="section-heading max-w-4xl text-balance lg:text-[clamp(2.45rem,3.9vw,4rem)]">Pilih berdasarkan masalahnya, bukan nama <span class="font-display italic text-accent">paketnya.</span></h2>
+        <p class="mt-6 max-w-lg text-sm leading-relaxed text-text-secondary lg:text-base">
           Nama layanan membantu memberi gambaran awal. Scope akhirnya tetap mengikuti tujuan, kondisi, dan cara bisnis Anda bekerja.
         </p>
       </div>
 
-      <div class="service-accordion overflow-hidden rounded-[1.6rem] border border-border-default bg-bg-card shadow-[var(--shadow-sm)]">
+      <div class="service-accordion self-start overflow-hidden rounded-[1.6rem] border border-border-default bg-bg-card shadow-[var(--shadow-sm)] lg:col-start-2 lg:row-span-2 lg:row-start-1">
         <article
           v-for="(service, index) in services"
           :key="service.slug"
@@ -78,7 +76,7 @@ function handleServiceKeydown(event, index) {
             :id="`service-trigger-${service.slug}`"
             :ref="(element) => setServiceButtonRef(element, index)"
             type="button"
-            class="group grid min-h-[4.75rem] w-full grid-cols-[2rem_2.5rem_minmax(0,1fr)_2.25rem] items-center gap-3 px-5 py-3.5 text-left transition-colors duration-300 hover:bg-bg-secondary/55 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent/60 md:grid-cols-[2rem_2.5rem_minmax(10rem,0.62fr)_minmax(14rem,1fr)_2.25rem] md:gap-4 md:px-6 lg:px-7"
+            class="group grid min-h-[4.5rem] w-full grid-cols-[2rem_2.5rem_minmax(0,1fr)_2.25rem] items-center gap-3 px-5 py-3 text-left transition-colors duration-300 hover:bg-bg-secondary/55 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent/60 md:grid-cols-[2rem_2.5rem_minmax(10rem,0.62fr)_minmax(14rem,1fr)_2.25rem] md:gap-4 md:px-6 lg:grid-cols-[2rem_2.5rem_minmax(0,1fr)_2.25rem] lg:px-5 xl:grid-cols-[2rem_2.5rem_minmax(9rem,0.62fr)_minmax(12rem,1fr)_2.25rem] xl:px-6"
             :aria-expanded="activeServiceIndex === index"
             :aria-controls="`service-panel-${service.slug}`"
             @click="selectService(index)"
@@ -89,7 +87,7 @@ function handleServiceKeydown(event, index) {
               <component :is="iconMap[service.slug]" class="h-[17px] w-[17px]" stroke-width="1.7" />
             </span>
             <span class="truncate text-base font-bold tracking-[-0.025em] text-text-primary md:text-lg">{{ service.name }}</span>
-            <span class="hidden line-clamp-2 text-xs leading-relaxed transition-colors md:block" :class="activeServiceIndex === index ? 'text-text-secondary' : 'text-text-tertiary'">{{ service.problem }}</span>
+            <span class="hidden line-clamp-2 text-xs leading-relaxed transition-colors md:block lg:hidden xl:block" :class="activeServiceIndex === index ? 'text-text-secondary' : 'text-text-tertiary'">{{ service.problem }}</span>
             <span class="flex h-9 w-9 items-center justify-center rounded-full border transition-colors duration-300" :class="activeServiceIndex === index ? 'border-text-primary bg-text-primary text-bg-primary' : 'border-border-default text-text-tertiary group-hover:border-text-tertiary group-hover:text-text-primary'">
               <ChevronDown class="h-4 w-4 transition-transform duration-500" :class="activeServiceIndex === index ? 'rotate-180' : ''" />
             </span>
@@ -105,8 +103,8 @@ function handleServiceKeydown(event, index) {
             :inert="activeServiceIndex !== index"
           >
             <div>
-              <div class="border-t border-border-subtle bg-bg-secondary/45 px-5 py-6 md:px-[6.5rem] md:py-7 lg:px-[7.25rem]">
-                <div class="grid gap-7 md:grid-cols-[1.15fr_0.85fr] md:items-start lg:gap-12">
+              <div class="border-t border-border-subtle bg-bg-secondary/45 px-5 py-6 md:px-[6.5rem] md:py-7 lg:px-6 lg:py-6 xl:px-7">
+                <div class="grid gap-7 md:grid-cols-[1.15fr_0.85fr] md:items-start lg:gap-7 xl:gap-9">
                   <div>
                     <p class="text-[10px] font-bold uppercase tracking-[0.16em] text-accent">Pendekatan yang disesuaikan</p>
                     <p class="mt-3 max-w-2xl text-base leading-relaxed text-text-primary md:text-lg">{{ service.summary }}</p>
@@ -134,9 +132,9 @@ function handleServiceKeydown(event, index) {
         </article>
       </div>
 
-      <div class="mt-5 flex flex-col gap-3 rounded-2xl border border-border-default bg-bg-secondary px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
-        <p class="text-sm font-medium text-text-secondary"><strong class="text-text-primary">Belum tahu bentuk yang tepat?</strong> Itu wajar. Cukup jelaskan hal yang ingin diperbaiki.</p>
-        <RouterLink to="/konsultasi" data-track="services_consultation" class="inline-flex min-h-10 shrink-0 items-center justify-center rounded-full border border-text-primary px-5 text-xs font-bold text-text-primary transition-colors hover:bg-text-primary hover:text-bg-primary">Ceritakan masalah</RouterLink>
+      <div class="rounded-[1.35rem] border border-border-default bg-bg-secondary px-5 py-5 lg:col-start-1 lg:row-start-2">
+        <p class="text-sm font-medium leading-relaxed text-text-secondary"><strong class="text-text-primary">Belum tahu bentuk yang tepat?</strong> Itu wajar. Cukup jelaskan hal yang ingin diperbaiki.</p>
+        <RouterLink to="/konsultasi" data-track="services_consultation" class="mt-4 inline-flex min-h-10 items-center justify-center rounded-full border border-text-primary px-5 text-xs font-bold text-text-primary transition-colors hover:bg-text-primary hover:text-bg-primary">Ceritakan masalah</RouterLink>
       </div>
     </div>
   </section>
