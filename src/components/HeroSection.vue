@@ -81,8 +81,10 @@ onUnmounted(() => {
 
 <template>
   <section id="hero" ref="heroRef" class="hero-section">
-    <div class="hero-aura hero-aura-left" aria-hidden="true" />
-    <div class="hero-aura hero-aura-right" aria-hidden="true" />
+    <div class="hero-aurora" aria-hidden="true">
+      <span class="hero-aurora-layer hero-aurora-layer-one" />
+      <span class="hero-aurora-layer hero-aurora-layer-two" />
+    </div>
     <div class="dot-grid hero-grid" aria-hidden="true" />
     <div class="noise-overlay" aria-hidden="true" />
 
@@ -153,11 +155,56 @@ onUnmounted(() => {
 
 <style scoped>
 .hero-section {
+  --hero-aurora-a: rgba(200, 95, 50, 0.22);
+  --hero-aurora-b: rgba(222, 169, 111, 0.2);
+  --hero-aurora-c: rgba(139, 154, 122, 0.15);
   position: relative;
   isolation: isolate;
   min-height: 100vh;
   overflow: hidden;
   padding: 7rem 0 2.75rem;
+}
+
+:global([data-theme="dark"] .hero-section) {
+  --hero-aurora-a: rgba(238, 136, 89, 0.2);
+  --hero-aurora-b: rgba(153, 92, 68, 0.18);
+  --hero-aurora-c: rgba(96, 116, 101, 0.15);
+}
+
+.hero-aurora {
+  position: absolute;
+  z-index: -4;
+  inset: -18% -12% -8%;
+  overflow: hidden;
+  pointer-events: none;
+  contain: paint;
+}
+
+.hero-aurora-layer {
+  position: absolute;
+  inset: 0;
+  filter: blur(78px);
+  opacity: 0.88;
+  transform-origin: center;
+  will-change: transform;
+}
+
+.hero-aurora-layer-one {
+  background:
+    radial-gradient(ellipse 38% 31% at 16% 42%, var(--hero-aurora-a), transparent 72%),
+    radial-gradient(ellipse 34% 27% at 74% 28%, var(--hero-aurora-b), transparent 74%),
+    radial-gradient(ellipse 29% 28% at 54% 78%, var(--hero-aurora-c), transparent 72%);
+  animation: hero-aurora-drift-one 18s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
+}
+
+.hero-aurora-layer-two {
+  inset: 8% -8% -4%;
+  background:
+    radial-gradient(ellipse 30% 24% at 32% 66%, var(--hero-aurora-b), transparent 75%),
+    radial-gradient(ellipse 36% 30% at 88% 58%, var(--hero-aurora-a), transparent 72%),
+    radial-gradient(ellipse 26% 24% at 48% 20%, var(--hero-aurora-c), transparent 76%);
+  opacity: 0.62;
+  animation: hero-aurora-drift-two 24s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
 }
 
 .hero-shell {
@@ -462,31 +509,6 @@ onUnmounted(() => {
   color: var(--accent);
 }
 
-.hero-aura {
-  position: absolute;
-  z-index: -2;
-  border-radius: 50%;
-  background: var(--accent);
-  filter: blur(130px);
-  opacity: 0.1;
-  pointer-events: none;
-}
-
-.hero-aura-left {
-  top: 3rem;
-  left: -13rem;
-  width: 35rem;
-  height: 35rem;
-}
-
-.hero-aura-right {
-  right: -15rem;
-  bottom: -5rem;
-  width: 40rem;
-  height: 40rem;
-  opacity: 0.13;
-}
-
 .hero-grid {
   position: absolute;
   z-index: -3;
@@ -499,6 +521,18 @@ onUnmounted(() => {
 @keyframes availability-pulse {
   0% { opacity: 0.65; transform: scale(1); }
   75%, 100% { opacity: 0; transform: scale(2.45); }
+}
+
+@keyframes hero-aurora-drift-one {
+  0% { transform: translate3d(-4%, -2%, 0) scale(1.02) rotate(-2deg); }
+  50% { transform: translate3d(4%, 3%, 0) scale(1.08) rotate(2deg); }
+  100% { transform: translate3d(1%, -3%, 0) scale(1.04) rotate(-1deg); }
+}
+
+@keyframes hero-aurora-drift-two {
+  0% { transform: translate3d(5%, 1%, 0) scale(1.06) rotate(2deg); }
+  50% { transform: translate3d(-3%, -4%, 0) scale(1.02) rotate(-2deg); }
+  100% { transform: translate3d(-1%, 4%, 0) scale(1.1) rotate(1deg); }
 }
 
 @media (max-width: 767px), (min-width: 768px) and (max-width: 1100px) and (orientation: portrait) {
@@ -616,6 +650,15 @@ onUnmounted(() => {
   .hero-button:hover {
     transform: none;
   }
+
+  .hero-aurora {
+    inset: -10% -45% -4%;
+  }
+
+  .hero-aurora-layer {
+    filter: blur(62px);
+    opacity: 0.76;
+  }
 }
 
 @media (max-width: 767px) {
@@ -664,6 +707,13 @@ onUnmounted(() => {
 
   .hero-title {
     font-size: 2.85rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-aurora-layer {
+    animation: none;
+    transform: none;
   }
 }
 </style>
