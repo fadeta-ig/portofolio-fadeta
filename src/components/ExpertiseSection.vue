@@ -53,7 +53,7 @@ function handleServiceKeydown(event, index) {
     <div ref="sectionRef" class="section-shell grid gap-8 lg:grid-cols-[minmax(0,0.72fr)_minmax(0,1.28fr)] lg:grid-rows-[1fr_auto] lg:gap-x-10 lg:gap-y-6 xl:grid-cols-[minmax(0,0.68fr)_minmax(0,1.32fr)] xl:gap-x-14">
       <div class="lg:pr-2">
         <p class="section-kicker mb-5">Bentuk solusi</p>
-        <h2 class="section-heading max-w-4xl text-balance lg:text-[clamp(2.45rem,3.9vw,4rem)]">Pilih berdasarkan masalahnya, bukan nama <span class="font-display italic text-accent">paketnya.</span></h2>
+        <h2 class="services-heading section-heading max-w-4xl text-balance">Pilih berdasarkan masalahnya, bukan nama <span class="font-display italic text-accent">paketnya.</span></h2>
         <p class="mt-6 max-w-lg text-sm leading-relaxed text-text-secondary lg:text-base">
           Nama layanan membantu memberi gambaran awal. Scope akhirnya tetap mengikuti tujuan, kondisi, dan cara bisnis Anda bekerja.
         </p>
@@ -141,6 +141,18 @@ function handleServiceKeydown(event, index) {
 </template>
 
 <style scoped>
+.services-heading {
+  font-size: clamp(2.25rem, 6vw, 3rem);
+  letter-spacing: -0.035em;
+  line-height: 1.03;
+}
+
+@media (min-width: 64rem) {
+  .services-heading {
+    font-size: clamp(2.4rem, 3.2vw, 3.1rem);
+  }
+}
+
 .accordion-content {
   display: grid;
   grid-template-rows: 0fr;
