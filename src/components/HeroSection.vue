@@ -34,15 +34,6 @@ onMounted(() => {
         duration: 0.72,
         stagger: 0.08
       }, '-=0.58');
-
-    gsap.to('.screen-glow', {
-      xPercent: 9,
-      yPercent: -7,
-      duration: 8,
-      repeat: -1,
-      yoyo: true,
-      ease: 'sine.inOut'
-    });
   }, heroRef.value);
 
   const finePointer = window.matchMedia('(pointer: fine)').matches;
@@ -83,7 +74,6 @@ onUnmounted(() => {
   <section id="hero" ref="heroRef" class="hero-section">
     <div class="hero-aurora" aria-hidden="true">
       <span class="hero-aurora-layer hero-aurora-layer-one" />
-      <span class="hero-aurora-layer hero-aurora-layer-two" />
     </div>
     <div class="dot-grid hero-grid" aria-hidden="true" />
     <div class="noise-overlay" aria-hidden="true" />
@@ -91,7 +81,10 @@ onUnmounted(() => {
     <div class="hero-shell">
       <div ref="deviceRef" class="hero-device">
         <div class="hero-screen">
-          <div class="screen-glow" aria-hidden="true" />
+          <div class="screen-aurora" aria-hidden="true">
+            <span class="screen-aurora-layer screen-aurora-layer-one" />
+            <span class="screen-aurora-layer screen-aurora-layer-two" />
+          </div>
           <div class="screen-grid" aria-hidden="true" />
 
           <div class="hero-content">
@@ -155,9 +148,9 @@ onUnmounted(() => {
 
 <style scoped>
 .hero-section {
-  --hero-aurora-a: rgba(200, 95, 50, 0.22);
-  --hero-aurora-b: rgba(222, 169, 111, 0.2);
-  --hero-aurora-c: rgba(139, 154, 122, 0.15);
+  --hero-aurora-a: rgba(200, 95, 50, 0.32);
+  --hero-aurora-b: rgba(222, 169, 111, 0.28);
+  --hero-aurora-c: rgba(139, 154, 122, 0.2);
   position: relative;
   isolation: isolate;
   min-height: 100vh;
@@ -166,9 +159,9 @@ onUnmounted(() => {
 }
 
 :global([data-theme="dark"] .hero-section) {
-  --hero-aurora-a: rgba(238, 136, 89, 0.2);
-  --hero-aurora-b: rgba(153, 92, 68, 0.18);
-  --hero-aurora-c: rgba(96, 116, 101, 0.15);
+  --hero-aurora-a: rgba(238, 136, 89, 0.28);
+  --hero-aurora-b: rgba(153, 92, 68, 0.24);
+  --hero-aurora-c: rgba(96, 116, 101, 0.2);
 }
 
 .hero-aurora {
@@ -183,8 +176,7 @@ onUnmounted(() => {
 .hero-aurora-layer {
   position: absolute;
   inset: 0;
-  filter: blur(78px);
-  opacity: 0.88;
+  opacity: 1;
   transform-origin: center;
   will-change: transform;
 }
@@ -195,16 +187,6 @@ onUnmounted(() => {
     radial-gradient(ellipse 34% 27% at 74% 28%, var(--hero-aurora-b), transparent 74%),
     radial-gradient(ellipse 29% 28% at 54% 78%, var(--hero-aurora-c), transparent 72%);
   animation: hero-aurora-drift-one 18s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
-}
-
-.hero-aurora-layer-two {
-  inset: 8% -8% -4%;
-  background:
-    radial-gradient(ellipse 30% 24% at 32% 66%, var(--hero-aurora-b), transparent 75%),
-    radial-gradient(ellipse 36% 30% at 88% 58%, var(--hero-aurora-a), transparent 72%),
-    radial-gradient(ellipse 26% 24% at 48% 20%, var(--hero-aurora-c), transparent 76%);
-  opacity: 0.62;
-  animation: hero-aurora-drift-two 24s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
 }
 
 .hero-shell {
@@ -265,6 +247,9 @@ onUnmounted(() => {
   --screen-sheen: rgba(255, 255, 255, 0.14);
   --screen-button-bg: #171511;
   --screen-button-fg: #f5f0e7;
+  --screen-aurora-a: rgba(200, 95, 50, 0.3);
+  --screen-aurora-b: rgba(224, 174, 116, 0.27);
+  --screen-aurora-c: rgba(140, 158, 124, 0.2);
   position: absolute;
   z-index: 1;
   top: 1.25%;
@@ -292,6 +277,9 @@ onUnmounted(() => {
   --screen-sheen: rgba(255, 255, 255, 0.025);
   --screen-button-bg: #f5f0e7;
   --screen-button-fg: #171511;
+  --screen-aurora-a: rgba(238, 136, 89, 0.27);
+  --screen-aurora-b: rgba(143, 76, 68, 0.22);
+  --screen-aurora-c: rgba(91, 122, 104, 0.18);
 }
 
 .hero-screen::after {
@@ -302,17 +290,37 @@ onUnmounted(() => {
   pointer-events: none;
 }
 
-.screen-glow {
+.screen-aurora {
   position: absolute;
-  top: -34%;
-  right: -8%;
-  width: 56%;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: var(--accent);
-  filter: blur(110px);
-  opacity: 0.16;
+  z-index: 0;
+  inset: -14%;
+  overflow: hidden;
   pointer-events: none;
+  contain: paint;
+}
+
+.screen-aurora-layer {
+  position: absolute;
+  inset: 0;
+  transform-origin: center;
+  will-change: transform;
+}
+
+.screen-aurora-layer-one {
+  background:
+    radial-gradient(ellipse 44% 38% at 18% 56%, var(--screen-aurora-a), transparent 72%),
+    radial-gradient(ellipse 42% 36% at 82% 24%, var(--screen-aurora-b), transparent 74%),
+    radial-gradient(ellipse 34% 32% at 61% 88%, var(--screen-aurora-c), transparent 73%);
+  animation: screen-aurora-drift-one 16s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
+}
+
+.screen-aurora-layer-two {
+  background:
+    radial-gradient(ellipse 36% 30% at 38% 22%, var(--screen-aurora-c), transparent 74%),
+    radial-gradient(ellipse 38% 34% at 88% 67%, var(--screen-aurora-a), transparent 73%),
+    radial-gradient(ellipse 32% 28% at 24% 84%, var(--screen-aurora-b), transparent 76%);
+  opacity: 0.72;
+  animation: screen-aurora-drift-two 22s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
 }
 
 .screen-grid {
@@ -529,10 +537,16 @@ onUnmounted(() => {
   100% { transform: translate3d(1%, -3%, 0) scale(1.04) rotate(-1deg); }
 }
 
-@keyframes hero-aurora-drift-two {
-  0% { transform: translate3d(5%, 1%, 0) scale(1.06) rotate(2deg); }
-  50% { transform: translate3d(-3%, -4%, 0) scale(1.02) rotate(-2deg); }
-  100% { transform: translate3d(-1%, 4%, 0) scale(1.1) rotate(1deg); }
+@keyframes screen-aurora-drift-one {
+  0% { transform: translate3d(-5%, 1%, 0) scale(1.04) rotate(-1deg); }
+  50% { transform: translate3d(4%, -4%, 0) scale(1.11) rotate(2deg); }
+  100% { transform: translate3d(2%, 4%, 0) scale(1.06) rotate(-1deg); }
+}
+
+@keyframes screen-aurora-drift-two {
+  0% { transform: translate3d(4%, -3%, 0) scale(1.08) rotate(2deg); }
+  50% { transform: translate3d(-4%, 4%, 0) scale(1.03) rotate(-2deg); }
+  100% { transform: translate3d(1%, -1%, 0) scale(1.12) rotate(1deg); }
 }
 
 @media (max-width: 767px), (min-width: 768px) and (max-width: 1100px) and (orientation: portrait) {
@@ -549,7 +563,7 @@ onUnmounted(() => {
 
   .hero-shell::after,
   .macbook-frame,
-  .screen-glow,
+  .screen-aurora,
   .screen-grid,
   .screen-meta {
     display: none;
@@ -656,9 +670,9 @@ onUnmounted(() => {
   }
 
   .hero-aurora-layer {
-    filter: blur(62px);
-    opacity: 0.76;
+    opacity: 0.88;
   }
+
 }
 
 @media (max-width: 767px) {
@@ -711,7 +725,8 @@ onUnmounted(() => {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-aurora-layer {
+  .hero-aurora-layer,
+  .screen-aurora-layer {
     animation: none;
     transform: none;
   }
