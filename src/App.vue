@@ -1,5 +1,6 @@
 <script setup>
 import NavBar from './components/NavBar.vue';
+import CookieConsent from './components/CookieConsent.vue';
 import { useSeo } from './composables/useSeo';
 
 useSeo();
@@ -13,6 +14,7 @@ useSeo();
         <component :is="Component" />
       </Transition>
     </RouterView>
+    <CookieConsent />
   </div>
 </template>
 

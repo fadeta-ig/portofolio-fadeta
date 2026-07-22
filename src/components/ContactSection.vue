@@ -2,6 +2,7 @@
 import { ArrowUpRight, BriefcaseBusiness, ClipboardPenLine, GitBranch, Mail, MessageCircle } from '@lucide/vue';
 import LogoMark from './LogoMark.vue';
 import { contact, createWhatsAppLink } from '../data/contact';
+import { openCookieSettings } from '../lib/analytics';
 
 const whatsappLink = createWhatsAppLink('Halo Gandiva Labs, saya ingin bercerita tentang masalah atau kebutuhan website bisnis saya.');
 </script>
@@ -71,7 +72,11 @@ const whatsappLink = createWhatsAppLink('Halo Gandiva Labs, saya ingin bercerita
         </div>
 
         <div class="text-xs text-[#827a70] md:text-right">
-          <RouterLink to="/privasi" class="transition-colors hover:text-[#f5f0e7]">Privasi data</RouterLink>
+          <div class="flex items-center gap-2 md:justify-end">
+            <RouterLink to="/privasi" class="transition-colors hover:text-[#f5f0e7]">Privasi data</RouterLink>
+            <span aria-hidden="true">·</span>
+            <button type="button" class="transition-colors hover:text-[#f5f0e7]" @click="openCookieSettings">Pengaturan cookie</button>
+          </div>
           <p class="mt-2">© {{ new Date().getFullYear() }} Gandiva Labs. Semua hak dilindungi.</p>
         </div>
       </div>

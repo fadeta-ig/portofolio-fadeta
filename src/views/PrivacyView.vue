@@ -14,7 +14,11 @@ const sections = [
   },
   {
     title: 'Layanan yang membantu memproses data',
-    text: 'Website dihosting melalui Vercel. Pengiriman brief menggunakan layanan email Resend. Google Analytics digunakan untuk melihat interaksi website secara agregat. Masing-masing layanan memiliki kebijakan privasinya sendiri.'
+    text: 'Website dihosting melalui Vercel. Pengiriman brief menggunakan layanan email Resend. Jika Anda mengizinkannya, Google Analytics digunakan untuk melihat interaksi website secara agregat. Masing-masing layanan memiliki kebijakan privasinya sendiri.'
+  },
+  {
+    title: 'Cookie dan analytics',
+    text: 'Google Analytics tidak diaktifkan sebelum Anda memberi izin. Pilihan tersebut disimpan pada browser agar pertanyaan yang sama tidak terus muncul dan dapat diubah kembali melalui Pengaturan cookie di footer.'
   },
   {
     title: 'Akses dan penghapusan',
@@ -44,7 +48,7 @@ const sections = [
           <p class="max-w-2xl text-sm leading-relaxed text-text-secondary">Jika ada pertanyaan tentang data yang pernah Anda kirim, sertakan alamat email yang digunakan agar permintaan dapat diperiksa.</p>
           <a :href="`mailto:${contact.email}`" class="mt-5 inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-text-primary px-5 text-sm font-bold text-bg-primary md:mt-0"><Mail class="h-4 w-4" /> {{ contact.email }}</a>
         </div>
-        <p class="mt-6 text-xs text-text-tertiary">Terakhir diperbarui: 21 Juli 2026.</p>
+        <p class="mt-6 text-xs text-text-tertiary">Terakhir diperbarui: 22 Juli 2026.</p>
       </div>
     </section>
     <ContactSection />
