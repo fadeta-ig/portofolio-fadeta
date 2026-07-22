@@ -10,7 +10,8 @@ const PrivacyView = () => import('./views/PrivacyView.vue');
 const ThankYouView = () => import('./views/ThankYouView.vue');
 
 export const siteUrl = 'https://www.gandivalabs.my.id';
-export const defaultImage = `${siteUrl}/favicon.png`;
+export const defaultImage = `${siteUrl}/og.png`;
+export const defaultImageAlt = 'Gandiva Labs — Website yang masuk akal untuk bisnis.';
 export const defaultDescription = 'Gandiva Labs membantu bisnis menyusun dan membangun website yang mudah dipahami, dipercaya, dan dikembangkan.';
 export const defaultRobots = 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
 

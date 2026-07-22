@@ -3,7 +3,7 @@ import { useRoute } from 'vue-router';
 import { watch } from 'vue';
 import { featuredProjects } from '../data/projects';
 import { findService } from '../data/services';
-import { defaultDescription, defaultImage, defaultRobots, resolveRouteSeo, siteUrl } from '../router';
+import { defaultDescription, defaultImage, defaultImageAlt, defaultRobots, resolveRouteSeo, siteUrl } from '../router';
 import { trackPageView } from '../lib/analytics';
 
 function breadcrumb(items) {
@@ -111,9 +111,16 @@ export function useSeo() {
         { property: 'og:description', content: description, key: 'og-description' },
         { property: 'og:url', content: canonicalUrl, key: 'og-url' },
         { property: 'og:image', content: defaultImage, key: 'og-image' },
+        { property: 'og:image:secure_url', content: defaultImage, key: 'og-image-secure-url' },
+        { property: 'og:image:type', content: 'image/png', key: 'og-image-type' },
+        { property: 'og:image:width', content: '1200', key: 'og-image-width' },
+        { property: 'og:image:height', content: '630', key: 'og-image-height' },
+        { property: 'og:image:alt', content: defaultImageAlt, key: 'og-image-alt' },
+        { name: 'twitter:card', content: 'summary_large_image', key: 'twitter-card' },
         { name: 'twitter:title', content: title, key: 'twitter-title' },
         { name: 'twitter:description', content: description, key: 'twitter-description' },
-        { name: 'twitter:image', content: defaultImage, key: 'twitter-image' }
+        { name: 'twitter:image', content: defaultImage, key: 'twitter-image' },
+        { name: 'twitter:image:alt', content: defaultImageAlt, key: 'twitter-image-alt' }
       ],
       script: schema.length ? [{ type: 'application/ld+json', innerHTML: JSON.stringify({ '@context': 'https://schema.org', '@graph': schema }), key: 'route-schema' }] : []
     };
