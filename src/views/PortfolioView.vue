@@ -161,7 +161,8 @@ onUnmounted(() => window.removeEventListener('scroll', updateScrollProgress));
                   </div>
                   <div class="mt-9 flex flex-wrap items-center gap-5">
                     <RouterLink :to="`/hasil/${project.slug}`" :data-track="`portfolio_case_${project.slug}`" class="inline-flex w-fit items-center gap-2 text-sm font-bold text-text-primary transition-colors hover:text-accent">Baca ringkasan proyek <ArrowRight class="h-4 w-4" /></RouterLink>
-                    <a :href="project.link" target="_blank" rel="noopener noreferrer" :data-track="`portfolio_visit_${project.slug}`" class="inline-flex w-fit items-center gap-2 text-xs font-bold text-text-tertiary transition-colors hover:text-accent">Kunjungi website <ArrowUpRight class="h-3.5 w-3.5" /></a>
+                    <a v-if="project.link" :href="project.link" target="_blank" rel="noopener noreferrer" :data-track="`portfolio_visit_${project.slug}`" class="inline-flex w-fit items-center gap-2 text-xs font-bold text-text-tertiary transition-colors hover:text-accent">Kunjungi website <ArrowUpRight class="h-3.5 w-3.5" /></a>
+                    <span v-else class="inline-flex w-fit items-center gap-2 text-xs font-bold text-text-tertiary">Tautan website menyusul</span>
                   </div>
                 </div>
               </article>

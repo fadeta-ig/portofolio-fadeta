@@ -23,7 +23,8 @@ const project = computed(() => featuredProjects.find((item) => item.slug === rou
           </div>
           <div class="lg:pb-2">
             <p class="text-lg leading-relaxed text-text-secondary">{{ project.description }}</p>
-            <a :href="project.link" target="_blank" rel="noopener noreferrer" :data-track="`case_${project.slug}_visit`" class="mt-6 inline-flex items-center gap-2 text-sm font-bold text-text-primary hover:text-accent">Kunjungi website <ArrowUpRight class="h-4 w-4" /></a>
+            <a v-if="project.link" :href="project.link" target="_blank" rel="noopener noreferrer" :data-track="`case_${project.slug}_visit`" class="mt-6 inline-flex items-center gap-2 text-sm font-bold text-text-primary hover:text-accent">Kunjungi website <ArrowUpRight class="h-4 w-4" /></a>
+            <span v-else class="mt-6 inline-flex items-center text-sm font-bold text-text-tertiary">Tautan website menyusul</span>
           </div>
         </div>
 

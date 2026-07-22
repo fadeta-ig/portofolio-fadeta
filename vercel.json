@@ -59,6 +59,12 @@
       ]
     },
     {
+      "source": "/hasil/karya-teknik-internusa-abadi",
+      "headers": [
+        { "key": "Link", "value": "<https://www.gandivalabs.my.id/hasil/karya-teknik-internusa-abadi>; rel=\"canonical\"" }
+      ]
+    },
+    {
       "source": "/konsultasi",
       "headers": [
         { "key": "Link", "value": "<https://www.gandivalabs.my.id/konsultasi>; rel=\"canonical\"" }

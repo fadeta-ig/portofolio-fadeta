@@ -1,6 +1,7 @@
 import shinyoungImg from '../assets/screenshots/shinyoung.webp';
 import mahakaryaImg from '../assets/screenshots/mahakarya.webp';
 import wijayaImg from '../assets/screenshots/wijaya.webp';
+import ktiaImg from '../assets/screenshots/ktia.webp';
 
 export const featuredProjects = [
   {
@@ -21,8 +22,8 @@ export const featuredProjects = [
     contribution: ['WordPress', 'WooCommerce', 'Custom AI plugin'],
     link: 'https://shinyoungbeauty.com/',
     image: shinyoungImg,
-    width: 1902,
-    height: 870
+    width: 1672,
+    height: 939
   },
   {
     id: '02',
@@ -42,8 +43,8 @@ export const featuredProjects = [
     contribution: ['Strategi halaman', 'WordPress', 'Pengembangan web'],
     link: 'https://mahakaryakosmetika.co.id/',
     image: mahakaryaImg,
-    width: 1898,
-    height: 866
+    width: 1672,
+    height: 939
   },
   {
     id: '03',
@@ -63,8 +64,29 @@ export const featuredProjects = [
     contribution: ['Arsitektur konten', 'WordPress', 'SEO on-page dasar'],
     link: 'https://wijayainovasi.co.id/',
     image: wijayaImg,
-    width: 1896,
-    height: 860
+    width: 1672,
+    height: 939
+  },
+  {
+    id: '04',
+    slug: 'karya-teknik-internusa-abadi',
+    title: 'Karya Teknik Internusa Abadi',
+    type: 'Website Bisnis',
+    category: 'Company profile · Galangan kapal',
+    description: 'Website company profile untuk perusahaan galangan kapal yang memperkenalkan layanan, fasilitas, pengalaman, dan profil perusahaan dalam satu alur informasi.',
+    need: 'Perusahaan membutuhkan media digital yang menjelaskan kapabilitas galangan kapal secara profesional dan memudahkan calon mitra memahami layanan yang tersedia.',
+    approach: 'Informasi disusun dari pengenalan perusahaan menuju layanan, fasilitas, pengalaman, dan jalur kontak agar calon mitra dapat menilai kapabilitas secara bertahap.',
+    decisions: [
+      { title: 'Kapabilitas sebagai fokus', text: 'Pesan utama dan struktur halaman menempatkan kemampuan perusahaan sebagai informasi pertama yang diterima pengunjung.' },
+      { title: 'Layanan mudah dijelajahi', text: 'Layanan, fasilitas, dan pengalaman dipisahkan dengan jelas agar ruang lingkup perusahaan cepat dipahami.' },
+      { title: 'Identitas maritim yang kuat', text: 'Tampilan visual menggunakan konteks operasional galangan kapal untuk memperkuat relevansi dan karakter perusahaan.' }
+    ],
+    result: 'Website company profile yang menyajikan profil perusahaan, layanan galangan kapal, fasilitas, pengalaman, berita, dan jalur kontak dalam struktur yang terarah.',
+    contribution: ['Arsitektur konten', 'Company profile', 'Pengembangan web'],
+    link: null,
+    image: ktiaImg,
+    width: 1672,
+    height: 939
   }
 ];
 

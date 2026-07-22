@@ -19,7 +19,7 @@ useGsapScrollReveal(sectionRef, { y: 30, stagger: 0.08, duration: 0.75, triggerS
         <p class="max-w-xl text-base leading-relaxed text-text-secondary lg:justify-self-end lg:text-lg">Tidak ada angka performa yang dibuat-buat. Yang ditampilkan adalah kebutuhan proyek, pendekatan, dan keluaran yang memang dikerjakan.</p>
       </div>
 
-      <div class="mt-12 grid gap-5 lg:grid-cols-3">
+      <div class="mt-12 grid gap-5 md:grid-cols-2">
         <article v-for="project in featuredProjects" :key="project.slug" class="group flex flex-col overflow-hidden rounded-[1.6rem] border border-border-default bg-bg-card shadow-[var(--shadow-sm)]">
           <RouterLink :to="`/hasil/${project.slug}`" class="block aspect-[16/10] overflow-hidden bg-bg-tertiary" :aria-label="`Baca studi kasus ${project.title}`">
             <img :src="project.image" :alt="`Tampilan website ${project.title}`" :width="project.width" :height="project.height" loading="lazy" decoding="async" class="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.025]" />
