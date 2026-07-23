@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from 'vue';
+import { defineAsyncComponent, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import NavBar from './components/NavBar.vue';
 import CookieConsent from './components/CookieConsent.vue';
@@ -9,6 +9,10 @@ useSeo();
 
 const route = useRoute();
 const pendingRouteFocus = ref(false);
+const bookingOfferReady = ref(false);
+const BookingOffer = defineAsyncComponent(() => import('./components/BookingOffer.vue'));
+let bookingIdleHandle;
+let bookingFallbackTimer;
 
 watch(() => route.path, (path, previousPath) => {
   if (!previousPath || path === previousPath) return;
@@ -20,6 +24,26 @@ function focusMainContent() {
   pendingRouteFocus.value = false;
   document.getElementById('main-content')?.focus({ preventScroll: true });
 }
+
+onMounted(() => {
+  if ('requestIdleCallback' in window) {
+    bookingIdleHandle = window.requestIdleCallback(() => {
+      bookingOfferReady.value = true;
+    }, { timeout: 2_500 });
+    return;
+  }
+
+  bookingFallbackTimer = window.setTimeout(() => {
+    bookingOfferReady.value = true;
+  }, 1_500);
+});
+
+onBeforeUnmount(() => {
+  if (bookingIdleHandle !== undefined && 'cancelIdleCallback' in window) {
+    window.cancelIdleCallback(bookingIdleHandle);
+  }
+  window.clearTimeout(bookingFallbackTimer);
+});
 </script>
 
 <template>
@@ -32,6 +56,7 @@ function focusMainContent() {
       </Transition>
     </RouterView>
     <CookieConsent />
+    <BookingOffer v-if="bookingOfferReady" />
   </div>
 </template>
 

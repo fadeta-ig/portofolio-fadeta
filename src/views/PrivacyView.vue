@@ -10,11 +10,15 @@ const sections = [
   },
   {
     title: 'Untuk apa data digunakan',
-    text: 'Data digunakan untuk membaca brief, menilai konteks kebutuhan, menghubungi Anda, dan melanjutkan pembicaraan terkait proyek. Data dari form tidak digunakan untuk mengirim newsletter.'
+    text: 'Data digunakan untuk membaca brief, menilai konteks kebutuhan, menghubungi Anda, menjadwalkan konsultasi yang Anda pilih, dan melanjutkan pembicaraan terkait proyek. Data dari form tidak digunakan untuk mengirim newsletter.'
   },
   {
     title: 'Layanan yang membantu memproses data',
-    text: 'Website dihosting melalui Vercel dan pengiriman brief menggunakan Resend. Jika proteksi anti-bot diaktifkan, Cloudflare Turnstile membantu memverifikasi bahwa pengiriman dilakukan oleh pengguna yang sah. Jika Anda mengizinkannya, Google Analytics digunakan untuk melihat interaksi website secara agregat. Masing-masing layanan memiliki kebijakan privasinya sendiri.'
+    text: 'Website dihosting melalui Vercel, pengiriman brief menggunakan Resend, dan booking konsultasi menggunakan Google Calendar. Jika proteksi anti-bot diaktifkan, Cloudflare Turnstile membantu memverifikasi bahwa pengiriman dilakukan oleh pengguna yang sah. Jika Anda mengizinkannya, Google Analytics digunakan untuk melihat interaksi website secara agregat. Masing-masing layanan memiliki kebijakan privasinya sendiri.'
+  },
+  {
+    title: 'Booking konsultasi',
+    text: 'Halaman Google Calendar baru dimuat setelah Anda memilih untuk melihat jadwal. Informasi yang Anda masukkan pada halaman booking diproses oleh Google untuk membuat jadwal, tautan Google Meet, serta pemberitahuan terkait konsultasi. Gandiva Labs tidak dapat membaca aktivitas lain pada kalender pribadi Anda.'
   },
   {
     title: 'Cookie dan analytics',

@@ -7,6 +7,7 @@ import {
   setAnalyticsConsent,
   trackPageView
 } from '../lib/analytics';
+import { overlayStateEvent } from '../lib/bookingOffer';
 
 const isVisible = ref(false);
 const savedConsent = ref(null);
@@ -14,10 +15,15 @@ const acceptButtonRef = ref(null);
 let revealTimer;
 let previouslyFocusedElement;
 
+function notifyOverlayState() {
+  nextTick(() => window.dispatchEvent(new Event(overlayStateEvent)));
+}
+
 function showSettings(shouldFocus = false) {
   savedConsent.value = getAnalyticsConsent();
   previouslyFocusedElement = shouldFocus ? document.activeElement : null;
   isVisible.value = true;
+  notifyOverlayState();
 
   if (shouldFocus) {
     nextTick(() => acceptButtonRef.value?.focus());
@@ -26,6 +32,7 @@ function showSettings(shouldFocus = false) {
 
 function hideSettings(restoreFocus = false) {
   isVisible.value = false;
+  notifyOverlayState();
 
   if (restoreFocus && previouslyFocusedElement instanceof HTMLElement) {
     nextTick(() => previouslyFocusedElement.focus());
@@ -69,7 +76,7 @@ onBeforeUnmount(() => {
 <template>
   <Teleport to="body">
     <Transition name="cookie-banner">
-      <section v-if="isVisible" class="pointer-events-none fixed inset-x-0 bottom-0 z-[100] p-3 sm:p-5" aria-labelledby="cookie-consent-title">
+      <section v-if="isVisible" data-blocks-marketing-overlay class="pointer-events-none fixed inset-x-0 bottom-0 z-[100] p-3 sm:p-5" aria-labelledby="cookie-consent-title">
         <div class="pointer-events-auto relative mx-auto max-w-5xl overflow-hidden rounded-[1.5rem] border border-border-default bg-bg-elevated/95 shadow-[var(--shadow-lg)] backdrop-blur-xl">
           <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/70 to-transparent" aria-hidden="true" />
 

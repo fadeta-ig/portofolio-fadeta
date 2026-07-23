@@ -7,6 +7,8 @@ const sitemapFile = resolve(dist, 'sitemap.xml');
 const robotsFile = resolve(dist, 'robots.txt');
 const socialImageFile = resolve(dist, 'og.png');
 const vercelConfigFile = resolve(root, 'vercel.json');
+const bookingOfferConfigFile = resolve(root, 'src/lib/bookingOffer.js');
+const bookingOfferComponentFile = resolve(root, 'src/components/BookingOffer.vue');
 const expectedHost = 'www.gandivalabs.my.id';
 const expectedSocialImage = `https://${expectedHost}/og.png`;
 const legacyWhatsapp = ['62815', '53821808'].join('');
@@ -40,6 +42,8 @@ function readCanonical(html) {
 check(existsSync(sitemapFile), 'dist/sitemap.xml tidak ditemukan.');
 check(existsSync(robotsFile), 'dist/robots.txt tidak ditemukan.');
 check(existsSync(socialImageFile), 'dist/og.png tidak ditemukan.');
+check(existsSync(bookingOfferConfigFile), 'Konfigurasi booking offer tidak ditemukan.');
+check(existsSync(bookingOfferComponentFile), 'Komponen booking offer tidak ditemukan.');
 
 if (existsSync(socialImageFile)) {
   const socialImage = readFileSync(socialImageFile);
@@ -108,6 +112,51 @@ for (const url of urls) {
 const robots = existsSync(robotsFile) ? readFileSync(robotsFile, 'utf8') : '';
 check(robots.includes('https://www.gandivalabs.my.id/sitemap.xml'), 'robots.txt tidak menunjuk sitemap canonical.');
 
+if (existsSync(bookingOfferConfigFile) && existsSync(bookingOfferComponentFile)) {
+  const bookingConfig = readFileSync(bookingOfferConfigFile, 'utf8');
+  const bookingComponent = readFileSync(bookingOfferComponentFile, 'utf8');
+  check(
+    bookingConfig.includes("bookingPageUrl = 'https://calendar.app.google/uFMcEBMzzNfDbx2LA'"),
+    'Link publik Google Calendar tidak sesuai konfigurasi final.'
+  );
+  check(
+    bookingConfig.includes('calendar.google.com/calendar/appointments/schedules/'),
+    'URL embed Google Calendar tidak ditemukan.'
+  );
+  check(bookingConfig.includes('minimumNoticeHours: 24'), 'Minimum notice booking harus 24 jam.');
+  check(bookingConfig.includes('maximumPerDay: 5'), 'Batas booking harus maksimal 5 per hari.');
+  check(
+    bookingComponent.includes('bookingSchedule.minimumNoticeHours'),
+    'Minimum notice 24 jam belum disampaikan pada UI booking.'
+  );
+  check(
+    bookingComponent.includes(':src="bookingEmbedUrl"') && bookingComponent.includes('loading="lazy"'),
+    'Google Calendar harus dimuat secara lazy setelah CTA dipilih.'
+  );
+}
+
+const indexHtmlFile = resolve(dist, 'index.html');
+if (existsSync(indexHtmlFile)) {
+  const indexHtml = readFileSync(indexHtmlFile, 'utf8');
+  check(
+    !indexHtml.includes('calendar.google.com/calendar/appointments/schedules/'),
+    'Embed Google Calendar tidak boleh masuk ke HTML awal.'
+  );
+}
+
+const privacyHtmlFile = resolve(dist, 'privasi.html');
+if (existsSync(privacyHtmlFile)) {
+  const privacyHtml = readFileSync(privacyHtmlFile, 'utf8');
+  check(privacyHtml.includes('Google Calendar'), 'Halaman privasi belum menjelaskan Google Calendar.');
+}
+
+const distAssetsDirectory = resolve(dist, 'assets');
+if (existsSync(distAssetsDirectory)) {
+  const hasAsyncBookingChunk = readdirSync(distAssetsDirectory)
+    .some((file) => /^BookingOffer-.*\.js$/.test(file));
+  check(hasAsyncBookingChunk, 'Booking offer belum dipisahkan ke chunk JavaScript async.');
+}
+
 check(existsSync(vercelConfigFile), 'vercel.json tidak ditemukan.');
 if (existsSync(vercelConfigFile)) {
   try {
@@ -129,6 +178,7 @@ if (existsSync(vercelConfigFile)) {
     const csp = headerMap.get('content-security-policy-report-only') ?? '';
     check(csp.includes("default-src 'self'"), 'CSP belum membatasi default-src ke origin sendiri.');
     check(csp.includes('challenges.cloudflare.com'), 'CSP belum mengizinkan Turnstile.');
+    check(csp.includes('calendar.google.com'), 'CSP belum mengizinkan Google Calendar.');
     check(csp.includes('googletagmanager.com'), 'CSP belum mengizinkan analytics yang digunakan.');
   } catch {
     errors.push('vercel.json bukan JSON yang valid.');
@@ -141,4 +191,4 @@ if (errors.length) {
   process.exit(1);
 }
 
-console.log(`Verifikasi build lolos: ${urls.length} URL pre-render, sitemap, robots, metadata, kontak, dan security headers konsisten.`);
+console.log(`Verifikasi build lolos: ${urls.length} URL pre-render, metadata, booking Google Calendar, privasi, dan security headers konsisten.`);

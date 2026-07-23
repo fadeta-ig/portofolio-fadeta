@@ -5,6 +5,7 @@ import { useRoute, useRouter } from 'vue-router';
 import gsap from 'gsap';
 import LogoMark from './LogoMark.vue';
 import { useTheme } from '../composables/useTheme';
+import { overlayStateEvent } from '../lib/bookingOffer';
 
 const { isDark, toggleTheme } = useTheme();
 const route = useRoute();
@@ -119,6 +120,7 @@ watch(isMobileMenuOpen, async (isOpen) => {
     await nextTick();
     closeMenuButtonRef.value?.focus();
     if (appRoot) appRoot.inert = true;
+    window.dispatchEvent(new Event(overlayStateEvent));
     return;
   }
 
@@ -134,6 +136,7 @@ watch(isMobileMenuOpen, async (isOpen) => {
     focusTarget.focus();
   }
   restoreFocusOnClose = true;
+  window.dispatchEvent(new Event(overlayStateEvent));
 });
 
 onMounted(() => {
@@ -230,6 +233,7 @@ onUnmounted(() => {
         v-if="isMobileMenuOpen"
         id="mobile-menu"
         ref="menuDialogRef"
+        data-blocks-marketing-overlay
         role="dialog"
         aria-modal="true"
         aria-labelledby="mobile-menu-title"
