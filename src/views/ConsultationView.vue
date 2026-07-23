@@ -22,7 +22,7 @@ const process = [
 </script>
 
 <template>
-  <main class="flex-grow bg-bg-primary pt-28 md:pt-36">
+  <main id="main-content" tabindex="-1" class="flex-grow bg-bg-primary pt-28 md:pt-36">
     <section class="relative overflow-hidden pb-24 md:pb-36">
       <div class="absolute -right-40 top-12 h-[34rem] w-[34rem] rounded-full bg-accent opacity-[0.09] blur-[150px]" aria-hidden="true" />
       <div class="dot-grid absolute inset-0 opacity-25 [mask-image:linear-gradient(to_bottom,black,transparent_68%)]" aria-hidden="true" />

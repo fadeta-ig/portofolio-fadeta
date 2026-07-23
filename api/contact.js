@@ -1,3 +1,10 @@
+import {
+  consumeRateLimit,
+  getClientIp,
+  validateSubmissionTiming,
+  verifyTurnstile
+} from '../server/contact-security.js';
+
 const CONTACT_TO_EMAIL = process.env.CONTACT_TO_EMAIL || 'fadeta287@gmail.com';
 const CONTACT_FROM_EMAIL = process.env.CONTACT_FROM_EMAIL || 'Gandiva Labs <onboarding@resend.dev>';
 const RESEND_ENDPOINT = 'https://api.resend.com/emails';
@@ -27,7 +34,7 @@ function json(res, status, payload) {
   res.end(JSON.stringify(payload));
 }
 
-function normalize(value, maxLength = 300) {
+export function normalize(value, maxLength = 300) {
   return typeof value === 'string' ? value.trim().slice(0, maxLength) : '';
 }
 
@@ -40,13 +47,13 @@ function escapeHtml(value) {
     .replaceAll("'", '&#039;');
 }
 
-function parseBody(body) {
+export function parseBody(body) {
   if (typeof body === 'string') return JSON.parse(body);
   if (body && typeof body === 'object') return body;
   return {};
 }
 
-function isAllowedOrigin(req) {
+export function isAllowedOrigin(req) {
   const origin = req.headers?.origin;
   if (!origin) return true;
 
@@ -64,7 +71,7 @@ function isAllowedOrigin(req) {
   }
 }
 
-function validate(data) {
+export function validate(data) {
   const errors = {};
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -145,6 +152,14 @@ export default async function handler(req, res) {
     return json(res, 413, { message: 'Data form terlalu besar.' });
   }
 
+  const clientIp = getClientIp(req);
+  const rateLimit = consumeRateLimit(clientIp);
+  res.setHeader('X-RateLimit-Remaining', String(rateLimit.remaining));
+  if (!rateLimit.allowed) {
+    res.setHeader('Retry-After', String(rateLimit.retryAfterSeconds));
+    return json(res, 429, { message: 'Terlalu banyak percobaan. Tunggu beberapa menit lalu coba kembali.' });
+  }
+
   let body;
   try {
     body = parseBody(req.body);
@@ -154,6 +169,14 @@ export default async function handler(req, res) {
 
   // Honeypot: return success so automated submitters do not learn how filtering works.
   if (normalize(body.website, 120)) return json(res, 200, { ok: true });
+
+  const timing = validateSubmissionTiming(body.formStartedAt);
+  if (!timing.valid) {
+    const message = timing.reason === 'expired'
+      ? 'Sesi form sudah terlalu lama. Muat ulang halaman lalu coba kembali.'
+      : 'Form belum dapat dikirim. Tunggu sebentar lalu coba kembali.';
+    return json(res, 400, { message });
+  }
 
   const data = {
     name: normalize(body.name, 120),
@@ -172,6 +195,22 @@ export default async function handler(req, res) {
   const validationErrors = validate(data);
   if (Object.keys(validationErrors).length) {
     return json(res, 422, { message: 'Periksa kembali informasi yang dimasukkan.', errors: validationErrors });
+  }
+
+  const turnstile = await verifyTurnstile({
+    token: normalize(body.turnstileToken, 2_048),
+    secret: process.env.TURNSTILE_SECRET_KEY,
+    remoteIp: clientIp,
+    expectedHostname: req.headers?.host,
+    expectedAction: 'contact_form'
+  });
+  if (!turnstile.success) {
+    const unavailable = ['verification-timeout', 'verification-unavailable'].includes(turnstile.error);
+    return json(res, unavailable ? 503 : 403, {
+      message: unavailable
+        ? 'Verifikasi keamanan sedang tidak tersedia. Silakan coba kembali.'
+        : 'Verifikasi keamanan belum berhasil. Silakan ulangi lalu kirim kembali.'
+    });
   }
 
   if (!process.env.RESEND_API_KEY) {

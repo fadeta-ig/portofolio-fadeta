@@ -47,7 +47,7 @@ onUnmounted(() => window.removeEventListener('scroll', updateScrollProgress));
 </script>
 
 <template>
-  <main class="flex-grow w-full">
+  <main id="main-content" tabindex="-1" class="flex-grow w-full">
     <div class="fixed left-0 top-0 z-[60] h-0.5 bg-accent transition-[width] duration-100" :style="{ width: `${scrollProgress}%` }" aria-hidden="true" />
 
     <section class="relative overflow-hidden pb-16 pt-32 md:pb-24 md:pt-40">

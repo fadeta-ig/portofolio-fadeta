@@ -119,6 +119,10 @@
     outline-offset: 3px;
   }
 
+  #main-content:focus {
+    outline: none;
+  }
+
   ::-webkit-scrollbar {
     width: 8px;
   }
@@ -150,6 +154,29 @@
 }
 
 @layer utilities {
+  .skip-link {
+    position: fixed;
+    top: 0.75rem;
+    left: 0.75rem;
+    z-index: 100;
+    padding: 0.7rem 1rem;
+    border: 1px solid var(--border-default);
+    border-radius: 999px;
+    background: var(--text-primary);
+    color: var(--bg-primary);
+    box-shadow: var(--shadow-md);
+    font-size: 0.8rem;
+    font-weight: 700;
+    transform: translateY(calc(-100% - 1rem));
+    transition: transform 0.2s ease;
+  }
+
+  .skip-link:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    transform: translateY(0);
+  }
+
   .theme-transition {
     transition: background-color 0.35s ease, color 0.35s ease, border-color 0.35s ease;
   }

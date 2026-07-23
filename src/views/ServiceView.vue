@@ -12,7 +12,7 @@ const whatsappLink = computed(() => createWhatsAppLink(`Halo Gandiva Labs, saya 
 </script>
 
 <template>
-  <main v-if="service" class="flex-grow bg-bg-primary pt-28 md:pt-36">
+  <main v-if="service" id="main-content" tabindex="-1" class="flex-grow bg-bg-primary pt-28 md:pt-36">
     <section class="relative overflow-hidden pb-20 md:pb-28">
       <div class="dot-grid absolute inset-0 opacity-25 [mask-image:linear-gradient(to_bottom,black,transparent_72%)]" aria-hidden="true" />
       <div class="absolute -right-36 top-0 h-[32rem] w-[32rem] rounded-full bg-accent opacity-[0.09] blur-[145px]" aria-hidden="true" />

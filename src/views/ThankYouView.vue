@@ -12,7 +12,7 @@ const nextSteps = [
 </script>
 
 <template>
-  <main class="relative flex min-h-screen flex-grow items-center overflow-hidden bg-bg-primary px-6 pb-20 pt-32">
+  <main id="main-content" tabindex="-1" class="relative flex min-h-screen flex-grow items-center overflow-hidden bg-bg-primary px-6 pb-20 pt-32">
     <div class="absolute -left-48 top-16 h-[34rem] w-[34rem] rounded-full bg-accent opacity-[0.1] blur-[150px]" aria-hidden="true" />
     <div class="dot-grid absolute inset-0 opacity-30 [mask-image:linear-gradient(to_bottom,black,transparent_75%)]" aria-hidden="true" />
     <div class="noise-overlay" aria-hidden="true" />

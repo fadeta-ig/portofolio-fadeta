@@ -10,7 +10,7 @@ const project = computed(() => featuredProjects.find((item) => item.slug === rou
 </script>
 
 <template>
-  <main v-if="project" class="flex-grow bg-bg-primary pt-28 md:pt-36">
+  <main v-if="project" id="main-content" tabindex="-1" class="flex-grow bg-bg-primary pt-28 md:pt-36">
     <section class="pb-20 md:pb-28">
       <div class="section-shell">
         <RouterLink to="/portfolio" class="inline-flex items-center gap-2 text-sm font-bold text-text-secondary transition-colors hover:text-accent">

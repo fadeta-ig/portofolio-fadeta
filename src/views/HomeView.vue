@@ -13,7 +13,7 @@ import ContactSection from '../components/ContactSection.vue';
 </script>
 
 <template>
-  <main class="flex-grow w-full">
+  <main id="main-content" tabindex="-1" class="flex-grow w-full">
     <HeroSection />
     <TechMarquee />
     <AboutSection />

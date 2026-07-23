@@ -6,7 +6,7 @@ import { contact } from '../data/contact';
 const sections = [
   {
     title: 'Data yang Anda kirim',
-    text: 'Form konsultasi dapat meminta nama, nama bisnis, email, nomor WhatsApp, jenis kebutuhan, target waktu, dan ringkasan kebutuhan. Anda memilih sendiri informasi yang dicantumkan pada kolom opsional.'
+    text: 'Form konsultasi dapat meminta nama, nama bisnis, email, nomor WhatsApp, jenis kebutuhan, target waktu, dan ringkasan kebutuhan. Anda memilih sendiri informasi yang dicantumkan pada kolom opsional. Data teknis seperti alamat IP dapat diproses sementara untuk membatasi penyalahgunaan form.'
   },
   {
     title: 'Untuk apa data digunakan',
@@ -14,7 +14,7 @@ const sections = [
   },
   {
     title: 'Layanan yang membantu memproses data',
-    text: 'Website dihosting melalui Vercel. Pengiriman brief menggunakan layanan email Resend. Jika Anda mengizinkannya, Google Analytics digunakan untuk melihat interaksi website secara agregat. Masing-masing layanan memiliki kebijakan privasinya sendiri.'
+    text: 'Website dihosting melalui Vercel dan pengiriman brief menggunakan Resend. Jika proteksi anti-bot diaktifkan, Cloudflare Turnstile membantu memverifikasi bahwa pengiriman dilakukan oleh pengguna yang sah. Jika Anda mengizinkannya, Google Analytics digunakan untuk melihat interaksi website secara agregat. Masing-masing layanan memiliki kebijakan privasinya sendiri.'
   },
   {
     title: 'Cookie dan analytics',
@@ -28,7 +28,7 @@ const sections = [
 </script>
 
 <template>
-  <main class="flex-grow bg-bg-primary pt-28 md:pt-36">
+  <main id="main-content" tabindex="-1" class="flex-grow bg-bg-primary pt-28 md:pt-36">
     <section class="pb-20 md:pb-28">
       <div class="section-shell max-w-5xl">
         <RouterLink to="/" class="inline-flex items-center gap-2 text-sm font-bold text-text-secondary hover:text-accent"><ArrowLeft class="h-4 w-4" /> Kembali ke beranda</RouterLink>
@@ -48,7 +48,7 @@ const sections = [
           <p class="max-w-2xl text-sm leading-relaxed text-text-secondary">Jika ada pertanyaan tentang data yang pernah Anda kirim, sertakan alamat email yang digunakan agar permintaan dapat diperiksa.</p>
           <a :href="`mailto:${contact.email}`" class="mt-5 inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-text-primary px-5 text-sm font-bold text-bg-primary md:mt-0"><Mail class="h-4 w-4" /> {{ contact.email }}</a>
         </div>
-        <p class="mt-6 text-xs text-text-tertiary">Terakhir diperbarui: 22 Juli 2026.</p>
+        <p class="mt-6 text-xs text-text-tertiary">Terakhir diperbarui: 23 Juli 2026.</p>
       </div>
     </section>
     <ContactSection />

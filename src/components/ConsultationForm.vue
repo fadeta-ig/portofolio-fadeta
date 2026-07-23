@@ -1,5 +1,5 @@
 <script setup>
-import { computed, nextTick, reactive, ref } from 'vue';
+import { computed, defineAsyncComponent, nextTick, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { ArrowRight, Check, LoaderCircle, LockKeyhole } from '@lucide/vue';
 import { trackEvent } from '../lib/analytics';
@@ -21,6 +21,13 @@ const isFull = computed(() => props.variant === 'full');
 const isSubmitting = ref(false);
 const submitError = ref('');
 const errors = ref({});
+const turnstileToken = ref('');
+const turnstileWidget = ref(null);
+const securityCheckRef = ref(null);
+const turnstileSiteKey = (import.meta.env.VITE_TURNSTILE_SITE_KEY || '').trim();
+const TurnstileWidget = turnstileSiteKey
+  ? defineAsyncComponent(() => import('./TurnstileWidget.vue'))
+  : null;
 const formStartedAt = Date.now();
 const submissionId = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(16).slice(2)}`;
 
@@ -71,6 +78,7 @@ function validateForm() {
   if (isFull.value && !form.timeline) nextErrors.timeline = 'Pilih target waktu atau “Belum ditentukan”.';
   if (form.summary.trim().length < 20) nextErrors.summary = 'Ceritakan kebutuhan Anda sedikit lebih detail, minimal 20 karakter.';
   if (!form.consent) nextErrors.consent = 'Persetujuan diperlukan agar kami dapat menghubungi Anda.';
+  if (turnstileSiteKey && !turnstileToken.value) nextErrors.turnstile = 'Selesaikan verifikasi keamanan terlebih dahulu.';
 
   errors.value = nextErrors;
   return Object.keys(nextErrors).length === 0;
@@ -78,7 +86,22 @@ function validateForm() {
 
 async function focusFirstError() {
   await nextTick();
-  document.querySelector('[data-consultation-form] [aria-invalid="true"]')?.focus();
+  const firstInvalidField = document.querySelector('[data-consultation-form] [aria-invalid="true"]');
+  const focusTarget = firstInvalidField
+    ?? (errors.value.turnstile ? securityCheckRef.value : null);
+  focusTarget?.focus();
+}
+
+function handleTurnstileToken(token) {
+  turnstileToken.value = token;
+  clearError('turnstile');
+}
+
+function handleTurnstileError() {
+  errors.value = {
+    ...errors.value,
+    turnstile: 'Verifikasi keamanan tidak tersedia. Muat ulang halaman lalu coba kembali.'
+  };
 }
 
 async function submitForm() {
@@ -100,7 +123,8 @@ async function submitForm() {
         variant: props.variant,
         source: props.source,
         submissionId,
-        formStartedAt
+        formStartedAt,
+        turnstileToken: turnstileToken.value
       })
     });
 
@@ -121,6 +145,10 @@ async function submitForm() {
     trackEvent('generate_lead', { form_source: props.source, form_variant: props.variant, service: form.service });
     await router.push({ name: 'thank-you' });
   } catch (error) {
+    if (turnstileSiteKey) {
+      turnstileToken.value = '';
+      turnstileWidget.value?.reset();
+    }
     submitError.value = error.message || 'Terjadi kendala saat mengirim form. Silakan coba kembali.';
   } finally {
     isSubmitting.value = false;
@@ -275,6 +303,24 @@ async function submitForm() {
         <span>Saya setuju Gandiva Labs menghubungi saya terkait kebutuhan yang dikirimkan. Baca <RouterLink to="/privasi" class="font-bold text-text-primary underline decoration-border-default underline-offset-2">privasi data</RouterLink>.</span>
       </label>
       <span v-if="errors.consent" id="consultation-consent-error" class="field-error mt-2 block">{{ errors.consent }}</span>
+    </div>
+
+    <div
+      v-if="turnstileSiteKey"
+      ref="securityCheckRef"
+      class="security-check"
+      :class="errors.turnstile ? 'security-check-error' : ''"
+      tabindex="-1"
+      :aria-invalid="Boolean(errors.turnstile)"
+      :aria-describedby="errors.turnstile ? 'consultation-turnstile-error' : undefined"
+    >
+      <TurnstileWidget
+        ref="turnstileWidget"
+        :site-key="turnstileSiteKey"
+        @token="handleTurnstileToken"
+        @error="handleTurnstileError"
+      />
+      <span v-if="errors.turnstile" id="consultation-turnstile-error" class="field-error mt-2 block" role="alert">{{ errors.turnstile }}</span>
     </div>
 
     <div v-if="submitError" class="form-alert" role="alert">
@@ -443,6 +489,19 @@ async function submitForm() {
   color: var(--text-primary);
   font-size: 0.78rem;
   line-height: 1.5;
+}
+
+.security-check {
+  margin-top: 1rem;
+  padding: 0.8rem;
+  border: 1px solid var(--border-default);
+  border-radius: 0.9rem;
+  background: color-mix(in srgb, var(--bg-primary) 74%, transparent);
+  transition: border-color 0.2s ease, background-color 0.35s ease;
+}
+
+.security-check-error {
+  border-color: var(--accent);
 }
 
 .submit-button {

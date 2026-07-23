@@ -1,11 +1,12 @@
-import { existsSync, readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
+import { extname, join, resolve } from 'node:path';
 
 const root = process.cwd();
 const dist = resolve(root, 'dist');
 const sitemapFile = resolve(dist, 'sitemap.xml');
 const robotsFile = resolve(dist, 'robots.txt');
 const socialImageFile = resolve(dist, 'og.png');
+const vercelConfigFile = resolve(root, 'vercel.json');
 const expectedHost = 'www.gandivalabs.my.id';
 const expectedSocialImage = `https://${expectedHost}/og.png`;
 const legacyWhatsapp = ['62815', '53821808'].join('');
@@ -14,6 +15,26 @@ const errors = [];
 
 function check(condition, message) {
   if (!condition) errors.push(message);
+}
+
+function collectHtmlFiles(directory) {
+  if (!existsSync(directory)) return [];
+  return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
+    const path = join(directory, entry.name);
+    if (entry.isDirectory()) return collectHtmlFiles(path);
+    return extname(entry.name) === '.html' ? [path] : [];
+  });
+}
+
+function readMetaContent(html, name) {
+  const tag = html.match(new RegExp(`<meta\\b[^>]*\\bname=["']${name}["'][^>]*>`, 'i'))?.[0];
+  return tag?.match(/\bcontent=["']([^"']+)["']/i)?.[1] ?? '';
+}
+
+function readCanonical(html) {
+  return html.match(/<link[^>]+rel=["']canonical["'][^>]+href=["']([^"']+)["']/i)?.[1]
+    ?? html.match(/<link[^>]+href=["']([^"']+)["'][^>]+rel=["']canonical["']/i)?.[1]
+    ?? '';
 }
 
 check(existsSync(sitemapFile), 'dist/sitemap.xml tidak ditemukan.');
@@ -34,6 +55,24 @@ if (existsSync(socialImageFile)) {
 const sitemap = existsSync(sitemapFile) ? readFileSync(sitemapFile, 'utf8') : '';
 const urls = [...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map((match) => match[1].trim());
 check(urls.length > 0, 'Sitemap tidak berisi URL.');
+check(new Set(urls).size === urls.length, 'Sitemap mengandung URL duplikat.');
+
+const renderedUrls = new Set();
+for (const file of collectHtmlFiles(dist)) {
+  const html = readFileSync(file, 'utf8');
+  if (readMetaContent(html, 'robots').toLowerCase().includes('noindex')) continue;
+  const canonical = readCanonical(html);
+  check(Boolean(canonical), `Halaman publik tidak memiliki canonical: ${file}`);
+  if (canonical) renderedUrls.add(canonical);
+}
+
+for (const url of renderedUrls) {
+  check(urls.includes(url), `Halaman publik belum tercantum di sitemap: ${url}`);
+}
+for (const url of urls) {
+  check(renderedUrls.has(url), `URL sitemap tidak sesuai halaman publik hasil prerender: ${url}`);
+}
+check(renderedUrls.size === urls.length, `Jumlah halaman publik (${renderedUrls.size}) dan URL sitemap (${urls.length}) berbeda.`);
 
 for (const url of urls) {
   const parsed = new URL(url);
@@ -46,13 +85,14 @@ for (const url of urls) {
   if (!existsSync(file)) continue;
 
   const html = readFileSync(file, 'utf8');
-  const canonical = html.match(/<link[^>]+rel="canonical"[^>]+href="([^"]+)"/i)?.[1]
-    ?? html.match(/<link[^>]+href="([^"]+)"[^>]+rel="canonical"/i)?.[1];
+  const canonical = readCanonical(html);
   const openGraphImage = html.match(/<meta[^>]+property="og:image"[^>]+content="([^"]+)"/i)?.[1]
     ?? html.match(/<meta[^>]+content="([^"]+)"[^>]+property="og:image"/i)?.[1];
 
   check((html.match(/<title>/gi) ?? []).length === 1, `${parsed.pathname}: title harus tepat satu.`);
   check((html.match(/<h1(?:\s|>)/gi) ?? []).length === 1, `${parsed.pathname}: H1 harus tepat satu.`);
+  check((html.match(/id="main-content"/gi) ?? []).length === 1, `${parsed.pathname}: target konten utama harus tepat satu.`);
+  check(html.includes('href="#main-content"'), `${parsed.pathname}: skip link ke konten utama tidak ditemukan.`);
   check((html.match(/name="description"/gi) ?? []).length === 1, `${parsed.pathname}: meta description harus tepat satu.`);
   check((html.match(/rel="canonical"/gi) ?? []).length === 1, `${parsed.pathname}: canonical harus tepat satu.`);
   check(canonical === url, `${parsed.pathname}: canonical (${canonical}) tidak sama dengan sitemap (${url}).`);
@@ -68,10 +108,37 @@ for (const url of urls) {
 const robots = existsSync(robotsFile) ? readFileSync(robotsFile, 'utf8') : '';
 check(robots.includes('https://www.gandivalabs.my.id/sitemap.xml'), 'robots.txt tidak menunjuk sitemap canonical.');
 
+check(existsSync(vercelConfigFile), 'vercel.json tidak ditemukan.');
+if (existsSync(vercelConfigFile)) {
+  try {
+    const vercelConfig = JSON.parse(readFileSync(vercelConfigFile, 'utf8'));
+    const globalHeaders = vercelConfig.headers
+      ?.find((entry) => entry.source === '/(.*)')
+      ?.headers ?? [];
+    const headerMap = new Map(globalHeaders.map(({ key, value }) => [key.toLowerCase(), value]));
+    const requiredHeaders = [
+      'content-security-policy-report-only',
+      'x-content-type-options',
+      'x-frame-options',
+      'referrer-policy',
+      'permissions-policy'
+    ];
+    for (const header of requiredHeaders) {
+      check(headerMap.has(header), `Security header belum dikonfigurasi: ${header}`);
+    }
+    const csp = headerMap.get('content-security-policy-report-only') ?? '';
+    check(csp.includes("default-src 'self'"), 'CSP belum membatasi default-src ke origin sendiri.');
+    check(csp.includes('challenges.cloudflare.com'), 'CSP belum mengizinkan Turnstile.');
+    check(csp.includes('googletagmanager.com'), 'CSP belum mengizinkan analytics yang digunakan.');
+  } catch {
+    errors.push('vercel.json bukan JSON yang valid.');
+  }
+}
+
 if (errors.length) {
   console.error(`Verifikasi build gagal (${errors.length}):`);
   for (const error of errors) console.error(`- ${error}`);
   process.exit(1);
 }
 
-console.log(`Verifikasi build lolos: ${urls.length} URL pre-render, sitemap, robots, metadata, dan nomor kontak konsisten.`);
+console.log(`Verifikasi build lolos: ${urls.length} URL pre-render, sitemap, robots, metadata, kontak, dan security headers konsisten.`);
