@@ -8,6 +8,7 @@ import {
 const CONTACT_TO_EMAIL = process.env.CONTACT_TO_EMAIL || 'fadeta287@gmail.com';
 const CONTACT_FROM_EMAIL = process.env.CONTACT_FROM_EMAIL || 'Gandiva Labs <onboarding@resend.dev>';
 const RESEND_ENDPOINT = 'https://api.resend.com/emails';
+const RESEND_TIMEOUT_MS = 8_000;
 
 const ALLOWED_SERVICES = new Set([
   'Company profile',
@@ -148,6 +149,10 @@ export default async function handler(req, res) {
   }
 
   if (!isAllowedOrigin(req)) return json(res, 403, { message: 'Permintaan tidak diizinkan.' });
+  const contentType = String(req.headers?.['content-type'] || '').toLowerCase();
+  if (contentType && !contentType.includes('application/json')) {
+    return json(res, 415, { message: 'Format data tidak didukung.' });
+  }
   if (Number(req.headers?.['content-length'] || 0) > 25_000) {
     return json(res, 413, { message: 'Data form terlalu besar.' });
   }
@@ -197,9 +202,14 @@ export default async function handler(req, res) {
     return json(res, 422, { message: 'Periksa kembali informasi yang dimasukkan.', errors: validationErrors });
   }
 
+  const turnstileSecret = process.env.TURNSTILE_SECRET_KEY;
+  if (process.env.VERCEL_ENV === 'production' && !turnstileSecret) {
+    return json(res, 503, { message: 'Verifikasi keamanan belum dikonfigurasi.' });
+  }
+
   const turnstile = await verifyTurnstile({
     token: normalize(body.turnstileToken, 2_048),
-    secret: process.env.TURNSTILE_SECRET_KEY,
+    secret: turnstileSecret,
     remoteIp: clientIp,
     expectedHostname: req.headers?.host,
     expectedAction: 'contact_form'
@@ -226,6 +236,9 @@ export default async function handler(req, res) {
     text: emailText(data)
   };
 
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), RESEND_TIMEOUT_MS);
+
   try {
     const resendResponse = await fetch(RESEND_ENDPOINT, {
       method: 'POST',
@@ -235,7 +248,8 @@ export default async function handler(req, res) {
         'Idempotency-Key': `lead/${data.submissionId}`,
         'User-Agent': 'gandiva-labs-contact/1.0'
       },
-      body: JSON.stringify(emailPayload)
+      body: JSON.stringify(emailPayload),
+      signal: controller.signal
     });
 
     if (!resendResponse.ok) {
@@ -248,6 +262,13 @@ export default async function handler(req, res) {
     return json(res, 200, { ok: true, id: result.id });
   } catch (error) {
     console.error('Contact email request failed', error instanceof Error ? error.message : 'Unknown error');
-    return json(res, 502, { message: 'Layanan email sedang tidak tersedia. Silakan coba kembali atau gunakan WhatsApp.' });
+    const timedOut = error?.name === 'AbortError';
+    return json(res, timedOut ? 504 : 502, {
+      message: timedOut
+        ? 'Pengiriman email membutuhkan waktu terlalu lama. Silakan coba kembali atau gunakan WhatsApp.'
+        : 'Layanan email sedang tidak tersedia. Silakan coba kembali atau gunakan WhatsApp.'
+    });
+  } finally {
+    clearTimeout(timeout);
   }
 }

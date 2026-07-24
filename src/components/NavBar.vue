@@ -166,7 +166,7 @@ onUnmounted(() => {
   <header ref="navRef" class="fixed inset-x-0 top-0 z-50 px-3 pt-3 md:px-5">
     <nav class="glass-panel mx-auto flex h-16 max-w-7xl items-center justify-between rounded-2xl px-4 md:px-5" aria-label="Navigasi utama">
       <a ref="brandLinkRef" href="/" class="flex items-center gap-2.5 rounded-xl" aria-label="Gandiva Labs — kembali ke beranda" @click.prevent="goHome">
-        <LogoMark :size="35" :variant="isDark ? 'light' : 'dark'" />
+        <LogoMark :size="35" variant="auto" />
         <span class="text-[15px] font-bold tracking-[-0.025em] text-text-primary">Gandiva Labs</span>
       </a>
 
@@ -187,11 +187,12 @@ onUnmounted(() => {
         <button
           type="button"
           class="flex h-11 w-11 items-center justify-center rounded-full text-text-secondary transition-colors hover:bg-bg-secondary hover:text-text-primary"
-          :aria-label="isDark ? 'Gunakan tema terang' : 'Gunakan tema gelap'"
+          aria-label="Ganti tema warna"
+          :aria-pressed="isDark"
           @click="toggleTheme"
         >
-          <Sun v-if="isDark" class="h-[18px] w-[18px]" />
-          <Moon v-else class="h-[18px] w-[18px]" />
+          <Sun class="theme-icon theme-icon-dark h-[18px] w-[18px]" aria-hidden="true" />
+          <Moon class="theme-icon theme-icon-light h-[18px] w-[18px]" aria-hidden="true" />
         </button>
 
         <RouterLink
@@ -243,7 +244,7 @@ onUnmounted(() => {
       >
         <div class="flex items-center justify-between border-b border-border-default pb-5">
           <div class="flex items-center gap-3">
-            <LogoMark :size="38" :variant="isDark ? 'light' : 'dark'" />
+            <LogoMark :size="38" variant="auto" />
             <span id="mobile-menu-title" class="font-bold text-text-primary">Menu Gandiva Labs</span>
           </div>
           <button ref="closeMenuButtonRef" type="button" class="flex h-11 w-11 items-center justify-center rounded-full hover:bg-bg-secondary" aria-label="Tutup menu" @click="closeMobileMenu()">
@@ -279,6 +280,18 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
+.theme-icon-dark {
+  display: none;
+}
+
+:global([data-theme="dark"]) .theme-icon-dark {
+  display: block;
+}
+
+:global([data-theme="dark"]) .theme-icon-light {
+  display: none;
+}
+
 .menu-fade-enter-active,
 .menu-fade-leave-active,
 .menu-slide-enter-active,

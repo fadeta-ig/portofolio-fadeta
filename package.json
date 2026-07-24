@@ -5,8 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite-ssg build && node scripts/generate-sitemap.mjs && node scripts/verify-build.mjs",
-    "test": "node --test tests/*.test.mjs",
+    "build": "npm run generate:social && vite-ssg build && node scripts/generate-sitemap.mjs && node scripts/verify-build.mjs",
+    "generate:social": "node scripts/generate-social-previews.mjs",
+    "test": "npm run test:node && npm run test:components",
+    "test:node": "node --test tests/*.test.mjs",
+    "test:components": "vitest run --config vitest.config.js",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -15,12 +18,17 @@
     "gsap": "^3.15.0",
     "tailwindcss": "^4.3.2",
     "vue": "^3.5.39",
-    "vue-router": "^5.1.0"
+    "vue-router": "^5.1.0",
+    "web-vitals": "^6.0.0"
   },
   "devDependencies": {
     "@unhead/vue": "^2.1.16",
     "@vitejs/plugin-vue": "^6.0.7",
+    "@vue/test-utils": "^2.4.11",
+    "jsdom": "^29.1.1",
+    "sharp": "^0.35.3",
     "vite": "^8.1.4",
-    "vite-ssg": "^28.3.0"
+    "vite-ssg": "^28.3.0",
+    "vitest": "^4.1.10"
   }
 }

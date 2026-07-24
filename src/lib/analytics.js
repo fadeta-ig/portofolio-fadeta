@@ -1,8 +1,10 @@
 export const measurementId = 'G-LQD4TF22QZ';
 export const analyticsConsentStorageKey = 'gandiva.analytics-consent.v1';
 export const cookieSettingsEvent = 'gandiva:open-cookie-settings';
+export const analyticsConsentChangedEvent = 'gandiva:analytics-consent-changed';
 
 let analyticsConfigured = false;
+let memoryConsent = null;
 
 function ensureGtag() {
   window.dataLayer = window.dataLayer || [];
@@ -37,10 +39,12 @@ function clearAnalyticsCookies() {
 
 export function getAnalyticsConsent() {
   if (typeof window === 'undefined') return null;
+  if (memoryConsent === 'granted' || memoryConsent === 'denied') return memoryConsent;
 
   try {
     const value = window.localStorage.getItem(analyticsConsentStorageKey);
-    return value === 'granted' || value === 'denied' ? value : null;
+    memoryConsent = value === 'granted' || value === 'denied' ? value : null;
+    return memoryConsent;
   } catch {
     return null;
   }
@@ -72,6 +76,7 @@ function enableAnalytics() {
 
 export function initializeAnalytics() {
   if (typeof window === 'undefined') return;
+  memoryConsent = null;
   ensureGtag();
   window.gtag('consent', 'default', {
     analytics_storage: 'denied',
@@ -92,11 +97,12 @@ export function setAnalyticsConsent(allowed) {
   if (typeof window === 'undefined') return;
 
   const value = allowed ? 'granted' : 'denied';
+  memoryConsent = value;
 
   try {
     window.localStorage.setItem(analyticsConsentStorageKey, value);
   } catch {
-    // Analytics remains blocked when browser storage is unavailable.
+    // The explicit choice remains valid for this page session.
   }
 
   ensureGtag();
@@ -113,7 +119,7 @@ export function setAnalyticsConsent(allowed) {
     clearAnalyticsCookies();
   }
 
-  window.dispatchEvent(new CustomEvent('gandiva:analytics-consent-changed', { detail: { value } }));
+  window.dispatchEvent(new CustomEvent(analyticsConsentChangedEvent, { detail: { value } }));
 }
 
 export function openCookieSettings() {
@@ -133,4 +139,9 @@ export function trackPageView(path, title) {
     page_path: path,
     page_title: title
   });
+}
+
+export function resetAnalyticsStateForTests() {
+  analyticsConfigured = false;
+  memoryConsent = null;
 }

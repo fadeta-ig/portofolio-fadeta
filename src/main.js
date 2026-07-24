@@ -4,11 +4,21 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './assets/css/main.css';
 import App from './App.vue';
 import { prerenderRoutes, routes, scrollBehavior } from './router';
-import { initializeAnalytics, trackEvent } from './lib/analytics';
+import {
+  analyticsConsentChangedEvent,
+  initializeAnalytics,
+  trackEvent
+} from './lib/analytics';
+import { initializeWebVitals } from './lib/webVitals';
 
 if (!import.meta.env.SSR) {
   gsap.registerPlugin(ScrollTrigger);
   initializeAnalytics();
+  initializeWebVitals();
+
+  window.addEventListener(analyticsConsentChangedEvent, (event) => {
+    if (event.detail?.value === 'granted') initializeWebVitals();
+  });
 
   document.addEventListener('click', (event) => {
     const target = event.target.closest?.('[data-track]');

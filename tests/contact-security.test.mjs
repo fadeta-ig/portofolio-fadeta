@@ -211,3 +211,217 @@ test('endpoint menerapkan metode, honeypot, timing, dan kegagalan konfigurasi de
   if (originalTurnstileSecret === undefined) delete process.env.TURNSTILE_SECRET_KEY;
   else process.env.TURNSTILE_SECRET_KEY = originalTurnstileSecret;
 });
+
+test('endpoint menolak origin, content type, payload besar, dan JSON rusak', async () => {
+  resetRateLimitsForTests();
+
+  const forbidden = createResponse();
+  await handler({
+    method: 'POST',
+    headers: {
+      host: 'www.gandivalabs.my.id',
+      origin: 'https://evil.example',
+      'x-forwarded-for': '203.0.113.20'
+    },
+    body: validBody()
+  }, forbidden);
+  assert.equal(forbidden.statusCode, 403);
+
+  const unsupported = createResponse();
+  await handler({
+    method: 'POST',
+    headers: {
+      host: 'www.gandivalabs.my.id',
+      'content-type': 'text/plain',
+      'x-forwarded-for': '203.0.113.21'
+    },
+    body: validBody()
+  }, unsupported);
+  assert.equal(unsupported.statusCode, 415);
+
+  const tooLarge = createResponse();
+  await handler({
+    method: 'POST',
+    headers: {
+      host: 'www.gandivalabs.my.id',
+      'content-length': '25001',
+      'x-forwarded-for': '203.0.113.22'
+    },
+    body: validBody()
+  }, tooLarge);
+  assert.equal(tooLarge.statusCode, 413);
+
+  const invalidJson = createResponse();
+  await handler({
+    method: 'POST',
+    headers: {
+      host: 'www.gandivalabs.my.id',
+      'content-type': 'application/json',
+      'x-forwarded-for': '203.0.113.23'
+    },
+    body: '{"name":'
+  }, invalidJson);
+  assert.equal(invalidJson.statusCode, 400);
+});
+
+test('endpoint rate limit mengirim status 429 beserta Retry-After', async () => {
+  resetRateLimitsForTests();
+  const request = {
+    method: 'POST',
+    headers: { host: 'www.gandivalabs.my.id', 'x-forwarded-for': '203.0.113.24' },
+    body: validBody({ website: 'bot.example' })
+  };
+
+  for (let index = 0; index < contactSecurityConfig.rateLimitMaxRequests; index += 1) {
+    const allowed = createResponse();
+    await handler(request, allowed);
+    assert.equal(allowed.statusCode, 200);
+  }
+
+  const blocked = createResponse();
+  await handler(request, blocked);
+  assert.equal(blocked.statusCode, 429);
+  assert.ok(Number(blocked.getHeader('retry-after')) > 0);
+  assert.equal(blocked.getHeader('cache-control'), 'no-store');
+});
+
+test('production gagal tertutup ketika Turnstile secret hilang', async () => {
+  resetRateLimitsForTests();
+  const originalVercelEnvironment = process.env.VERCEL_ENV;
+  const originalTurnstileSecret = process.env.TURNSTILE_SECRET_KEY;
+  process.env.VERCEL_ENV = 'production';
+  delete process.env.TURNSTILE_SECRET_KEY;
+
+  try {
+    const response = createResponse();
+    await handler({
+      method: 'POST',
+      headers: { host: 'www.gandivalabs.my.id', 'x-forwarded-for': '203.0.113.25' },
+      body: validBody()
+    }, response);
+    assert.equal(response.statusCode, 503);
+    assert.match(response.body, /Verifikasi keamanan belum dikonfigurasi/);
+  } finally {
+    if (originalVercelEnvironment === undefined) delete process.env.VERCEL_ENV;
+    else process.env.VERCEL_ENV = originalVercelEnvironment;
+    if (originalTurnstileSecret === undefined) delete process.env.TURNSTILE_SECRET_KEY;
+    else process.env.TURNSTILE_SECRET_KEY = originalTurnstileSecret;
+  }
+});
+
+test('endpoint memverifikasi Turnstile dan menolak token yang gagal', async () => {
+  resetRateLimitsForTests();
+  const originalSecret = process.env.TURNSTILE_SECRET_KEY;
+  const originalFetch = globalThis.fetch;
+  process.env.TURNSTILE_SECRET_KEY = 'test-secret';
+  globalThis.fetch = async () => ({
+    ok: true,
+    json: async () => ({
+      success: false,
+      'error-codes': ['invalid-input-response']
+    })
+  });
+
+  try {
+    const response = createResponse();
+    await handler({
+      method: 'POST',
+      headers: { host: 'www.gandivalabs.my.id', 'x-forwarded-for': '203.0.113.26' },
+      body: validBody({ turnstileToken: 'invalid-token' })
+    }, response);
+    assert.equal(response.statusCode, 403);
+  } finally {
+    globalThis.fetch = originalFetch;
+    if (originalSecret === undefined) delete process.env.TURNSTILE_SECRET_KEY;
+    else process.env.TURNSTILE_SECRET_KEY = originalSecret;
+  }
+});
+
+test('endpoint mengirim email Resend yang aman dan idempotent', async () => {
+  resetRateLimitsForTests();
+  const originalKey = process.env.RESEND_API_KEY;
+  const originalSecret = process.env.TURNSTILE_SECRET_KEY;
+  const originalVercelEnvironment = process.env.VERCEL_ENV;
+  const originalFetch = globalThis.fetch;
+  process.env.RESEND_API_KEY = 're_test_key';
+  delete process.env.TURNSTILE_SECRET_KEY;
+  delete process.env.VERCEL_ENV;
+
+  let capturedOptions;
+  globalThis.fetch = async (_url, options) => {
+    capturedOptions = options;
+    return {
+      ok: true,
+      json: async () => ({ id: 'email_123' })
+    };
+  };
+
+  try {
+    const response = createResponse();
+    await handler({
+      method: 'POST',
+      headers: {
+        host: 'www.gandivalabs.my.id',
+        'content-type': 'application/json',
+        'x-forwarded-for': '203.0.113.27'
+      },
+      body: validBody({
+        name: '<script>alert(1)</script>',
+        submissionId: 'submission-12345'
+      })
+    }, response);
+
+    assert.equal(response.statusCode, 200);
+    assert.deepEqual(JSON.parse(response.body), { ok: true, id: 'email_123' });
+    assert.equal(capturedOptions.headers.Authorization, 'Bearer re_test_key');
+    assert.equal(capturedOptions.headers['Idempotency-Key'], 'lead/submission-12345');
+    assert.ok(capturedOptions.signal instanceof AbortSignal);
+
+    const payload = JSON.parse(capturedOptions.body);
+    assert.equal(payload.reply_to, 'halo@example.com');
+    assert.ok(payload.html.includes('&lt;script&gt;alert(1)&lt;/script&gt;'));
+    assert.ok(!payload.html.includes('<script>alert(1)</script>'));
+    assert.ok(payload.text.includes('<script>alert(1)</script>'));
+  } finally {
+    globalThis.fetch = originalFetch;
+    if (originalKey === undefined) delete process.env.RESEND_API_KEY;
+    else process.env.RESEND_API_KEY = originalKey;
+    if (originalSecret === undefined) delete process.env.TURNSTILE_SECRET_KEY;
+    else process.env.TURNSTILE_SECRET_KEY = originalSecret;
+    if (originalVercelEnvironment === undefined) delete process.env.VERCEL_ENV;
+    else process.env.VERCEL_ENV = originalVercelEnvironment;
+  }
+});
+
+test('endpoint memetakan kegagalan provider email ke status 502', async () => {
+  resetRateLimitsForTests();
+  const originalKey = process.env.RESEND_API_KEY;
+  const originalSecret = process.env.TURNSTILE_SECRET_KEY;
+  const originalFetch = globalThis.fetch;
+  const originalConsoleError = console.error;
+  process.env.RESEND_API_KEY = 're_test_key';
+  delete process.env.TURNSTILE_SECRET_KEY;
+  console.error = () => {};
+  globalThis.fetch = async () => ({
+    ok: false,
+    status: 500,
+    text: async () => 'provider failed'
+  });
+
+  try {
+    const response = createResponse();
+    await handler({
+      method: 'POST',
+      headers: { host: 'www.gandivalabs.my.id', 'x-forwarded-for': '203.0.113.28' },
+      body: validBody()
+    }, response);
+    assert.equal(response.statusCode, 502);
+  } finally {
+    globalThis.fetch = originalFetch;
+    console.error = originalConsoleError;
+    if (originalKey === undefined) delete process.env.RESEND_API_KEY;
+    else process.env.RESEND_API_KEY = originalKey;
+    if (originalSecret === undefined) delete process.env.TURNSTILE_SECRET_KEY;
+    else process.env.TURNSTILE_SECRET_KEY = originalSecret;
+  }
+});

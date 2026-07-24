@@ -97,6 +97,9 @@ export function useSeo() {
     const seo = resolveRouteSeo(route);
     const title = seo.title ?? 'Gandiva Labs';
     const description = seo.description ?? defaultDescription;
+    const image = seo.image ?? defaultImage;
+    const imageAlt = seo.imageAlt ?? defaultImageAlt;
+    const imageType = seo.imageType ?? 'image/png';
     const canonicalUrl = new URL(seo.canonicalPath ?? route.path, `${siteUrl}/`).href;
     const schema = routeSchema(route, canonicalUrl, title, description);
 
@@ -107,20 +110,21 @@ export function useSeo() {
       meta: [
         { name: 'description', content: description, key: 'description' },
         { name: 'robots', content: seo.robots ?? defaultRobots, key: 'robots' },
+        { property: 'og:type', content: seo.openGraphType ?? 'website', key: 'og-type' },
         { property: 'og:title', content: title, key: 'og-title' },
         { property: 'og:description', content: description, key: 'og-description' },
         { property: 'og:url', content: canonicalUrl, key: 'og-url' },
-        { property: 'og:image', content: defaultImage, key: 'og-image' },
-        { property: 'og:image:secure_url', content: defaultImage, key: 'og-image-secure-url' },
-        { property: 'og:image:type', content: 'image/png', key: 'og-image-type' },
+        { property: 'og:image', content: image, key: 'og-image' },
+        { property: 'og:image:secure_url', content: image, key: 'og-image-secure-url' },
+        { property: 'og:image:type', content: imageType, key: 'og-image-type' },
         { property: 'og:image:width', content: '1200', key: 'og-image-width' },
         { property: 'og:image:height', content: '630', key: 'og-image-height' },
-        { property: 'og:image:alt', content: defaultImageAlt, key: 'og-image-alt' },
+        { property: 'og:image:alt', content: imageAlt, key: 'og-image-alt' },
         { name: 'twitter:card', content: 'summary_large_image', key: 'twitter-card' },
         { name: 'twitter:title', content: title, key: 'twitter-title' },
         { name: 'twitter:description', content: description, key: 'twitter-description' },
-        { name: 'twitter:image', content: defaultImage, key: 'twitter-image' },
-        { name: 'twitter:image:alt', content: defaultImageAlt, key: 'twitter-image-alt' }
+        { name: 'twitter:image', content: image, key: 'twitter-image' },
+        { name: 'twitter:image:alt', content: imageAlt, key: 'twitter-image-alt' }
       ],
       script: schema.length ? [{ type: 'application/ld+json', innerHTML: JSON.stringify({ '@context': 'https://schema.org', '@graph': schema }), key: 'route-schema' }] : []
     };

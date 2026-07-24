@@ -22,6 +22,8 @@ export const featuredProjects = [
     contribution: ['WordPress', 'WooCommerce', 'Custom AI plugin'],
     link: 'https://shinyoungbeauty.com/',
     image: shinyoungImg,
+    socialImage: '/og/shinyoung-beauty.jpg',
+    socialImageAlt: 'Studi kasus Shinyoung Beauty oleh Gandiva Labs dengan tampilan toko online kecantikan.',
     width: 1672,
     height: 939
   },
@@ -43,6 +45,8 @@ export const featuredProjects = [
     contribution: ['Strategi halaman', 'WordPress', 'Pengembangan web'],
     link: 'https://mahakaryakosmetika.co.id/',
     image: mahakaryaImg,
+    socialImage: '/og/mahakarya-kosmetika.jpg',
+    socialImageAlt: 'Studi kasus Mahakarya Kosmetika oleh Gandiva Labs dengan tampilan website manufaktur kosmetik.',
     width: 1672,
     height: 939
   },
@@ -64,6 +68,8 @@ export const featuredProjects = [
     contribution: ['Arsitektur konten', 'WordPress', 'SEO on-page dasar'],
     link: 'https://wijayainovasi.co.id/',
     image: wijayaImg,
+    socialImage: '/og/wijaya-inovasi.jpg',
+    socialImageAlt: 'Studi kasus Wijaya Inovasi oleh Gandiva Labs dengan tampilan company profile manufaktur.',
     width: 1672,
     height: 939
   },
@@ -85,6 +91,8 @@ export const featuredProjects = [
     contribution: ['Arsitektur konten', 'Company profile', 'Pengembangan web'],
     link: null,
     image: ktiaImg,
+    socialImage: '/og/karya-teknik-internusa-abadi.jpg',
+    socialImageAlt: 'Studi kasus Karya Teknik Internusa Abadi oleh Gandiva Labs dengan tampilan website galangan kapal.',
     width: 1672,
     height: 939
   }

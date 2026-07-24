@@ -1,8 +1,11 @@
-import { ref, watch, onMounted } from 'vue';
-
-const STORAGE_KEY = 'gandiva-theme';
-const DARK_VALUE = 'dark';
-const LIGHT_VALUE = 'light';
+import { onMounted, onUnmounted, ref } from 'vue';
+import {
+  applyTheme,
+  darkTheme,
+  lightTheme,
+  readStoredTheme,
+  writeStoredTheme
+} from '../lib/theme';
 
 /**
  * Theme composable — manages light/dark toggle with localStorage persistence.
@@ -10,61 +13,44 @@ const LIGHT_VALUE = 'light';
  */
 const isDark = ref(false);
 
-function applyTheme(dark) {
-  const root = document.documentElement;
-  if (dark) {
-    root.setAttribute('data-theme', DARK_VALUE);
-  } else {
-    root.removeAttribute('data-theme');
-  }
-}
-
-function getSystemPreference() {
-  if (typeof window === 'undefined') return false;
-  return window.matchMedia('(prefers-color-scheme: dark)').matches;
-}
-
-function getStoredTheme() {
-  if (typeof window === 'undefined') return null;
-  return localStorage.getItem(STORAGE_KEY);
-}
-
-function initTheme() {
-  const stored = getStoredTheme();
-
-  if (stored === DARK_VALUE) {
-    isDark.value = true;
-  } else if (stored === LIGHT_VALUE) {
-    isDark.value = false;
-  } else {
-    isDark.value = getSystemPreference();
-  }
-
-  applyTheme(isDark.value);
-}
-
 export function useTheme() {
-  onMounted(() => {
-    initTheme();
+  let mediaQuery;
+  let handleSystemChange;
 
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const handleSystemChange = (event) => {
-      const stored = getStoredTheme();
+  onMounted(() => {
+    const currentTheme = document.documentElement.dataset.theme === darkTheme
+      ? darkTheme
+      : lightTheme;
+    isDark.value = currentTheme === darkTheme;
+
+    mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    handleSystemChange = (event) => {
+      const stored = readStoredTheme();
       if (!stored) {
         isDark.value = event.matches;
+        applyTheme(event.matches ? darkTheme : lightTheme);
       }
     };
 
     mediaQuery.addEventListener('change', handleSystemChange);
+    window.requestAnimationFrame(() => {
+      document.documentElement.dataset.themeReady = 'true';
+    });
   });
 
-  watch(isDark, (newVal) => {
-    applyTheme(newVal);
-    localStorage.setItem(STORAGE_KEY, newVal ? DARK_VALUE : LIGHT_VALUE);
+  onUnmounted(() => {
+    if (mediaQuery && handleSystemChange) {
+      mediaQuery.removeEventListener('change', handleSystemChange);
+    }
   });
 
   function toggleTheme() {
-    isDark.value = !isDark.value;
+    const nextTheme = document.documentElement.dataset.theme === darkTheme
+      ? lightTheme
+      : darkTheme;
+    isDark.value = nextTheme === darkTheme;
+    applyTheme(nextTheme);
+    writeStoredTheme(nextTheme);
   }
 
   return {

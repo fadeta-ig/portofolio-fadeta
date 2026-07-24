@@ -22,7 +22,7 @@ const sections = [
   },
   {
     title: 'Cookie dan analytics',
-    text: 'Google Analytics tidak diaktifkan sebelum Anda memberi izin. Pilihan tersebut disimpan pada browser agar pertanyaan yang sama tidak terus muncul dan dapat diubah kembali melalui Pengaturan cookie di footer.'
+    text: 'Google Analytics tidak diaktifkan sebelum Anda memberi izin. Jika diizinkan, website juga mengukur LCP, INP, dan CLS untuk memahami kecepatan muat, respons interaksi, dan kestabilan tampilan secara agregat. Pengukuran ini tidak mengirim isi form atau teks yang Anda masukkan. Pilihan consent disimpan pada browser dan dapat diubah melalui Pengaturan cookie di footer.'
   },
   {
     title: 'Akses dan penghapusan',

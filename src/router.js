@@ -99,7 +99,11 @@ export function resolveRouteSeo(to) {
     return project ? {
       title: `${project.title} — Studi Kasus Website | Gandiva Labs`,
       description: `${project.description} Baca kebutuhan, pendekatan, dan ruang lingkup proyeknya.`,
-      canonicalPath: to.path
+      canonicalPath: to.path,
+      image: `${siteUrl}${project.socialImage}`,
+      imageAlt: project.socialImageAlt,
+      imageType: 'image/jpeg',
+      openGraphType: 'article'
     } : {};
   }
 
