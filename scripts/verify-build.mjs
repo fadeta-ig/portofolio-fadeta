@@ -266,6 +266,22 @@ if (existsSync(distAssetsDirectory)) {
     assetFiles.some((file) => /^BookingOffer-.*\.js$/.test(file)),
     'Booking offer belum dipisahkan ke chunk JavaScript async.'
   );
+
+  const compiledCss = assetFiles
+    .filter((file) => file.endsWith('.css'))
+    .map((file) => readFileSync(resolve(distAssetsDirectory, file), 'utf8'))
+    .join('\n');
+  const standaloneDarkThemeDisplayRules = [...compiledCss.matchAll(/([^{}]+)\{([^{}]*)\}/g)]
+    .filter(([, selectors, declarations]) => {
+      const hasStandaloneDarkThemeSelector = selectors
+        .split(',')
+        .some((selector) => /^\[data-theme=(?:"dark"|dark)\]$/.test(selector.trim()));
+      return hasStandaloneDarkThemeSelector && /(?:^|;)display\s*:/.test(declarations);
+    });
+  check(
+    standaloneDarkThemeDisplayRules.length === 0,
+    'CSS hasil build mengubah display langsung pada [data-theme="dark"] dan dapat menyembunyikan seluruh halaman.'
+  );
 }
 
 const instrumentFontDirectory = resolve(root, 'public/fonts/instrument-serif');

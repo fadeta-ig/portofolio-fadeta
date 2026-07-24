@@ -284,11 +284,11 @@ onUnmounted(() => {
   display: none;
 }
 
-:global([data-theme="dark"]) .theme-icon-dark {
+:global([data-theme="dark"] .theme-icon-dark) {
   display: block;
 }
 
-:global([data-theme="dark"]) .theme-icon-light {
+:global([data-theme="dark"] .theme-icon-light) {
   display: none;
 }
 

@@ -50,12 +50,12 @@ defineProps({
   display: none;
 }
 
-:global([data-theme="dark"]) .logo-mark[data-variant="auto"] .mark-dark,
+:global([data-theme="dark"] .logo-mark[data-variant="auto"] .mark-dark),
 .logo-mark[data-variant="light"] .mark-dark {
   display: none;
 }
 
-:global([data-theme="dark"]) .logo-mark[data-variant="auto"] .mark-light,
+:global([data-theme="dark"] .logo-mark[data-variant="auto"] .mark-light),
 .logo-mark[data-variant="light"] .mark-light {
   display: block;
 }
