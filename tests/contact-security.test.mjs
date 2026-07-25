@@ -129,12 +129,17 @@ test('Turnstile dilewati tanpa secret dan wajib valid ketika secret tersedia', a
     secret: 'secret',
     remoteIp: '203.0.113.10',
     expectedHostname: 'www.gandivalabs.my.id',
-    expectedAction: 'contact_form',
-    fetchImpl: async (_url, options) => {
+    expectedAction: 'turnstile-spin-v2',
+    fetchImpl: async (url, options) => {
+      assert.equal(url, 'https://challenges.cloudflare.com/turnstile/v0/siteverify');
+      assert.equal(options.method, 'POST');
+      assert.equal(options.headers['Content-Type'], 'application/x-www-form-urlencoded');
+      assert.equal(options.body.get('secret'), 'secret');
+      assert.equal(options.body.get('response'), 'verified-token');
       assert.equal(options.body.get('remoteip'), '203.0.113.10');
       return {
         ok: true,
-        json: async () => ({ success: true, hostname: 'www.gandivalabs.my.id', action: 'contact_form' })
+        json: async () => ({ success: true, hostname: 'www.gandivalabs.my.id', action: 'turnstile-spin-v2' })
       };
     }
   });
@@ -155,7 +160,7 @@ test('Turnstile dilewati tanpa secret dan wajib valid ketika secret tersedia', a
     token: 'verified-token',
     secret: 'secret',
     expectedHostname: 'www.gandivalabs.my.id',
-    expectedAction: 'contact_form',
+    expectedAction: 'turnstile-spin-v2',
     fetchImpl: async () => ({
       ok: true,
       json: async () => ({
@@ -193,9 +198,9 @@ test('endpoint menerapkan metode, honeypot, timing, dan kegagalan konfigurasi de
   assert.equal(fastResponse.statusCode, 400);
 
   const originalResendKey = process.env.RESEND_API_KEY;
-  const originalTurnstileSecret = process.env.TURNSTILE_SECRET_KEY;
+  const originalTurnstileSecret = process.env.TURNSTILE_SECRET;
   delete process.env.RESEND_API_KEY;
-  delete process.env.TURNSTILE_SECRET_KEY;
+  delete process.env.TURNSTILE_SECRET;
 
   const configurationResponse = createResponse();
   await handler({
@@ -208,8 +213,8 @@ test('endpoint menerapkan metode, honeypot, timing, dan kegagalan konfigurasi de
 
   if (originalResendKey === undefined) delete process.env.RESEND_API_KEY;
   else process.env.RESEND_API_KEY = originalResendKey;
-  if (originalTurnstileSecret === undefined) delete process.env.TURNSTILE_SECRET_KEY;
-  else process.env.TURNSTILE_SECRET_KEY = originalTurnstileSecret;
+  if (originalTurnstileSecret === undefined) delete process.env.TURNSTILE_SECRET;
+  else process.env.TURNSTILE_SECRET = originalTurnstileSecret;
 });
 
 test('endpoint menolak origin, content type, payload besar, dan JSON rusak', async () => {
@@ -288,9 +293,9 @@ test('endpoint rate limit mengirim status 429 beserta Retry-After', async () => 
 test('production gagal tertutup ketika Turnstile secret hilang', async () => {
   resetRateLimitsForTests();
   const originalVercelEnvironment = process.env.VERCEL_ENV;
-  const originalTurnstileSecret = process.env.TURNSTILE_SECRET_KEY;
+  const originalTurnstileSecret = process.env.TURNSTILE_SECRET;
   process.env.VERCEL_ENV = 'production';
-  delete process.env.TURNSTILE_SECRET_KEY;
+  delete process.env.TURNSTILE_SECRET;
 
   try {
     const response = createResponse();
@@ -304,16 +309,16 @@ test('production gagal tertutup ketika Turnstile secret hilang', async () => {
   } finally {
     if (originalVercelEnvironment === undefined) delete process.env.VERCEL_ENV;
     else process.env.VERCEL_ENV = originalVercelEnvironment;
-    if (originalTurnstileSecret === undefined) delete process.env.TURNSTILE_SECRET_KEY;
-    else process.env.TURNSTILE_SECRET_KEY = originalTurnstileSecret;
+    if (originalTurnstileSecret === undefined) delete process.env.TURNSTILE_SECRET;
+    else process.env.TURNSTILE_SECRET = originalTurnstileSecret;
   }
 });
 
 test('endpoint memverifikasi Turnstile dan menolak token yang gagal', async () => {
   resetRateLimitsForTests();
-  const originalSecret = process.env.TURNSTILE_SECRET_KEY;
+  const originalSecret = process.env.TURNSTILE_SECRET;
   const originalFetch = globalThis.fetch;
-  process.env.TURNSTILE_SECRET_KEY = 'test-secret';
+  process.env.TURNSTILE_SECRET = 'test-secret';
   globalThis.fetch = async () => ({
     ok: true,
     json: async () => ({
@@ -332,19 +337,19 @@ test('endpoint memverifikasi Turnstile dan menolak token yang gagal', async () =
     assert.equal(response.statusCode, 403);
   } finally {
     globalThis.fetch = originalFetch;
-    if (originalSecret === undefined) delete process.env.TURNSTILE_SECRET_KEY;
-    else process.env.TURNSTILE_SECRET_KEY = originalSecret;
+    if (originalSecret === undefined) delete process.env.TURNSTILE_SECRET;
+    else process.env.TURNSTILE_SECRET = originalSecret;
   }
 });
 
 test('endpoint mengirim email Resend yang aman dan idempotent', async () => {
   resetRateLimitsForTests();
   const originalKey = process.env.RESEND_API_KEY;
-  const originalSecret = process.env.TURNSTILE_SECRET_KEY;
+  const originalSecret = process.env.TURNSTILE_SECRET;
   const originalVercelEnvironment = process.env.VERCEL_ENV;
   const originalFetch = globalThis.fetch;
   process.env.RESEND_API_KEY = 're_test_key';
-  delete process.env.TURNSTILE_SECRET_KEY;
+  delete process.env.TURNSTILE_SECRET;
   delete process.env.VERCEL_ENV;
 
   let capturedOptions;
@@ -386,8 +391,8 @@ test('endpoint mengirim email Resend yang aman dan idempotent', async () => {
     globalThis.fetch = originalFetch;
     if (originalKey === undefined) delete process.env.RESEND_API_KEY;
     else process.env.RESEND_API_KEY = originalKey;
-    if (originalSecret === undefined) delete process.env.TURNSTILE_SECRET_KEY;
-    else process.env.TURNSTILE_SECRET_KEY = originalSecret;
+    if (originalSecret === undefined) delete process.env.TURNSTILE_SECRET;
+    else process.env.TURNSTILE_SECRET = originalSecret;
     if (originalVercelEnvironment === undefined) delete process.env.VERCEL_ENV;
     else process.env.VERCEL_ENV = originalVercelEnvironment;
   }
@@ -396,11 +401,11 @@ test('endpoint mengirim email Resend yang aman dan idempotent', async () => {
 test('endpoint memetakan kegagalan provider email ke status 502', async () => {
   resetRateLimitsForTests();
   const originalKey = process.env.RESEND_API_KEY;
-  const originalSecret = process.env.TURNSTILE_SECRET_KEY;
+  const originalSecret = process.env.TURNSTILE_SECRET;
   const originalFetch = globalThis.fetch;
   const originalConsoleError = console.error;
   process.env.RESEND_API_KEY = 're_test_key';
-  delete process.env.TURNSTILE_SECRET_KEY;
+  delete process.env.TURNSTILE_SECRET;
   console.error = () => {};
   globalThis.fetch = async () => ({
     ok: false,
@@ -421,7 +426,7 @@ test('endpoint memetakan kegagalan provider email ke status 502', async () => {
     console.error = originalConsoleError;
     if (originalKey === undefined) delete process.env.RESEND_API_KEY;
     else process.env.RESEND_API_KEY = originalKey;
-    if (originalSecret === undefined) delete process.env.TURNSTILE_SECRET_KEY;
-    else process.env.TURNSTILE_SECRET_KEY = originalSecret;
+    if (originalSecret === undefined) delete process.env.TURNSTILE_SECRET;
+    else process.env.TURNSTILE_SECRET = originalSecret;
   }
 });

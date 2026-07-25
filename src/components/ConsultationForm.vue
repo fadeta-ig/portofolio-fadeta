@@ -24,10 +24,8 @@ const errors = ref({});
 const turnstileToken = ref('');
 const turnstileWidget = ref(null);
 const securityCheckRef = ref(null);
-const turnstileSiteKey = (import.meta.env.VITE_TURNSTILE_SITE_KEY || '').trim();
-const TurnstileWidget = turnstileSiteKey
-  ? defineAsyncComponent(() => import('./TurnstileWidget.vue'))
-  : null;
+const turnstileSiteKey = '0x4AAAAAAD7tVUg67iDC-OvG';
+const TurnstileWidget = defineAsyncComponent(() => import('./TurnstileWidget.vue'));
 const formStartedAt = Date.now();
 const submissionId = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(16).slice(2)}`;
 

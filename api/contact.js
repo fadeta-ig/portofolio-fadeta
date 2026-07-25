@@ -202,7 +202,7 @@ export default async function handler(req, res) {
     return json(res, 422, { message: 'Periksa kembali informasi yang dimasukkan.', errors: validationErrors });
   }
 
-  const turnstileSecret = process.env.TURNSTILE_SECRET_KEY;
+  const turnstileSecret = process.env.TURNSTILE_SECRET;
   if (process.env.VERCEL_ENV === 'production' && !turnstileSecret) {
     return json(res, 503, { message: 'Verifikasi keamanan belum dikonfigurasi.' });
   }
@@ -212,7 +212,7 @@ export default async function handler(req, res) {
     secret: turnstileSecret,
     remoteIp: clientIp,
     expectedHostname: req.headers?.host,
-    expectedAction: 'contact_form'
+    expectedAction: 'turnstile-spin-v2'
   });
   if (!turnstile.success) {
     const unavailable = ['verification-timeout', 'verification-unavailable'].includes(turnstile.error);

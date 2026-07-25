@@ -52,7 +52,7 @@ async function renderWidget() {
       language: 'id',
       size: 'flexible',
       appearance: 'interaction-only',
-      action: 'contact_form',
+      action: 'turnstile-spin-v2',
       callback(token) {
         status.value = '';
         emit('token', token);
@@ -97,7 +97,12 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="turnstile-shell">
-    <div ref="container" class="turnstile-container" />
+    <div
+      ref="container"
+      class="cf-turnstile turnstile-container"
+      :data-sitekey="siteKey"
+      data-action="turnstile-spin-v2"
+    />
     <p v-if="status" class="turnstile-status" aria-live="polite">{{ status }}</p>
   </div>
 </template>

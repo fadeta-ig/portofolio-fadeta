@@ -39,8 +39,9 @@ Form dikirim melalui Vercel Function di `api/contact.js` dan Resend. Salin `.env
 - `CONTACT_TO_EMAIL` - tujuan brief; default `fadeta287@gmail.com`.
 - `CONTACT_FROM_EMAIL` - pengirim email. Default `Gandiva Labs <onboarding@resend.dev>` hanya dapat digunakan untuk mengirim ke email pemilik akun Resend. Untuk production dengan domain sendiri, verifikasi domain di Resend lalu gunakan alamat dari domain tersebut.
 - `ALLOWED_ORIGIN` - opsional. Dapat berisi daftar origin yang dipisahkan koma; jika kosong, endpoint memeriksa host request secara otomatis.
+- `TURNSTILE_SECRET` - secret widget Turnstile untuk verifikasi server-side. Site key publik sudah tertanam di frontend dan secret ini tidak boleh menggunakan prefix `VITE_`.
 
-Jangan menyimpan API key di repository. Setelah environment variable production diatur, deploy ulang agar endpoint menerima konfigurasi terbaru.
+Jangan menyimpan API key atau secret Turnstile di repository. Setelah environment variable production diatur, deploy ulang agar endpoint menerima konfigurasi terbaru.
 
 ## Catatan operasional
 
