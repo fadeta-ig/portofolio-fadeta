@@ -27,7 +27,7 @@ useGsapScrollReveal(sectionRef, { y: 34, stagger: 0.1, duration: 0.75, once: tru
 </script>
 
 <template>
-  <section id="approach" class="py-24 md:py-36">
+  <section id="approach" class="section-glow overflow-hidden py-24 md:py-36">
     <div ref="sectionRef" class="section-shell">
       <div class="grid gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:gap-20">
         <div>
@@ -42,7 +42,7 @@ useGsapScrollReveal(sectionRef, { y: 34, stagger: 0.1, duration: 0.75, once: tru
 
           <div class="mt-10 grid gap-4 sm:grid-cols-3">
             <article v-for="item in outcomes" :key="item.title" class="card-surface p-5 transition-transform duration-300 hover:-translate-y-1 md:p-6">
-              <div class="mb-5 flex h-11 w-11 items-center justify-center rounded-xl bg-accent-subtle text-accent">
+              <div class="liquid-icon mb-5 flex h-11 w-11 items-center justify-center rounded-xl text-accent">
                 <component :is="item.icon" class="h-5 w-5" stroke-width="1.7" />
               </div>
               <h3 class="text-base font-bold text-text-primary">{{ item.title }}</h3>

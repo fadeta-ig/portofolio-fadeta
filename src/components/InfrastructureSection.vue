@@ -52,9 +52,9 @@ useGsapScrollReveal(sectionRef, { y: 38, stagger: 0.1, duration: 0.8, once: true
       </div>
 
       <div class="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
-        <article v-for="step in steps" :key="step.number" class="group rounded-[1.5rem] border border-white/15 bg-white/[0.035] p-6 transition-colors hover:border-[#ee8859]/45 hover:bg-white/[0.06] md:p-7">
+        <article v-for="step in steps" :key="step.number" class="liquid-dark group rounded-[1.5rem] border border-white/15 bg-white/[0.035] p-6 transition-colors hover:border-[#ee8859]/45 hover:bg-white/[0.06] md:p-7">
           <div class="flex items-start justify-between">
-            <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-[#ee8859]/12 text-[#ee8859]">
+            <div class="flex h-11 w-11 items-center justify-center rounded-xl border border-[#ee8859]/20 bg-[#ee8859]/12 text-[#ee8859] shadow-[inset_0_1px_0_rgba(255,255,255,0.15)]">
               <component :is="step.icon" class="h-5 w-5" stroke-width="1.7" />
             </div>
             <span class="text-xs font-bold tracking-[0.16em] text-[#827a70]">{{ step.number }}</span>
@@ -64,7 +64,7 @@ useGsapScrollReveal(sectionRef, { y: 38, stagger: 0.1, duration: 0.8, once: true
         </article>
       </div>
 
-      <div class="mt-8 flex flex-col gap-3 rounded-2xl border border-white/15 bg-white/[0.045] p-5 sm:flex-row sm:items-center sm:justify-between md:p-6">
+      <div class="liquid-dark mt-8 flex flex-col gap-3 rounded-2xl border border-white/15 bg-white/[0.045] p-5 sm:flex-row sm:items-center sm:justify-between md:p-6">
         <p class="text-sm text-[#bcb4a9]"><strong class="text-[#f5f0e7]">Scope dan estimasi disepakati di awal.</strong> Jadi arah kerja tetap terukur dari awal sampai tayang.</p>
         <span class="shrink-0 text-[10px] font-bold uppercase tracking-[0.16em] text-[#ee8859]">Transparan sejak awal</span>
       </div>

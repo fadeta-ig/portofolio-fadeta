@@ -12,6 +12,7 @@ vi.mock('gsap', () => ({
       callback();
       return { revert: vi.fn() };
     }),
+    from: vi.fn(),
     timeline: vi.fn(() => timeline),
     quickTo: vi.fn(() => vi.fn())
   }
@@ -50,6 +51,13 @@ describe('Gandiva Labs hero', () => {
     expect(wrapper.text()).not.toContain('01 / 04');
     expect(wrapper.text()).not.toContain('Website yang masuk akal');
     expect(wrapper.find('.hero-wordmark').exists()).toBe(false);
+
+    const heroImage = wrapper.get('.hero-visual');
+    expect(heroImage.element.tagName).toBe('IMG');
+    expect(heroImage.attributes('fetchpriority')).toBe('high');
+    expect(heroImage.attributes('loading')).toBe('eager');
+    expect(heroImage.attributes('width')).toBe('1672');
+    expect(heroImage.attributes('height')).toBe('941');
 
     wrapper.unmount();
   });

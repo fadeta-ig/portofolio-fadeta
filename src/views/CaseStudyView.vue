@@ -11,7 +11,7 @@ const project = computed(() => featuredProjects.find((item) => item.slug === rou
 
 <template>
   <main v-if="project" id="main-content" tabindex="-1" class="flex-grow bg-bg-primary pt-28 md:pt-36">
-    <section class="pb-20 md:pb-28">
+    <section class="section-glow overflow-hidden pb-20 md:pb-28">
       <div class="section-shell">
         <RouterLink to="/portfolio" class="inline-flex items-center gap-2 text-sm font-bold text-text-secondary transition-colors hover:text-accent">
           <ArrowLeft class="h-4 w-4" /> Kembali ke semua karya
@@ -28,7 +28,7 @@ const project = computed(() => featuredProjects.find((item) => item.slug === rou
           </div>
         </div>
 
-        <div class="mt-14 overflow-hidden rounded-[1.75rem] border border-border-default bg-bg-secondary shadow-[var(--shadow-sm)]">
+        <div class="liquid-panel mt-14 overflow-hidden rounded-[1.75rem] border border-border-default bg-bg-secondary shadow-[var(--shadow-sm)]">
           <img :src="project.image" :alt="`Tampilan website ${project.title}`" :width="project.width" :height="project.height" class="w-full object-cover object-top" decoding="async" />
         </div>
       </div>
@@ -57,7 +57,7 @@ const project = computed(() => featuredProjects.find((item) => item.slug === rou
           </article>
         </div>
 
-        <div class="mt-12 grid gap-8 rounded-[1.75rem] bg-[#171511] p-7 text-[#f5f0e7] md:grid-cols-[0.75fr_1.25fr] md:p-10 lg:p-12">
+        <div class="liquid-dark mt-12 grid gap-8 rounded-[1.75rem] bg-[#171511] p-7 text-[#f5f0e7] md:grid-cols-[0.75fr_1.25fr] md:p-10 lg:p-12">
           <div>
             <p class="text-[10px] font-bold uppercase tracking-[0.16em] text-[#ee8859]">Hasil yang diserahkan</p>
             <div class="mt-5 flex flex-wrap gap-2">
@@ -70,7 +70,7 @@ const project = computed(() => featuredProjects.find((item) => item.slug === rou
           </div>
         </div>
 
-        <div class="mt-6 rounded-[1.75rem] border border-border-default bg-bg-card p-7 md:flex md:items-center md:justify-between md:gap-8 md:p-10">
+        <div class="liquid-panel mt-6 rounded-[1.75rem] border border-border-default bg-bg-card p-7 md:flex md:items-center md:justify-between md:gap-8 md:p-10">
           <h2 class="max-w-2xl text-2xl font-bold tracking-[-0.035em] text-text-primary md:text-3xl">Punya konteks yang mirip? Mulai dari masalahnya, lalu kita tentukan bentuk yang tepat.</h2>
           <RouterLink to="/konsultasi" class="mt-7 inline-flex min-h-12 shrink-0 items-center justify-center gap-2 rounded-full bg-text-primary px-6 text-sm font-bold text-bg-primary md:mt-0">Ceritakan kebutuhan <ArrowRight class="h-4 w-4" /></RouterLink>
         </div>

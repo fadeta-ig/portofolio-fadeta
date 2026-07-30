@@ -471,12 +471,17 @@ onBeforeUnmount(() => {
   z-index: 120;
   max-height: calc(100dvh - 1.5rem);
   overflow: hidden;
-  border: 1px solid var(--border-default);
+  border: 1px solid var(--glass-border);
   border-radius: 1.6rem;
-  background: var(--bg-elevated);
-  box-shadow: var(--shadow-lg);
+  background:
+    radial-gradient(circle at 12% -22%, var(--glass-highlight), transparent 38%),
+    radial-gradient(circle at 96% 118%, var(--glass-accent), transparent 34%),
+    linear-gradient(145deg, var(--glass-surface-strong), var(--glass-surface));
+  box-shadow: var(--shadow-glass);
   color: var(--text-primary);
   outline: none;
+  -webkit-backdrop-filter: blur(30px) saturate(175%);
+  backdrop-filter: blur(30px) saturate(175%);
 }
 
 .booking-glow {
@@ -497,10 +502,13 @@ onBeforeUnmount(() => {
   height: 2.75rem;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--border-default);
+  border: 1px solid var(--glass-border);
   border-radius: 999px;
-  background: color-mix(in srgb, var(--bg-elevated) 88%, transparent);
+  background:
+    radial-gradient(circle at 35% 0%, var(--glass-highlight), transparent 52%),
+    linear-gradient(145deg, var(--glass-surface-strong), var(--glass-surface));
   color: var(--text-secondary);
+  box-shadow: inset 0 1px 0 var(--glass-highlight);
   transition: color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
 }
 
@@ -586,10 +594,11 @@ onBeforeUnmount(() => {
   padding: 0.38rem 0.72rem;
   align-items: center;
   gap: 0.4rem;
-  border: 1px solid var(--border-default);
+  border: 1px solid var(--glass-border);
   border-radius: 999px;
-  background: var(--bg-secondary);
+  background: linear-gradient(145deg, var(--glass-surface-strong), var(--glass-surface));
   color: var(--text-secondary);
+  box-shadow: inset 0 1px 0 var(--glass-highlight);
   font-size: 0.68rem;
   font-weight: 700;
 }
@@ -610,8 +619,13 @@ onBeforeUnmount(() => {
   justify-content: center;
   gap: 0.65rem;
   border-radius: 999px;
-  background: var(--text-primary);
+  border: 1px solid color-mix(in srgb, var(--text-primary) 74%, transparent);
+  background:
+    linear-gradient(145deg, var(--text-primary), color-mix(in srgb, var(--text-primary) 88%, var(--accent)));
   color: var(--bg-primary);
+  box-shadow:
+    0 14px 32px color-mix(in srgb, var(--text-primary) 20%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--bg-primary) 34%, transparent);
   font-size: 0.8rem;
   font-weight: 700;
   transition: transform 0.25s ease;
@@ -661,9 +675,11 @@ onBeforeUnmount(() => {
   padding: 2rem;
   flex-direction: column;
   justify-content: space-between;
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
   background:
     radial-gradient(circle at 90% 10%, rgba(238, 136, 89, 0.2), transparent 34%),
-    #171511;
+    radial-gradient(circle at 10% -10%, rgba(255, 255, 255, 0.12), transparent 42%),
+    rgba(23, 21, 17, 0.94);
   color: #f5f0e7;
 }
 

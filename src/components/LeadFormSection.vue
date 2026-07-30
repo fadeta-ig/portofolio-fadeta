@@ -31,7 +31,7 @@ useGsapScrollReveal(sectionRef, { y: 32, stagger: 0.08, duration: 0.75, once: tr
         </p>
 
         <div class="mt-8 grid gap-3">
-          <div v-for="item in benefits" :key="item.text" class="flex items-start gap-3 border-t border-border-default py-3.5">
+          <div v-for="item in benefits" :key="item.text" class="liquid-panel flex items-start gap-3 rounded-xl px-4 py-3.5">
             <component :is="item.icon" class="mt-0.5 h-4 w-4 shrink-0 text-accent" />
             <span class="text-sm leading-relaxed text-text-secondary">{{ item.text }}</span>
           </div>
@@ -49,7 +49,7 @@ useGsapScrollReveal(sectionRef, { y: 32, stagger: 0.08, duration: 0.75, once: tr
             <p class="text-[10px] font-bold uppercase tracking-[0.16em] text-accent">Brief awal</p>
             <h3 class="mt-2 text-xl font-bold tracking-[-0.025em] text-text-primary md:text-2xl">Apa yang sedang ingin Anda perbaiki?</h3>
           </div>
-          <span class="hidden rounded-full border border-border-default bg-bg-primary px-3 py-1 text-[10px] font-bold uppercase tracking-[0.1em] text-text-tertiary sm:inline-flex">Tanpa komitmen</span>
+          <span class="tag hidden sm:inline-flex">Tanpa komitmen</span>
         </div>
 
         <ConsultationForm variant="compact" source="homepage" />

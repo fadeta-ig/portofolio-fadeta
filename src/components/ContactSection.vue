@@ -37,7 +37,7 @@ const whatsappLink = createWhatsAppLink('Halo Gandiva Labs, saya ingin bercerita
           <RouterLink
             to="/konsultasi"
             data-track="footer_consultation"
-            class="inline-flex min-h-14 w-full items-center justify-center gap-3 rounded-full border border-white/20 px-7 text-sm font-bold text-[#f5f0e7] transition-colors hover:border-white/45 sm:w-auto"
+            class="liquid-dark inline-flex min-h-14 w-full items-center justify-center gap-3 rounded-full border border-white/20 px-7 text-sm font-bold text-[#f5f0e7] transition-colors hover:border-white/45 sm:w-auto"
           >
             <ClipboardPenLine class="h-[18px] w-[18px]" />
             Isi form konsultasi
@@ -57,16 +57,16 @@ const whatsappLink = createWhatsAppLink('Halo Gandiva Labs, saya ingin bercerita
         </div>
 
         <div class="flex items-center gap-2">
-          <a href="https://github.com/fadeta-ig" target="_blank" rel="noopener noreferrer" class="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 text-[#aaa298] transition-colors hover:border-[#ee8859]/50 hover:text-[#ee8859]" aria-label="GitHub">
+          <a href="https://github.com/fadeta-ig" target="_blank" rel="noopener noreferrer" class="liquid-dark flex h-11 w-11 items-center justify-center rounded-full border border-white/15 text-[#aaa298] transition-colors hover:border-[#ee8859]/50 hover:text-[#ee8859]" aria-label="GitHub">
             <GitBranch class="h-5 w-5" />
           </a>
-          <a href="https://linkedin.com/in/fadetaig" target="_blank" rel="noopener noreferrer" class="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 text-[#aaa298] transition-colors hover:border-[#ee8859]/50 hover:text-[#ee8859]" aria-label="LinkedIn">
+          <a href="https://linkedin.com/in/fadetaig" target="_blank" rel="noopener noreferrer" class="liquid-dark flex h-11 w-11 items-center justify-center rounded-full border border-white/15 text-[#aaa298] transition-colors hover:border-[#ee8859]/50 hover:text-[#ee8859]" aria-label="LinkedIn">
             <BriefcaseBusiness class="h-5 w-5" />
           </a>
-          <a :href="whatsappLink" target="_blank" rel="noopener noreferrer" class="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 text-[#aaa298] transition-colors hover:border-[#ee8859]/50 hover:text-[#ee8859]" aria-label="WhatsApp">
+          <a :href="whatsappLink" target="_blank" rel="noopener noreferrer" class="liquid-dark flex h-11 w-11 items-center justify-center rounded-full border border-white/15 text-[#aaa298] transition-colors hover:border-[#ee8859]/50 hover:text-[#ee8859]" aria-label="WhatsApp">
             <MessageCircle class="h-5 w-5" />
           </a>
-          <a :href="`mailto:${contact.email}`" class="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 text-[#aaa298] transition-colors hover:border-[#ee8859]/50 hover:text-[#ee8859]" aria-label="Email">
+          <a :href="`mailto:${contact.email}`" class="liquid-dark flex h-11 w-11 items-center justify-center rounded-full border border-white/15 text-[#aaa298] transition-colors hover:border-[#ee8859]/50 hover:text-[#ee8859]" aria-label="Email">
             <Mail class="h-5 w-5" />
           </a>
         </div>

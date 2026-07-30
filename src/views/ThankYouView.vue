@@ -18,7 +18,7 @@ const nextSteps = [
     <div class="noise-overlay" aria-hidden="true" />
 
     <section class="relative z-10 mx-auto w-full max-w-4xl text-center" aria-labelledby="thank-you-title">
-      <span class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-accent/30 bg-accent-subtle text-accent">
+      <span class="liquid-icon mx-auto flex h-16 w-16 items-center justify-center rounded-2xl text-accent">
         <CheckCircle2 class="h-7 w-7" />
       </span>
 
@@ -31,7 +31,7 @@ const nextSteps = [
       </p>
 
       <div class="mx-auto mt-10 grid max-w-2xl gap-3 text-left">
-        <div v-for="item in nextSteps" :key="item" class="flex items-start gap-3 rounded-xl border border-border-default bg-bg-card/70 px-4 py-3.5">
+        <div v-for="item in nextSteps" :key="item" class="liquid-panel flex items-start gap-3 rounded-xl px-4 py-3.5">
           <span class="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent-subtle text-accent">
             <Check class="h-3 w-3" />
           </span>
@@ -44,7 +44,7 @@ const nextSteps = [
           Lihat portofolio
           <ArrowRight class="h-4 w-4 transition-transform group-hover:translate-x-1" />
         </RouterLink>
-        <a :href="whatsappLink" target="_blank" rel="noopener noreferrer" class="inline-flex min-h-13 w-full items-center justify-center gap-3 rounded-full border border-border-default bg-bg-card/70 px-7 text-sm font-bold text-text-primary transition-colors hover:border-text-tertiary sm:w-auto">
+        <a :href="whatsappLink" target="_blank" rel="noopener noreferrer" class="liquid-button inline-flex min-h-13 w-full items-center justify-center gap-3 rounded-full px-7 text-sm font-bold text-text-primary transition-colors hover:border-text-tertiary sm:w-auto">
           <MessageCircle class="h-4 w-4" />
           Tambahkan pesan via WhatsApp
         </a>

@@ -44,15 +44,15 @@ useGsapScrollReveal(sectionRef, { y: 32, stagger: 0.08, duration: 0.7, once: tru
         <p class="mt-6 max-w-md leading-relaxed text-text-secondary">Kalau pertanyaan Anda belum terjawab di sini, kirim pesan saja. Tidak harus langsung punya brief.</p>
       </div>
 
-      <div class="divide-y divide-border-default border-y border-border-default">
-        <details v-for="item in faqs" :key="item.question" class="faq-item group">
-          <summary class="flex cursor-pointer list-none items-center justify-between gap-6 py-6 text-left text-base font-bold text-text-primary md:text-lg">
+      <div class="grid gap-3">
+        <details v-for="item in faqs" :key="item.question" class="faq-item liquid-panel group rounded-2xl px-5 md:px-6">
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-6 py-5 text-left text-base font-bold text-text-primary md:text-lg">
             {{ item.question }}
-            <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-border-default bg-bg-card text-text-secondary transition-all group-open:rotate-45 group-open:border-accent/40 group-open:text-accent">
+            <span class="liquid-button flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-text-secondary transition-all group-open:rotate-45 group-open:border-accent/40 group-open:text-accent">
               <Plus class="h-4 w-4" />
             </span>
           </summary>
-          <p class="max-w-2xl pb-7 pr-12 text-sm leading-relaxed text-text-secondary md:text-base">{{ item.answer }}</p>
+          <p class="max-w-2xl pb-6 pr-12 text-sm leading-relaxed text-text-secondary md:text-base">{{ item.answer }}</p>
         </details>
       </div>
     </div>

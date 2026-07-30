@@ -94,30 +94,13 @@ onMounted(() => {
 
   if (!reduceMotion) {
     ctx = gsap.context(() => {
-      const timeline = gsap.timeline({
-        defaults: { ease: 'power3.out' }
+      gsap.from('.hero-floating-element', {
+        y: 14,
+        duration: 0.62,
+        stagger: 0.08,
+        delay: 0.2,
+        ease: 'power3.out'
       });
-
-      timeline
-        .from('.hero-frame', {
-          y: 28,
-          opacity: 0,
-          scale: 0.985,
-          duration: 1.05,
-          delay: 0.1
-        })
-        .from('.hero-reveal', {
-          y: 24,
-          opacity: 0,
-          duration: 0.72,
-          stagger: 0.08
-        }, '-=0.62')
-        .from('.hero-floating-element', {
-          y: 18,
-          opacity: 0,
-          duration: 0.62,
-          stagger: 0.09
-        }, '-=0.48');
     }, heroRef.value);
   }
 
@@ -164,12 +147,20 @@ onUnmounted(() => {
 
 <template>
   <section id="hero" ref="heroRef" class="hero-section">
-    <div class="hero-stage-backdrop" aria-hidden="true" />
-    <div class="hero-stage-vignette" aria-hidden="true" />
-
     <div class="hero-shell">
       <div class="hero-frame">
-        <div ref="visualRef" class="hero-visual" aria-hidden="true" />
+        <img
+          ref="visualRef"
+          class="hero-visual"
+          :src="'/gandiva-hero-editorial-v2.webp'"
+          alt=""
+          width="1672"
+          height="941"
+          fetchpriority="high"
+          loading="eager"
+          decoding="async"
+          aria-hidden="true"
+        >
         <div class="hero-visual-overlay" aria-hidden="true" />
         <div class="hero-grain" aria-hidden="true" />
 
@@ -302,30 +293,6 @@ onUnmounted(() => {
   color: #f5f0e7;
 }
 
-.hero-stage-backdrop,
-.hero-stage-vignette {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.hero-stage-backdrop {
-  z-index: -3;
-  inset: -4%;
-  background:
-    linear-gradient(rgba(5, 6, 7, 0.74), rgba(5, 6, 7, 0.82)),
-    url('/gandiva-hero-editorial-v2.webp') center / cover no-repeat;
-  filter: blur(28px) saturate(0.72);
-  transform: scale(1.08);
-}
-
-.hero-stage-vignette {
-  z-index: -2;
-  background:
-    radial-gradient(circle at 50% 42%, transparent 28%, rgba(0, 0, 0, 0.54) 100%),
-    linear-gradient(180deg, rgba(0, 0, 0, 0.14), rgba(0, 0, 0, 0.52));
-}
-
 .hero-shell {
   width: 100%;
   min-height: 100svh;
@@ -346,8 +313,14 @@ onUnmounted(() => {
 .hero-visual {
   position: absolute;
   z-index: 0;
-  inset: -0.75rem;
-  background: url('/gandiva-hero-editorial-v2.webp') 62% center / cover no-repeat;
+  top: -0.75rem;
+  right: -0.75rem;
+  bottom: -0.75rem;
+  left: -0.75rem;
+  width: calc(100% + 1.5rem);
+  height: calc(100% + 1.5rem);
+  object-fit: cover;
+  object-position: 62% center;
   transform: scale(1.015);
   will-change: transform;
 }
@@ -772,7 +745,7 @@ onUnmounted(() => {
   }
 
   .hero-visual {
-    background-position: 66% center;
+    object-position: 66% center;
   }
 
   .hero-visual-overlay {
@@ -793,17 +766,24 @@ onUnmounted(() => {
 
   .hero-shell,
   .hero-frame {
-    min-height: max(56rem, 100svh);
+    min-height: 100svh;
   }
 
   .hero-frame {
+    display: flex;
     border: 0;
     border-radius: 0;
+    flex-direction: column;
   }
 
   .hero-visual {
-    inset: -0.5rem;
-    background-position: 69% center;
+    top: -0.5rem;
+    right: -0.5rem;
+    bottom: -0.5rem;
+    left: -0.5rem;
+    width: calc(100% + 1rem);
+    height: calc(100% + 1rem);
+    object-position: 69% center;
   }
 
   .hero-visual-overlay {
@@ -814,8 +794,8 @@ onUnmounted(() => {
 
   .hero-content {
     width: 100%;
-    min-height: max(56rem, 100svh);
-    padding: 7.25rem 1.2rem 14.5rem;
+    min-height: auto;
+    padding: 7.25rem 1.2rem 0;
     justify-content: flex-start;
   }
 
@@ -860,9 +840,13 @@ onUnmounted(() => {
   }
 
   .hero-socials {
+    position: relative;
     right: auto;
-    bottom: 1rem;
-    left: 1rem;
+    bottom: auto;
+    left: auto;
+    order: 3;
+    align-self: flex-start;
+    margin: 0.75rem 1rem 1.15rem;
     padding: 0.3rem;
   }
 
@@ -872,11 +856,14 @@ onUnmounted(() => {
   }
 
   .hero-benefit-card {
-    right: 0.9rem;
-    bottom: 4.8rem;
-    left: 0.9rem;
-    width: auto;
+    position: relative;
+    right: auto;
+    bottom: auto;
+    left: auto;
+    width: calc(100% - 1.8rem);
     min-height: 8rem;
+    order: 2;
+    margin: 1rem 0.9rem 0;
     grid-template-columns: 4.6rem minmax(0, 1fr);
     gap: 0.75rem;
   }

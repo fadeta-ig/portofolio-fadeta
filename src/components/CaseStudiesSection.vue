@@ -94,7 +94,7 @@ function scrollToProject(index) {
             v-for="project in featuredProjects"
             :key="project.slug"
             data-project-card
-            class="group grid h-full min-h-full shrink-0 snap-start snap-always overflow-hidden rounded-[1.6rem] border border-border-default bg-bg-card shadow-[var(--shadow-sm)] md:grid-cols-[1.12fr_0.88fr]"
+            class="liquid-panel group grid h-full min-h-full shrink-0 snap-start snap-always overflow-hidden rounded-[1.6rem] border border-border-default bg-bg-card shadow-[var(--shadow-sm)] md:grid-cols-[1.12fr_0.88fr]"
           >
             <RouterLink :to="`/hasil/${project.slug}`" class="block aspect-[16/10] overflow-hidden bg-bg-tertiary sm:aspect-[16/9] md:aspect-auto md:h-full" :aria-label="`Baca studi kasus ${project.title}`">
               <img :src="project.image" :alt="`Tampilan website ${project.title}`" :width="project.width" :height="project.height" loading="lazy" decoding="async" class="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.025]" />
@@ -109,7 +109,7 @@ function scrollToProject(index) {
         </div>
       </div>
 
-      <div class="mt-5 flex flex-col gap-4 rounded-2xl border border-border-default bg-bg-primary p-5 sm:flex-row sm:items-center sm:justify-between">
+      <div class="liquid-panel mt-5 flex flex-col gap-4 rounded-2xl border border-border-default bg-bg-primary p-5 sm:flex-row sm:items-center sm:justify-between">
         <p class="text-sm leading-relaxed text-text-secondary">Ada juga sistem internal dan eksperimen yang tidak semuanya dapat ditampilkan secara publik.</p>
         <RouterLink to="/portfolio" data-track="home_portfolio" class="group inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-full bg-text-primary px-5 text-sm font-bold text-bg-primary">Lihat semua karya <ArrowUpRight class="h-4 w-4" /></RouterLink>
       </div>

@@ -77,11 +77,11 @@ onBeforeUnmount(() => {
   <Teleport to="body">
     <Transition name="cookie-banner">
       <section v-if="isVisible" data-blocks-marketing-overlay class="pointer-events-none fixed inset-x-0 bottom-0 z-[100] p-3 sm:p-5" aria-labelledby="cookie-consent-title">
-        <div class="pointer-events-auto relative mx-auto max-w-5xl overflow-hidden rounded-[1.5rem] border border-border-default bg-bg-elevated/95 shadow-[var(--shadow-lg)] backdrop-blur-xl">
+        <div class="liquid-panel pointer-events-auto relative mx-auto max-w-5xl overflow-hidden rounded-[1.5rem] border border-border-default bg-bg-elevated/95 shadow-[var(--shadow-lg)] backdrop-blur-xl">
           <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/70 to-transparent" aria-hidden="true" />
 
           <div class="grid gap-5 p-5 sm:p-6 md:grid-cols-[auto_minmax(0,1fr)_auto] md:items-center md:gap-6">
-            <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-accent-subtle text-accent" aria-hidden="true">
+            <div class="liquid-icon flex h-11 w-11 items-center justify-center rounded-2xl text-accent" aria-hidden="true">
               <Cookie class="h-5 w-5" stroke-width="1.7" />
             </div>
 
@@ -99,7 +99,7 @@ onBeforeUnmount(() => {
             </div>
 
             <div class="flex flex-col-reverse gap-2 sm:flex-row md:flex-col-reverse lg:flex-row" :class="savedConsent ? 'md:mr-8' : ''">
-              <button type="button" class="inline-flex min-h-11 items-center justify-center rounded-full border border-border-default px-5 text-xs font-bold text-text-primary transition-colors hover:border-text-tertiary hover:bg-bg-secondary" @click="chooseAnalytics(false)">
+              <button type="button" class="liquid-button inline-flex min-h-11 items-center justify-center rounded-full px-5 text-xs font-bold text-text-primary transition-colors hover:border-text-tertiary" @click="chooseAnalytics(false)">
                 Tolak analytics
               </button>
               <button ref="acceptButtonRef" type="button" class="inline-flex min-h-11 items-center justify-center rounded-full bg-text-primary px-5 text-xs font-bold text-bg-primary transition-transform hover:-translate-y-0.5" @click="chooseAnalytics(true)">

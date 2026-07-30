@@ -102,11 +102,23 @@ export function useSeo() {
     const imageType = seo.imageType ?? 'image/png';
     const canonicalUrl = new URL(seo.canonicalPath ?? route.path, `${siteUrl}/`).href;
     const schema = routeSchema(route, canonicalUrl, title, description);
+    const links = [{ rel: 'canonical', href: canonicalUrl, key: 'canonical' }];
+
+    if (route.name === 'home') {
+      links.push({
+        rel: 'preload',
+        href: '/gandiva-hero-editorial-v2.webp',
+        as: 'image',
+        type: 'image/webp',
+        fetchpriority: 'high',
+        key: 'hero-preload'
+      });
+    }
 
     return {
       htmlAttrs: { lang: 'id' },
       title,
-      link: [{ rel: 'canonical', href: canonicalUrl, key: 'canonical' }],
+      link: links,
       meta: [
         { name: 'description', content: description, key: 'description' },
         { name: 'robots', content: seo.robots ?? defaultRobots, key: 'robots' },

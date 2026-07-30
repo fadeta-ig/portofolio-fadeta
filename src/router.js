@@ -11,8 +11,8 @@ const ThankYouView = () => import('./views/ThankYouView.vue');
 
 export const siteUrl = 'https://www.gandivalabs.my.id';
 export const defaultImage = `${siteUrl}/og.png`;
-export const defaultImageAlt = 'Gandiva Labs — Website yang masuk akal untuk bisnis.';
-export const defaultDescription = 'Gandiva Labs membantu bisnis menyusun dan membangun website yang mudah dipahami, dipercaya, dan dikembangkan.';
+export const defaultImageAlt = 'Gandiva Labs — partner pembuatan website bisnis.';
+export const defaultDescription = 'Gandiva Labs adalah partner pembuatan website bisnis yang membantu memperjelas nilai usaha, membangun kepercayaan, dan mendorong calon pelanggan bertindak.';
 export const defaultRobots = 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
 
 export const routes = [
@@ -21,7 +21,7 @@ export const routes = [
     name: 'home',
     component: HomeView,
     meta: {
-      title: 'Website yang Masuk Akal untuk Bisnis | Gandiva Labs',
+      title: 'Partner Pembuatan Website Bisnis | Gandiva Labs',
       description: defaultDescription,
       canonicalPath: '/'
     }

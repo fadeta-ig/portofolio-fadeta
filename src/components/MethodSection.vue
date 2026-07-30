@@ -26,9 +26,9 @@ useGsapScrollReveal(sectionRef, { y: 32, stagger: 0.08, duration: 0.7, once: tru
       </div>
 
       <div class="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <article v-for="item in principles" :key="item.number" class="rounded-[1.5rem] border border-border-default bg-bg-card p-6">
+        <article v-for="item in principles" :key="item.number" class="card-surface p-6">
           <div class="flex items-center justify-between">
-            <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-accent-subtle text-accent"><component :is="item.icon" class="h-5 w-5" stroke-width="1.7" /></span>
+            <span class="liquid-icon flex h-11 w-11 items-center justify-center rounded-xl text-accent"><component :is="item.icon" class="h-5 w-5" stroke-width="1.7" /></span>
             <span class="text-xs font-bold tracking-[0.16em] text-text-tertiary">{{ item.number }}</span>
           </div>
           <h3 class="mt-8 text-lg font-bold text-text-primary">{{ item.title }}</h3>

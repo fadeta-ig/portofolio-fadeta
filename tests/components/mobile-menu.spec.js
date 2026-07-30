@@ -59,6 +59,8 @@ describe('mobile navigation dialog', () => {
 
     const dialog = document.getElementById('mobile-menu');
     expect(dialog).not.toBeNull();
+    expect(dialog.querySelectorAll('.mobile-menu-link')).toHaveLength(4);
+    expect(dialog.querySelector('.mobile-menu-footer')).not.toBeNull();
     expect(document.getElementById('app').inert).toBe(true);
     expect(document.body.style.overflow).toBe('hidden');
     expect(document.activeElement?.getAttribute('aria-label')).toBe('Tutup menu');

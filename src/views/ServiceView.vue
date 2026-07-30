@@ -13,7 +13,7 @@ const whatsappLink = computed(() => createWhatsAppLink(`Halo Gandiva Labs, saya 
 
 <template>
   <main v-if="service" id="main-content" tabindex="-1" class="flex-grow bg-bg-primary pt-28 md:pt-36">
-    <section class="relative overflow-hidden pb-20 md:pb-28">
+    <section class="section-glow relative overflow-hidden pb-20 md:pb-28">
       <div class="dot-grid absolute inset-0 opacity-25 [mask-image:linear-gradient(to_bottom,black,transparent_72%)]" aria-hidden="true" />
       <div class="absolute -right-36 top-0 h-[32rem] w-[32rem] rounded-full bg-accent opacity-[0.09] blur-[145px]" aria-hidden="true" />
       <div class="section-shell relative z-10">
@@ -34,7 +34,7 @@ const whatsappLink = computed(() => createWhatsAppLink(`Halo Gandiva Labs, saya 
               <RouterLink to="/konsultasi" :data-track="`service_${service.slug}_brief`" class="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-text-primary px-6 text-sm font-bold text-bg-primary">
                 Ceritakan masalahnya <ArrowRight class="h-4 w-4" />
               </RouterLink>
-              <a :href="whatsappLink" target="_blank" rel="noopener noreferrer" :data-track="`service_${service.slug}_whatsapp`" class="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-border-default px-6 text-sm font-bold text-text-primary">
+              <a :href="whatsappLink" target="_blank" rel="noopener noreferrer" :data-track="`service_${service.slug}_whatsapp`" class="liquid-button inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-6 text-sm font-bold text-text-primary">
                 <MessageCircle class="h-4 w-4" /> WhatsApp
               </a>
             </div>
@@ -50,7 +50,7 @@ const whatsappLink = computed(() => createWhatsAppLink(`Halo Gandiva Labs, saya 
           <h2 class="section-heading text-balance">Tandanya biasanya terlihat dari proses <span class="font-display italic text-accent">sehari-hari.</span></h2>
         </div>
         <div class="grid gap-3 sm:grid-cols-2">
-          <div v-for="item in service.fits" :key="item" class="flex items-start gap-3 rounded-2xl border border-border-default bg-bg-card p-5">
+          <div v-for="item in service.fits" :key="item" class="liquid-panel flex items-start gap-3 rounded-2xl border border-border-default bg-bg-card p-5">
             <span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent-subtle text-accent"><Check class="h-3.5 w-3.5" /></span>
             <p class="text-sm leading-relaxed text-text-secondary">{{ item }}</p>
           </div>
@@ -72,7 +72,7 @@ const whatsappLink = computed(() => createWhatsAppLink(`Halo Gandiva Labs, saya 
           </article>
         </div>
 
-        <div class="mt-16 grid gap-8 rounded-[1.75rem] border border-border-default bg-bg-card p-6 md:grid-cols-2 md:p-10 lg:p-12">
+        <div class="liquid-panel mt-16 grid gap-8 rounded-[1.75rem] border border-border-default bg-bg-card p-6 md:grid-cols-2 md:p-10 lg:p-12">
           <div>
             <p class="text-[10px] font-bold uppercase tracking-[0.16em] text-accent">Ruang lingkup umum</p>
             <h2 class="mt-3 text-2xl font-bold tracking-[-0.035em] text-text-primary md:text-3xl">Apa yang dapat masuk dalam pengerjaan</h2>
@@ -83,7 +83,7 @@ const whatsappLink = computed(() => createWhatsAppLink(`Halo Gandiva Labs, saya 
           </ul>
         </div>
 
-        <div class="mt-6 rounded-[1.75rem] bg-[#171511] p-7 text-[#f5f0e7] md:flex md:items-center md:justify-between md:gap-10 md:p-10">
+        <div class="liquid-dark mt-6 rounded-[1.75rem] bg-[#171511] p-7 text-[#f5f0e7] md:flex md:items-center md:justify-between md:gap-10 md:p-10">
           <div class="max-w-3xl">
             <p class="text-[10px] font-bold uppercase tracking-[0.16em] text-[#ee8859]">Supaya mudah berkembang</p>
             <p class="mt-3 text-lg leading-relaxed text-[#bcb4a9] md:text-xl">{{ service.scale }}</p>

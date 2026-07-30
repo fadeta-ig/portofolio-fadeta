@@ -12,6 +12,8 @@ const sourceIndexFile = resolve(root, 'index.html');
 const vercelConfigFile = resolve(root, 'vercel.json');
 const bookingOfferConfigFile = resolve(root, 'src/lib/bookingOffer.js');
 const bookingOfferComponentFile = resolve(root, 'src/components/BookingOffer.vue');
+const heroComponentFile = resolve(root, 'src/components/HeroSection.vue');
+const seoComposableFile = resolve(root, 'src/composables/useSeo.js');
 const analyticsFile = resolve(root, 'src/lib/analytics.js');
 const webVitalsFile = resolve(root, 'src/lib/webVitals.js');
 const privacySourceFile = resolve(root, 'src/views/PrivacyView.vue');
@@ -304,11 +306,24 @@ check(existsSync(resolve(root, 'scripts/assets/social-font/OFL.txt')), 'Lisensi 
 const sourceIndex = existsSync(sourceIndexFile) ? readFileSync(sourceIndexFile, 'utf8') : '';
 check(!sourceIndex.includes('fonts.googleapis.com'), 'index.html masih bergantung pada Google Fonts stylesheet.');
 check(!sourceIndex.includes('fonts.gstatic.com'), 'index.html masih bergantung pada Google Fonts CDN.');
-check(sourceIndex.includes('api.fontshare.com'), 'Fontshare untuk Satoshi tidak ditemukan.');
+check(!sourceIndex.includes('api.fontshare.com'), 'index.html masih memuat stylesheet font eksternal yang menghambat render.');
+check(!sourceIndex.includes('cdn.fontshare.com'), 'index.html masih membuka koneksi ke CDN font eksternal.');
 check(
   sourceIndex.includes('/fonts/instrument-serif/instrument-serif-italic-latin-v5.woff2'),
   'Instrument Serif italic belum dipreload.'
 );
+if (existsSync(seoComposableFile)) {
+  const seoSource = readFileSync(seoComposableFile, 'utf8');
+  check(seoSource.includes("route.name === 'home'"), 'Preload hero belum dibatasi hanya untuk halaman beranda.');
+  check(seoSource.includes("href: '/gandiva-hero-editorial-v2.webp'"), 'Gambar hero utama belum dipreload.');
+  check(seoSource.includes("fetchpriority: 'high'"), 'Preload hero belum memakai prioritas tinggi.');
+}
+if (existsSync(heroComponentFile)) {
+  const heroSource = readFileSync(heroComponentFile, 'utf8');
+  check(heroSource.includes('fetchpriority="high"'), 'Gambar hero belum memakai fetchpriority high.');
+  check(heroSource.includes('loading="eager"'), 'Gambar hero belum dimuat eager.');
+  check(!heroSource.includes(".from('.hero-frame'"), 'Hero frame masih dianimasikan dari kondisi tersembunyi dan berisiko menunda LCP.');
+}
 
 const themeScriptMatch = sourceIndex.match(/<script>([\s\S]*?)<\/script>/);
 check(Boolean(themeScriptMatch), 'Theme boot script sebelum Vue tidak ditemukan.');
@@ -320,11 +335,6 @@ check(
   sourceIndex.indexOf('<script>') < sourceIndex.indexOf('<script type="module"'),
   'Theme boot script harus berjalan sebelum Vue.'
 );
-check(
-  sourceIndex.indexOf('<script>') < sourceIndex.indexOf('api.fontshare.com/v2/css'),
-  'Theme boot script harus berjalan sebelum stylesheet eksternal.'
-);
-
 const packageJson = existsSync(packageFile)
   ? JSON.parse(readFileSync(packageFile, 'utf8'))
   : {};

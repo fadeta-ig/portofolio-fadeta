@@ -50,7 +50,7 @@ onUnmounted(() => window.removeEventListener('scroll', updateScrollProgress));
   <main id="main-content" tabindex="-1" class="flex-grow w-full">
     <div class="fixed left-0 top-0 z-[60] h-0.5 bg-accent transition-[width] duration-100" :style="{ width: `${scrollProgress}%` }" aria-hidden="true" />
 
-    <section class="relative overflow-hidden pb-16 pt-32 md:pb-24 md:pt-40">
+    <section class="section-glow relative overflow-hidden pb-16 pt-32 md:pb-24 md:pt-40">
       <div class="dot-grid absolute inset-0 opacity-30 [mask-image:linear-gradient(to_bottom,black,transparent_78%)]" aria-hidden="true" />
       <div class="absolute -right-24 top-8 h-80 w-80 rounded-full bg-accent opacity-[0.1] blur-[120px]" aria-hidden="true" />
       <div class="noise-overlay" aria-hidden="true" />
@@ -79,7 +79,7 @@ onUnmounted(() => window.removeEventListener('scroll', updateScrollProgress));
           </div>
         </div>
 
-        <dl class="mt-14 grid overflow-hidden rounded-2xl border border-border-default bg-bg-card/70 shadow-[var(--shadow-sm)] backdrop-blur md:grid-cols-3">
+        <dl class="liquid-panel mt-14 grid overflow-hidden rounded-2xl border border-border-default bg-bg-card/70 shadow-[var(--shadow-sm)] backdrop-blur md:grid-cols-3">
           <div class="border-b border-border-default p-5 md:border-b-0 md:border-r md:p-7">
             <dt class="text-[10px] font-bold uppercase tracking-[0.16em] text-text-tertiary">Website bisnis</dt>
             <dd class="mt-2 text-3xl font-bold tracking-tight text-text-primary">{{ featuredProjects.length }}</dd>
@@ -96,7 +96,7 @@ onUnmounted(() => window.removeEventListener('scroll', updateScrollProgress));
       </div>
     </section>
 
-    <div class="sticky top-[5.75rem] z-30 border-y border-border-default bg-bg-primary/90 py-3 backdrop-blur-xl">
+    <div class="sticky top-[5.75rem] z-30 border-y border-white/30 bg-bg-primary/72 py-3 shadow-[0_12px_36px_rgba(0,0,0,0.06)] backdrop-blur-2xl">
       <div class="section-shell flex items-center justify-between gap-5 overflow-x-auto">
         <div class="flex min-w-max items-center gap-2" role="group" aria-label="Filter portofolio">
           <button
@@ -104,7 +104,7 @@ onUnmounted(() => window.removeEventListener('scroll', updateScrollProgress));
             :key="filter"
             type="button"
             class="min-h-10 rounded-full border px-4 text-xs font-bold transition-colors"
-            :class="activeFilter === filter ? 'border-text-primary bg-text-primary text-bg-primary' : 'border-border-default bg-bg-card text-text-secondary hover:text-text-primary'"
+            :class="activeFilter === filter ? 'border-text-primary bg-text-primary text-bg-primary shadow-[var(--shadow-sm)]' : 'liquid-button text-text-secondary hover:text-text-primary'"
             :aria-pressed="activeFilter === filter"
             @click="activeFilter = filter"
           >
@@ -133,7 +133,7 @@ onUnmounted(() => window.removeEventListener('scroll', updateScrollProgress));
               <article
                 v-for="(project, index) in featuredProjects"
                 :key="project.id"
-                class="group grid overflow-hidden rounded-[1.75rem] border border-border-default bg-bg-card shadow-[var(--shadow-sm)] lg:grid-cols-[1.08fr_0.92fr]"
+                class="liquid-panel group grid overflow-hidden rounded-[1.75rem] border border-border-default bg-bg-card shadow-[var(--shadow-sm)] lg:grid-cols-[1.08fr_0.92fr]"
               >
                 <RouterLink :to="`/hasil/${project.slug}`" class="relative min-h-64 overflow-hidden bg-bg-secondary lg:min-h-[30rem]" :class="index % 2 ? 'lg:order-2' : ''" :aria-label="`Baca studi kasus ${project.title}`">
                   <img
@@ -184,10 +184,10 @@ onUnmounted(() => window.removeEventListener('scroll', updateScrollProgress));
             </div>
 
             <div class="grid gap-5 lg:grid-cols-3">
-              <article v-for="project in privateProjects" :key="project.id" class="private-card group flex min-h-[31rem] flex-col overflow-hidden rounded-[1.75rem] border border-border-default bg-bg-card shadow-[var(--shadow-sm)]">
+              <article v-for="project in privateProjects" :key="project.id" class="private-card liquid-panel group flex min-h-[31rem] flex-col overflow-hidden rounded-[1.75rem] border border-border-default bg-bg-card shadow-[var(--shadow-sm)]">
                 <div class="relative h-48 overflow-hidden border-b border-border-default bg-bg-secondary p-6">
                   <div class="dot-grid absolute inset-0 opacity-35" aria-hidden="true" />
-                  <div class="absolute inset-6 rounded-2xl border border-border-default bg-bg-card/80 p-4 shadow-[var(--shadow-sm)] backdrop-blur">
+                  <div class="liquid-panel absolute inset-6 rounded-2xl border border-border-default bg-bg-card/80 p-4 shadow-[var(--shadow-sm)] backdrop-blur">
                     <div class="mb-5 flex items-center justify-between">
                       <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-accent-subtle text-accent">
                         <component :is="iconMap[project.icon]" class="h-5 w-5" />
@@ -251,7 +251,7 @@ onUnmounted(() => window.removeEventListener('scroll', updateScrollProgress));
             </div>
           </section>
 
-          <div class="rounded-[1.75rem] border border-border-default bg-bg-secondary/60 p-7 md:flex md:items-center md:justify-between md:gap-8 md:p-10">
+          <div class="liquid-panel rounded-[1.75rem] border border-border-default bg-bg-secondary/60 p-7 md:flex md:items-center md:justify-between md:gap-8 md:p-10">
             <div>
               <p class="text-[10px] font-bold uppercase tracking-[0.16em] text-accent">Punya kebutuhan serupa?</p>
               <h2 class="mt-3 max-w-2xl text-2xl font-bold tracking-[-0.035em] text-text-primary md:text-4xl">Ceritakan konteksnya. Kita cari bentuk website atau sistem yang paling masuk akal.</h2>

@@ -35,6 +35,6 @@ export function applyTheme(theme, documentRef = globalThis.document) {
 
   const themeColor = documentRef.querySelector('meta[name="theme-color"]');
   if (themeColor) {
-    themeColor.setAttribute('content', normalizedTheme === darkTheme ? '#12110f' : '#f5f0e7');
+    themeColor.setAttribute('content', normalizedTheme === darkTheme ? '#12110f' : '#eef1ef');
   }
 }

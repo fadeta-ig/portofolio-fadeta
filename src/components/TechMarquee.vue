@@ -3,7 +3,7 @@ const audiences = ['Brand yang mulai tumbuh', 'UMKM', 'Manufaktur & B2B', 'Bisni
 </script>
 
 <template>
-  <section class="border-y border-border-default bg-bg-secondary/70 py-6" aria-label="Jenis bisnis yang dilayani">
+  <section class="border-y border-white/40 bg-bg-secondary/60 py-6 backdrop-blur-xl" aria-label="Jenis bisnis yang dilayani">
     <div class="section-shell flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
       <p class="shrink-0 text-[11px] font-bold uppercase tracking-[0.18em] text-text-tertiary">Bekerja baik untuk</p>
       <div class="flex flex-wrap gap-x-6 gap-y-3 md:justify-end">

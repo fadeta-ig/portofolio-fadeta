@@ -23,7 +23,7 @@ const process = [
 
 <template>
   <main id="main-content" tabindex="-1" class="flex-grow bg-bg-primary pt-28 md:pt-36">
-    <section class="relative overflow-hidden pb-24 md:pb-36">
+    <section class="section-glow relative overflow-hidden pb-24 md:pb-36">
       <div class="absolute -right-40 top-12 h-[34rem] w-[34rem] rounded-full bg-accent opacity-[0.09] blur-[150px]" aria-hidden="true" />
       <div class="dot-grid absolute inset-0 opacity-25 [mask-image:linear-gradient(to_bottom,black,transparent_68%)]" aria-hidden="true" />
       <div class="noise-overlay" aria-hidden="true" />
@@ -40,11 +40,11 @@ const process = [
         </div>
 
         <div class="mt-16 grid items-start gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:gap-14">
-          <aside class="rounded-[1.5rem] border border-border-default bg-bg-secondary/70 p-6 md:p-8 lg:sticky lg:top-28">
+          <aside class="liquid-panel rounded-[1.5rem] border border-border-default bg-bg-secondary/70 p-6 md:p-8 lg:sticky lg:top-28">
             <p class="text-[10px] font-bold uppercase tracking-[0.16em] text-accent">Sesudah form dikirim</p>
             <div class="mt-6 grid gap-6">
               <div v-for="(item, index) in process" :key="item.title" class="grid grid-cols-[auto_1fr] gap-4">
-                <span class="flex h-10 w-10 items-center justify-center rounded-xl border border-border-default bg-bg-card text-accent">
+                <span class="liquid-icon flex h-10 w-10 items-center justify-center rounded-xl text-accent">
                   <component :is="item.icon" class="h-4 w-4" />
                 </span>
                 <div>

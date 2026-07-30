@@ -49,7 +49,7 @@ function handleServiceKeydown(event, index) {
 </script>
 
 <template>
-  <section id="services" class="py-20 md:py-24">
+  <section id="services" class="section-glow overflow-hidden py-20 md:py-24">
     <div ref="sectionRef" class="section-shell grid gap-8 lg:grid-cols-[minmax(0,0.72fr)_minmax(0,1.28fr)] lg:grid-rows-[1fr_auto] lg:gap-x-10 lg:gap-y-6 xl:grid-cols-[minmax(0,0.68fr)_minmax(0,1.32fr)] xl:gap-x-14">
       <div class="lg:pr-2">
         <p class="section-kicker mb-5">Bentuk solusi</p>
@@ -59,7 +59,7 @@ function handleServiceKeydown(event, index) {
         </p>
       </div>
 
-      <div class="service-accordion self-start overflow-hidden rounded-[1.6rem] border border-border-default bg-bg-card shadow-[var(--shadow-sm)] lg:col-start-2 lg:row-span-2 lg:row-start-1">
+      <div class="service-accordion liquid-panel self-start overflow-hidden rounded-[1.6rem] border border-border-default bg-bg-card shadow-[var(--shadow-sm)] lg:col-start-2 lg:row-span-2 lg:row-start-1">
         <article
           v-for="(service, index) in services"
           :key="service.slug"
@@ -88,7 +88,7 @@ function handleServiceKeydown(event, index) {
             </span>
             <span class="truncate text-base font-bold tracking-[-0.025em] text-text-primary md:text-lg">{{ service.name }}</span>
             <span class="hidden line-clamp-2 text-xs leading-relaxed transition-colors md:block lg:hidden xl:block" :class="activeServiceIndex === index ? 'text-text-secondary' : 'text-text-tertiary'">{{ service.problem }}</span>
-            <span class="flex h-9 w-9 items-center justify-center rounded-full border transition-colors duration-300" :class="activeServiceIndex === index ? 'border-text-primary bg-text-primary text-bg-primary' : 'border-border-default text-text-tertiary group-hover:border-text-tertiary group-hover:text-text-primary'">
+            <span class="liquid-button flex h-9 w-9 items-center justify-center rounded-full border transition-colors duration-300" :class="activeServiceIndex === index ? 'border-text-primary bg-text-primary text-bg-primary' : 'border-border-default text-text-tertiary group-hover:border-text-tertiary group-hover:text-text-primary'">
               <ChevronDown class="h-4 w-4 transition-transform duration-500" :class="activeServiceIndex === index ? 'rotate-180' : ''" />
             </span>
           </button>
@@ -132,7 +132,7 @@ function handleServiceKeydown(event, index) {
         </article>
       </div>
 
-      <div class="rounded-[1.35rem] border border-border-default bg-bg-secondary px-5 py-5 lg:col-start-1 lg:row-start-2">
+      <div class="liquid-panel rounded-[1.35rem] border border-border-default bg-bg-secondary px-5 py-5 lg:col-start-1 lg:row-start-2">
         <p class="text-sm font-medium leading-relaxed text-text-secondary"><strong class="text-text-primary">Belum tahu bentuk yang tepat?</strong> Itu wajar. Cukup jelaskan hal yang ingin diperbaiki.</p>
         <RouterLink to="/konsultasi" data-track="services_consultation" class="mt-4 inline-flex min-h-10 items-center justify-center rounded-full border border-text-primary px-5 text-xs font-bold text-text-primary transition-colors hover:bg-text-primary hover:text-bg-primary">Ceritakan masalah</RouterLink>
       </div>

@@ -364,12 +364,18 @@ async function submitForm() {
 .form-field select,
 .form-field textarea {
   width: 100%;
-  border: 1px solid var(--border-default);
-  border-radius: 0.9rem;
-  background: var(--bg-primary);
+  border: 1px solid var(--glass-border);
+  border-radius: 1rem;
+  background:
+    linear-gradient(145deg, var(--glass-surface-strong), var(--glass-surface));
   color: var(--text-primary);
   font: inherit;
   font-size: 0.9rem;
+  box-shadow:
+    inset 0 1px 0 var(--glass-highlight),
+    0 8px 22px rgba(32, 25, 18, 0.035);
+  -webkit-backdrop-filter: blur(16px) saturate(145%);
+  backdrop-filter: blur(16px) saturate(145%);
   transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.35s ease;
 }
 
@@ -397,7 +403,10 @@ async function submitForm() {
 .form-field textarea:focus {
   border-color: var(--accent);
   outline: none;
-  box-shadow: 0 0 0 3px var(--accent-subtle);
+  box-shadow:
+    0 0 0 3px var(--accent-subtle),
+    0 12px 28px color-mix(in srgb, var(--accent) 10%, transparent),
+    inset 0 1px 0 var(--glass-highlight);
 }
 
 .form-field [aria-invalid="true"] {
@@ -450,10 +459,11 @@ async function submitForm() {
   margin-top: 0.05rem;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--border-default);
+  border: 1px solid var(--glass-border);
   border-radius: 0.38rem;
-  background: var(--bg-primary);
+  background: linear-gradient(145deg, var(--glass-surface-strong), var(--glass-surface));
   color: transparent;
+  box-shadow: inset 0 1px 0 var(--glass-highlight);
   transition: all 0.2s ease;
 }
 
@@ -492,9 +502,11 @@ async function submitForm() {
 .security-check {
   margin-top: 1rem;
   padding: 0.8rem;
-  border: 1px solid var(--border-default);
-  border-radius: 0.9rem;
-  background: color-mix(in srgb, var(--bg-primary) 74%, transparent);
+  border: 1px solid var(--glass-border);
+  border-radius: 1rem;
+  background:
+    linear-gradient(145deg, var(--glass-surface-strong), var(--glass-surface));
+  box-shadow: inset 0 1px 0 var(--glass-highlight);
   transition: border-color 0.2s ease, background-color 0.35s ease;
 }
 
@@ -511,10 +523,14 @@ async function submitForm() {
   align-items: center;
   justify-content: center;
   gap: 0.75rem;
-  border: 0;
+  border: 1px solid color-mix(in srgb, var(--text-primary) 74%, transparent);
   border-radius: 999px;
-  background: var(--text-primary);
+  background:
+    linear-gradient(145deg, var(--text-primary), color-mix(in srgb, var(--text-primary) 88%, var(--accent)));
   color: var(--bg-primary);
+  box-shadow:
+    0 14px 30px color-mix(in srgb, var(--text-primary) 18%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--bg-primary) 35%, transparent);
   font-size: 0.875rem;
   font-weight: 700;
   transition: transform 0.3s ease, opacity 0.2s ease;
