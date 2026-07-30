@@ -16,6 +16,7 @@ const brandLinkRef = ref(null);
 const menuDialogRef = ref(null);
 const closeMenuButtonRef = ref(null);
 const isMobileMenuOpen = ref(false);
+const isHeroNav = ref(route.path === '/');
 let ctx;
 let previouslyFocusedElement = null;
 let previousBodyOverflow = '';
@@ -108,6 +109,19 @@ function handleViewportChange() {
   if (window.innerWidth >= 1024 && isMobileMenuOpen.value) {
     closeMobileMenu();
   }
+  updateHeroNavState();
+}
+
+function updateHeroNavState() {
+  if (route.path !== '/') {
+    isHeroNav.value = false;
+    return;
+  }
+
+  const hero = document.getElementById('hero');
+  isHeroNav.value = hero
+    ? hero.getBoundingClientRect().bottom > 104
+    : window.scrollY < 120;
 }
 
 watch(isMobileMenuOpen, async (isOpen) => {
@@ -139,8 +153,15 @@ watch(isMobileMenuOpen, async (isOpen) => {
   window.dispatchEvent(new Event(overlayStateEvent));
 });
 
+watch(() => route.path, async () => {
+  await nextTick();
+  updateHeroNavState();
+});
+
 onMounted(() => {
   window.addEventListener('resize', handleViewportChange, { passive: true });
+  window.addEventListener('scroll', updateHeroNavState, { passive: true });
+  updateHeroNavState();
 
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
@@ -156,6 +177,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   window.removeEventListener('resize', handleViewportChange);
+  window.removeEventListener('scroll', updateHeroNavState);
   document.getElementById('app')?.removeAttribute('inert');
   document.body.style.overflow = previousBodyOverflow;
   ctx?.revert();
@@ -163,11 +185,15 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <header ref="navRef" class="fixed inset-x-0 top-0 z-50 px-3 pt-3 md:px-5">
-    <nav class="glass-panel mx-auto flex h-16 max-w-7xl items-center justify-between rounded-2xl px-4 md:px-5" aria-label="Navigasi utama">
+  <header
+    ref="navRef"
+    class="site-header fixed inset-x-0 top-0 z-50 px-3 pt-3 md:px-5"
+    :class="{ 'hero-nav-active': isHeroNav }"
+  >
+    <nav class="nav-surface glass-panel mx-auto flex h-16 max-w-7xl items-center justify-between rounded-2xl px-4 md:px-5" aria-label="Navigasi utama">
       <a ref="brandLinkRef" href="/" class="flex items-center gap-2.5 rounded-xl" aria-label="Gandiva Labs — kembali ke beranda" @click.prevent="goHome">
-        <LogoMark :size="35" variant="auto" />
-        <span class="text-[15px] font-bold tracking-[-0.025em] text-text-primary">Gandiva Labs</span>
+        <LogoMark :size="35" :variant="isHeroNav ? 'light' : 'auto'" />
+        <span class="nav-brand text-[15px] font-bold tracking-[-0.025em] text-text-primary">Gandiva Labs</span>
       </a>
 
       <div class="hidden items-center gap-7 lg:flex">
@@ -175,7 +201,7 @@ onUnmounted(() => {
           v-for="item in navItems"
           :key="item.label"
           :href="hrefFor(item)"
-          class="py-3 text-sm font-medium text-text-secondary transition-colors hover:text-text-primary"
+          class="nav-link py-3 text-sm font-medium text-text-secondary transition-colors hover:text-text-primary"
           :class="route.path === item.path ? 'text-text-primary' : ''"
           @click.prevent="navigateTo(item)"
         >
@@ -186,7 +212,7 @@ onUnmounted(() => {
       <div class="flex items-center gap-2">
         <button
           type="button"
-          class="flex h-11 w-11 items-center justify-center rounded-full text-text-secondary transition-colors hover:bg-bg-secondary hover:text-text-primary"
+          class="nav-icon-button flex h-11 w-11 items-center justify-center rounded-full text-text-secondary transition-colors hover:bg-bg-secondary hover:text-text-primary"
           aria-label="Ganti tema warna"
           :aria-pressed="isDark"
           @click="toggleTheme"
@@ -198,7 +224,7 @@ onUnmounted(() => {
         <RouterLink
           to="/konsultasi"
           data-track="nav_consultation"
-          class="hidden min-h-11 items-center gap-2 rounded-full bg-text-primary px-5 text-sm font-bold text-bg-primary transition-transform hover:-translate-y-0.5 sm:inline-flex"
+          class="nav-cta hidden min-h-11 items-center gap-2 rounded-full bg-text-primary px-5 text-sm font-bold text-bg-primary transition-transform hover:-translate-y-0.5 sm:inline-flex"
         >
           <MessageCircle class="h-4 w-4" />
           Ceritakan masalah
@@ -206,7 +232,7 @@ onUnmounted(() => {
 
         <button
           type="button"
-          class="flex h-11 w-11 items-center justify-center rounded-full text-text-primary transition-colors hover:bg-bg-secondary lg:hidden"
+          class="nav-icon-button flex h-11 w-11 items-center justify-center rounded-full text-text-primary transition-colors hover:bg-bg-secondary lg:hidden"
           :aria-label="isMobileMenuOpen ? 'Tutup menu' : 'Buka menu'"
           :aria-expanded="isMobileMenuOpen"
           aria-controls="mobile-menu"
@@ -280,6 +306,107 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
+.nav-surface,
+.nav-brand,
+.nav-link,
+.nav-icon-button,
+.nav-cta {
+  transition:
+    color 0.3s ease,
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
+}
+
+.nav-surface {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--text-primary) 13%, transparent);
+  background:
+    radial-gradient(circle at 14% -70%, color-mix(in srgb, var(--bg-elevated) 56%, transparent), transparent 48%),
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--bg-card) 74%, transparent),
+      color-mix(in srgb, var(--bg-primary) 48%, transparent)
+    );
+  box-shadow:
+    0 18px 44px rgba(0, 0, 0, 0.14),
+    inset 0 1px 0 color-mix(in srgb, var(--text-primary) 17%, transparent),
+    inset 0 -1px 0 color-mix(in srgb, var(--text-primary) 4%, transparent);
+  -webkit-backdrop-filter: blur(26px) saturate(175%);
+  backdrop-filter: blur(26px) saturate(175%);
+}
+
+.nav-surface::before {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  background:
+    linear-gradient(112deg, rgba(255, 255, 255, 0.15), transparent 25%, transparent 74%, rgba(238, 136, 89, 0.055)),
+    radial-gradient(circle at 20% -90%, rgba(255, 255, 255, 0.36), transparent 43%);
+  content: '';
+  opacity: 0.72;
+  pointer-events: none;
+}
+
+.nav-surface > * {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-nav-active .nav-surface {
+  border-color: rgba(255, 255, 255, 0.17);
+  background:
+    radial-gradient(circle at 16% -85%, rgba(255, 255, 255, 0.22), transparent 46%),
+    radial-gradient(circle at 92% 130%, rgba(238, 136, 89, 0.09), transparent 34%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.105), rgba(255, 255, 255, 0.04));
+  box-shadow:
+    0 20px 52px rgba(0, 0, 0, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.045),
+    inset 1px 0 0 rgba(255, 255, 255, 0.06);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  backdrop-filter: blur(28px) saturate(180%);
+}
+
+.hero-nav-active .nav-brand {
+  color: #f5f0e7;
+}
+
+.hero-nav-active .nav-link {
+  color: rgba(245, 240, 231, 0.68);
+}
+
+.hero-nav-active .nav-link:hover {
+  color: #f5f0e7;
+}
+
+.hero-nav-active .nav-icon-button {
+  color: rgba(245, 240, 231, 0.76);
+}
+
+.hero-nav-active .nav-icon-button:hover {
+  background: rgba(245, 240, 231, 0.09);
+  color: #f5f0e7;
+}
+
+.hero-nav-active .nav-cta {
+  border: 1px solid rgba(255, 255, 255, 0.62);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(236, 229, 218, 0.9));
+  color: #171511;
+  box-shadow:
+    0 10px 28px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -1px 0 rgba(23, 21, 17, 0.08);
+}
+
+.hero-nav-active .nav-cta:hover {
+  background: #fffaf2;
+}
+
 .theme-icon-dark {
   display: none;
 }
