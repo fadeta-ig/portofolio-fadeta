@@ -1,6 +1,5 @@
 <script setup>
-import { computed, onMounted, onUnmounted, ref } from 'vue';
-import gsap from 'gsap';
+import { computed, ref } from 'vue';
 import {
   ArrowRight,
   ArrowUpRight,
@@ -15,8 +14,6 @@ import {
 import { siInstagram, siThreads, siWhatsapp } from 'simple-icons';
 import { contact, createWhatsAppLink } from '../data/contact';
 
-const heroRef = ref(null);
-const visualRef = ref(null);
 const whatsappLink = createWhatsAppLink(
   'Halo Gandiva Labs, saya ingin membahas masalah dan kebutuhan website bisnis saya.'
 );
@@ -86,81 +83,24 @@ function showNextBenefit() {
   activeBenefitIndex.value = (activeBenefitIndex.value + 1) % benefits.length;
 }
 
-let ctx;
-let removePointerListeners;
-
-onMounted(() => {
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  if (!reduceMotion) {
-    ctx = gsap.context(() => {
-      gsap.from('.hero-floating-element', {
-        y: 14,
-        duration: 0.62,
-        stagger: 0.08,
-        delay: 0.2,
-        ease: 'power3.out'
-      });
-    }, heroRef.value);
-  }
-
-  const finePointer = window.matchMedia('(pointer: fine)').matches;
-  if (reduceMotion || !finePointer || !heroRef.value || !visualRef.value) return;
-
-  const moveX = gsap.quickTo(visualRef.value, 'x', {
-    duration: 1.1,
-    ease: 'power3.out'
-  });
-  const moveY = gsap.quickTo(visualRef.value, 'y', {
-    duration: 1.1,
-    ease: 'power3.out'
-  });
-
-  const handlePointerMove = (event) => {
-    const bounds = heroRef.value.getBoundingClientRect();
-    const x = (event.clientX - bounds.left) / bounds.width - 0.5;
-    const y = (event.clientY - bounds.top) / bounds.height - 0.5;
-
-    moveX(x * -10);
-    moveY(y * -7);
-  };
-
-  const resetVisual = () => {
-    moveX(0);
-    moveY(0);
-  };
-
-  heroRef.value.addEventListener('pointermove', handlePointerMove);
-  heroRef.value.addEventListener('pointerleave', resetVisual);
-
-  removePointerListeners = () => {
-    heroRef.value?.removeEventListener('pointermove', handlePointerMove);
-    heroRef.value?.removeEventListener('pointerleave', resetVisual);
-  };
-});
-
-onUnmounted(() => {
-  removePointerListeners?.();
-  ctx?.revert();
-});
 </script>
 
 <template>
-  <section id="hero" ref="heroRef" class="hero-section">
+  <section id="hero" class="hero-section">
     <div class="hero-shell">
       <div class="hero-frame">
-        <img
-          ref="visualRef"
-          class="hero-visual"
-          :src="'/gandiva-hero-editorial-v2.webp'"
-          alt=""
-          width="1672"
-          height="941"
-          fetchpriority="high"
-          loading="eager"
-          decoding="async"
-          aria-hidden="true"
-        >
+        <picture class="hero-visual" aria-hidden="true">
+          <source media="(max-width: 767px)" :srcset="'/gandiva-hero-editorial-mobile-v1.webp'" width="640" height="960">
+          <img
+            :src="'/gandiva-hero-editorial-v2.webp'"
+            alt=""
+            width="1672"
+            height="941"
+            fetchpriority="high"
+            loading="eager"
+            decoding="sync"
+          >
+        </picture>
         <div class="hero-visual-overlay" aria-hidden="true" />
         <div class="hero-grain" aria-hidden="true" />
 
@@ -319,10 +259,14 @@ onUnmounted(() => {
   left: -0.75rem;
   width: calc(100% + 1.5rem);
   height: calc(100% + 1.5rem);
+  pointer-events: none;
+}
+
+.hero-visual img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   object-position: 62% center;
-  transform: scale(1.015);
-  will-change: transform;
 }
 
 .hero-visual-overlay {
@@ -744,7 +688,7 @@ onUnmounted(() => {
     font-size: clamp(3.25rem, 7vw, 4.8rem);
   }
 
-  .hero-visual {
+  .hero-visual img {
     object-position: 66% center;
   }
 
@@ -752,6 +696,10 @@ onUnmounted(() => {
     background:
       linear-gradient(90deg, rgba(7, 8, 9, 0.98) 0%, rgba(7, 8, 9, 0.9) 42%, rgba(7, 8, 9, 0.34) 75%, rgba(7, 8, 9, 0.12) 100%),
       linear-gradient(180deg, rgba(6, 7, 8, 0.44) 0%, transparent 30%, transparent 65%, rgba(6, 7, 8, 0.88) 100%);
+  }
+
+  .hero-grain {
+    display: none;
   }
 
   .hero-benefit-card {
@@ -783,6 +731,9 @@ onUnmounted(() => {
     left: -0.5rem;
     width: calc(100% + 1rem);
     height: calc(100% + 1rem);
+  }
+
+  .hero-visual img {
     object-position: 69% center;
   }
 

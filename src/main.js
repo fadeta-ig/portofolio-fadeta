@@ -1,6 +1,4 @@
 import { ViteSSG } from 'vite-ssg';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './assets/css/main.css';
 import App from './App.vue';
 import { prerenderRoutes, routes, scrollBehavior } from './router';
@@ -12,7 +10,6 @@ import {
 import { initializeWebVitals } from './lib/webVitals';
 
 if (!import.meta.env.SSR) {
-  gsap.registerPlugin(ScrollTrigger);
   initializeAnalytics();
   initializeWebVitals();
 

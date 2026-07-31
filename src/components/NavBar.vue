@@ -2,7 +2,6 @@
 import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
 import { ArrowUpRight, Menu, MessageCircle, Moon, Sun, X } from '@lucide/vue';
 import { useRoute, useRouter } from 'vue-router';
-import gsap from 'gsap';
 import LogoMark from './LogoMark.vue';
 import { useTheme } from '../composables/useTheme';
 import { overlayStateEvent } from '../lib/bookingOffer';
@@ -17,7 +16,6 @@ const menuDialogRef = ref(null);
 const closeMenuButtonRef = ref(null);
 const isMobileMenuOpen = ref(false);
 const isHeroNav = ref(route.path === '/');
-let ctx;
 let previouslyFocusedElement = null;
 let previousBodyOverflow = '';
 let restoreFocusOnClose = true;
@@ -163,16 +161,6 @@ onMounted(() => {
   window.addEventListener('scroll', updateHeroNavState, { passive: true });
   updateHeroNavState();
 
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-  ctx = gsap.context(() => {
-    gsap.from(navRef.value, {
-      y: -18,
-      opacity: 0,
-      duration: 0.7,
-      ease: 'power3.out'
-    });
-  }, navRef.value);
 });
 
 onUnmounted(() => {
@@ -180,7 +168,6 @@ onUnmounted(() => {
   window.removeEventListener('scroll', updateHeroNavState);
   document.getElementById('app')?.removeAttribute('inert');
   document.body.style.overflow = previousBodyOverflow;
-  ctx?.revert();
 });
 </script>
 

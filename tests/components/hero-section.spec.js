@@ -52,8 +52,9 @@ describe('Gandiva Labs hero', () => {
     expect(wrapper.text()).not.toContain('Website yang masuk akal');
     expect(wrapper.find('.hero-wordmark').exists()).toBe(false);
 
-    const heroImage = wrapper.get('.hero-visual');
-    expect(heroImage.element.tagName).toBe('IMG');
+    const heroImage = wrapper.get('.hero-visual img');
+    expect(wrapper.get('.hero-visual').element.tagName).toBe('PICTURE');
+    expect(wrapper.get('.hero-visual source').attributes('srcset')).toContain('gandiva-hero-editorial-mobile-v1.webp');
     expect(heroImage.attributes('fetchpriority')).toBe('high');
     expect(heroImage.attributes('loading')).toBe('eager');
     expect(heroImage.attributes('width')).toBe('1672');

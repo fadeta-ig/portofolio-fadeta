@@ -5,6 +5,8 @@ import { fileURLToPath } from 'node:url';
 
 const root = process.cwd();
 const outputDirectory = resolve(root, 'public/og');
+const defaultOutputFile = resolve(root, 'public/og.png');
+const heroImagePath = resolve(root, 'public/gandiva-hero-editorial-v2.webp');
 const regularFontPath = resolve(root, 'scripts/assets/social-font/Manrope-Regular.ttf');
 const boldFontPath = resolve(root, 'scripts/assets/social-font/Manrope-Bold.ttf');
 const selectedSlug = process.argv
@@ -250,6 +252,126 @@ async function createPreview(project) {
   return { size: file.size };
 }
 
+async function createDefaultPreview() {
+  const brand = await createTextLayer({
+    text: 'Gandiva Labs',
+    color: '#f7f3ec',
+    fontSize: 22,
+    fontFile: boldFontPath,
+    fontName: 'Manrope Bold',
+    width: 260
+  });
+  const eyebrow = await createTextLayer({
+    text: 'WEBSITE STUDIO',
+    color: '#ee8859',
+    fontSize: 14,
+    fontFile: boldFontPath,
+    fontName: 'Manrope Bold',
+    width: 320,
+    letterSpacing: 2.8
+  });
+  const titleLines = ['Partner website', 'untuk bisnis yang', 'siap bertumbuh.'];
+  const titleLayers = [];
+  for (const line of titleLines) {
+    titleLayers.push(await createTextLayer({
+      text: line,
+      color: line === 'siap bertumbuh.' ? '#ee8859' : '#f7f3ec',
+      fontSize: 56,
+      fontFile: boldFontPath,
+      fontName: 'Manrope Bold',
+      width: 610
+    }));
+  }
+  const description = await createTextLayer({
+    text: 'Website yang memperjelas nilai bisnis dan mengarahkan calon pelanggan untuk bertindak.',
+    color: '#c7c3bb',
+    fontSize: 18,
+    fontFile: regularFontPath,
+    fontName: 'Manrope',
+    width: 540,
+    spacing: 3
+  });
+  const cardLabel = await createTextLayer({
+    text: 'KEUNGGULAN GANDIVA',
+    color: '#c9c5bf',
+    fontSize: 11,
+    fontFile: boldFontPath,
+    fontName: 'Manrope Bold',
+    width: 220,
+    letterSpacing: 1.6
+  });
+  const cardTitle = await createTextLayer({
+    text: 'Konsultasi awal gratis',
+    color: '#ffffff',
+    fontSize: 19,
+    fontFile: boldFontPath,
+    fontName: 'Manrope Bold',
+    width: 235
+  });
+
+  const backdrop = await sharp(heroImagePath)
+    .resize(1200, 630, { fit: 'cover', position: 'right' })
+    .modulate({ brightness: 0.7, saturation: 0.78 })
+    .png()
+    .toBuffer();
+  const artwork = Buffer.from(`
+    <svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="leftShadow" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#060708" stop-opacity="0.99"/>
+          <stop offset="0.56" stop-color="#070809" stop-opacity="0.86"/>
+          <stop offset="1" stop-color="#070809" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#ffffff" stop-opacity="0.24"/>
+          <stop offset="1" stop-color="#ffffff" stop-opacity="0.08"/>
+        </linearGradient>
+        <linearGradient id="icon" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#ffe3ca"/>
+          <stop offset="1" stop-color="#d77543"/>
+        </linearGradient>
+      </defs>
+      <rect width="1200" height="630" fill="url(#leftShadow)"/>
+      <rect x="48" y="34" width="1104" height="64" rx="22" fill="url(#glass)" stroke="#ffffff" stroke-opacity="0.28"/>
+      <rect x="64" y="49" width="34" height="34" rx="12" fill="#f7f3ec"/>
+      <path d="M73 66c5-8 12-8 16 0-4 7-11 7-16 0Z" fill="#171511"/>
+      <path d="M448 65h62M536 65h48M622 65h72" stroke="#f7f3ec" stroke-opacity="0.58" stroke-width="3" stroke-linecap="round"/>
+      <rect x="942" y="46" width="176" height="40" rx="20" fill="#f7f3ec"/>
+      <circle cx="970" cy="66" r="7" fill="none" stroke="#171511" stroke-width="2"/>
+      <rect x="764" y="448" width="356" height="132" rx="26" fill="url(#glass)" stroke="#ffffff" stroke-opacity="0.28"/>
+      <rect x="780" y="464" width="88" height="100" rx="17" fill="url(#icon)" stroke="#ffffff" stroke-opacity="0.45"/>
+      <path d="M813 502c-7 0-13 5-13 12 0 4 1 7 4 10l-2 9 9-4c2 1 5 2 8 2 8 0 14-6 14-14s-6-15-14-15Z" fill="none" stroke="#2b160e" stroke-width="3" stroke-linejoin="round"/>
+      <circle cx="1064" cy="538" r="17" fill="#ffffff" fill-opacity="0.85"/>
+      <path d="M1068 532l6 6-6 6M1053 538h20" stroke="#171511" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  `);
+
+  await sharp(backdrop)
+    .composite([
+      { input: artwork },
+      { input: brand.data, left: 112, top: 55 },
+      { input: eyebrow.data, left: 66, top: 142 },
+      ...titleLayers.map((layer, index) => ({ input: layer.data, left: 62, top: 180 + (index * 64) })),
+      { input: description.data, left: 64, top: 402 },
+      { input: cardLabel.data, left: 886, top: 470 },
+      { input: cardTitle.data, left: 886, top: 497 }
+    ])
+    .png({ compressionLevel: 9, palette: true, quality: 90 })
+    .toFile(defaultOutputFile);
+
+  const metadata = await sharp(defaultOutputFile).metadata();
+  if (metadata.width !== 1200 || metadata.height !== 630 || metadata.format !== 'png') {
+    throw new Error('Social preview default tidak valid.');
+  }
+
+  const file = await stat(defaultOutputFile);
+  if (file.size > 750_000) {
+    throw new Error(`Social preview default terlalu besar (${file.size} byte)`);
+  }
+
+  return { size: file.size };
+}
+
 await mkdir(outputDirectory, { recursive: true });
 
 if (!selectedSlug) {
@@ -275,6 +397,8 @@ if (!selectedSlug) {
       .join('\n');
     if (meaningfulWarnings) process.stderr.write(`${meaningfulWarnings}\n`);
   }
+  const defaultPreview = await createDefaultPreview();
+  console.log(`Social preview dibuat: gandiva-labs (${defaultPreview.size} byte)`);
 } else {
   const project = projects.find((item) => item.slug === selectedSlug);
   if (!project) throw new Error(`Project social preview tidak dikenal: ${selectedSlug}`);

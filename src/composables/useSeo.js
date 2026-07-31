@@ -110,8 +110,18 @@ export function useSeo() {
         href: '/gandiva-hero-editorial-v2.webp',
         as: 'image',
         type: 'image/webp',
+        media: '(min-width: 768px)',
         fetchpriority: 'high',
-        key: 'hero-preload'
+        key: 'hero-desktop-preload'
+      });
+      links.push({
+        rel: 'preload',
+        href: '/gandiva-hero-editorial-mobile-v1.webp',
+        as: 'image',
+        type: 'image/webp',
+        media: '(max-width: 767px)',
+        fetchpriority: 'high',
+        key: 'hero-mobile-preload'
       });
     }
 

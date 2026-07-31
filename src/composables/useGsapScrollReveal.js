@@ -1,9 +1,7 @@
 import { onMounted, onUnmounted } from 'vue';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 /**
- * GSAP scroll-reveal composable using gsap.context() for proper Vue 3 cleanup.
+ * Scroll-reveal composable that only loads GSAP once the section is visible.
  * Respects prefers-reduced-motion by skipping animations when active.
  *
  * @param {import('vue').Ref} elementRef - Template ref for the container element
@@ -15,11 +13,13 @@ export function useGsapScrollReveal(elementRef, options = {}) {
     duration = 0.9,
     stagger = 0.1,
     ease = 'power3.out',
-    triggerStart = 'top 85%',
-    once = false
+    triggerStart: _triggerStart = 'top 85%',
+    once: _once = false
   } = options;
 
   let ctx;
+  let observer;
+  let isDisposed = false;
 
   onMounted(() => {
     if (!elementRef.value) return;
@@ -36,7 +36,11 @@ export function useGsapScrollReveal(elementRef, options = {}) {
       return;
     }
 
-    ctx = gsap.context(() => {
+    const reveal = async () => {
+      const { default: gsap } = await import('gsap');
+      if (isDisposed || !elementRef.value) return;
+
+      ctx = gsap.context(() => {
       const targets = elementRef.value.children
         ? Array.from(elementRef.value.children)
         : [elementRef.value];
@@ -48,20 +52,29 @@ export function useGsapScrollReveal(elementRef, options = {}) {
           opacity: 1,
           duration,
           stagger,
-          ease,
-          scrollTrigger: {
-            trigger: elementRef.value,
-            start: triggerStart,
-            toggleActions: once
-              ? 'play none none none'
-              : 'play none none reverse'
-          }
+          ease
         }
       );
-    }, elementRef.value);
+      }, elementRef.value);
+    };
+
+    if (!('IntersectionObserver' in window)) {
+      reveal();
+      return;
+    }
+
+    observer = new IntersectionObserver((entries) => {
+      if (!entries.some((entry) => entry.isIntersecting)) return;
+      observer?.disconnect();
+      observer = undefined;
+      reveal();
+    }, { rootMargin: '0px' });
+    observer.observe(elementRef.value);
   });
 
   onUnmounted(() => {
+    isDisposed = true;
+    observer?.disconnect();
     ctx?.revert();
   });
 }

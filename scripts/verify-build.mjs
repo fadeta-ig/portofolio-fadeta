@@ -8,12 +8,15 @@ const dist = resolve(root, 'dist');
 const sitemapFile = resolve(dist, 'sitemap.xml');
 const robotsFile = resolve(dist, 'robots.txt');
 const defaultSocialImageFile = resolve(dist, 'og.png');
+const mobileHeroImageFile = resolve(root, 'public/gandiva-hero-editorial-mobile-v1.webp');
 const sourceIndexFile = resolve(root, 'index.html');
 const vercelConfigFile = resolve(root, 'vercel.json');
 const bookingOfferConfigFile = resolve(root, 'src/lib/bookingOffer.js');
 const bookingOfferComponentFile = resolve(root, 'src/components/BookingOffer.vue');
 const heroComponentFile = resolve(root, 'src/components/HeroSection.vue');
 const seoComposableFile = resolve(root, 'src/composables/useSeo.js');
+const mainSourceFile = resolve(root, 'src/main.js');
+const scrollRevealFile = resolve(root, 'src/composables/useGsapScrollReveal.js');
 const analyticsFile = resolve(root, 'src/lib/analytics.js');
 const webVitalsFile = resolve(root, 'src/lib/webVitals.js');
 const privacySourceFile = resolve(root, 'src/views/PrivacyView.vue');
@@ -113,6 +116,13 @@ await verifyImage(defaultSocialImageFile, {
   height: 630,
   maximumBytes: 750_000,
   label: 'dist/og.png'
+});
+await verifyImage(mobileHeroImageFile, {
+  format: 'webp',
+  width: 640,
+  height: 960,
+  maximumBytes: 100_000,
+  label: 'public/gandiva-hero-editorial-mobile-v1.webp'
 });
 
 for (const project of caseStudies.values()) {
@@ -316,13 +326,26 @@ if (existsSync(seoComposableFile)) {
   const seoSource = readFileSync(seoComposableFile, 'utf8');
   check(seoSource.includes("route.name === 'home'"), 'Preload hero belum dibatasi hanya untuk halaman beranda.');
   check(seoSource.includes("href: '/gandiva-hero-editorial-v2.webp'"), 'Gambar hero utama belum dipreload.');
+  check(seoSource.includes("href: '/gandiva-hero-editorial-mobile-v1.webp'"), 'Gambar hero mobile belum dipreload.');
   check(seoSource.includes("fetchpriority: 'high'"), 'Preload hero belum memakai prioritas tinggi.');
 }
 if (existsSync(heroComponentFile)) {
   const heroSource = readFileSync(heroComponentFile, 'utf8');
   check(heroSource.includes('fetchpriority="high"'), 'Gambar hero belum memakai fetchpriority high.');
   check(heroSource.includes('loading="eager"'), 'Gambar hero belum dimuat eager.');
+  check(heroSource.includes('decoding="sync"'), 'Gambar hero LCP belum memakai decoding sinkron.');
+  check(heroSource.includes('gandiva-hero-editorial-mobile-v1.webp'), 'Hero belum memiliki aset khusus mobile.');
   check(!heroSource.includes(".from('.hero-frame'"), 'Hero frame masih dianimasikan dari kondisi tersembunyi dan berisiko menunda LCP.');
+  check(!heroSource.includes("from 'gsap'"), 'GSAP masih dimuat pada jalur hero awal.');
+}
+if (existsSync(mainSourceFile)) {
+  const mainSource = readFileSync(mainSourceFile, 'utf8');
+  check(!mainSource.includes("from 'gsap'"), 'GSAP masih dimuat oleh entry bundle awal.');
+}
+if (existsSync(scrollRevealFile)) {
+  const revealSource = readFileSync(scrollRevealFile, 'utf8');
+  check(revealSource.includes("await import('gsap')"), 'Animasi scroll belum dimuat secara dinamis.');
+  check(revealSource.includes('IntersectionObserver'), 'Animasi scroll belum ditunda hingga section terlihat.');
 }
 
 const themeScriptMatch = sourceIndex.match(/<script>([\s\S]*?)<\/script>/);
