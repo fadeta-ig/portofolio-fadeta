@@ -133,16 +133,16 @@ function submitLead() {
         <strong class="text-accent font-semibold">Alasan Rekomendasi:</strong> {{ result.rationale }}
       </div>
 
-      <!-- Free Domain & Hosting Narrative Card -->
+      <!-- Free Domain, Maintenance & Monitoring Guarantee Card -->
       <div class="p-4.5 rounded-xl bg-bg-secondary/70 border border-border-default space-y-2">
         <div class="flex items-center gap-2.5">
-          <Gift class="h-4 w-4 text-accent shrink-0" />
+          <ShieldCheck class="h-4 w-4 text-accent shrink-0" />
           <h4 class="text-xs font-bold text-text-primary">
-            Bonus Promo & Kepemilikan Infrastruktur
+            Garansi Maintenance 6 Bulan & Infrastructure Support
           </h4>
         </div>
         <p class="text-xs text-text-secondary leading-relaxed pl-6">
-          <strong>Gratis Domain (.com / .my.id)</strong> disertakan selama kuota promo tersedia. Server & Cloud Hosting 100% dibantu setup gratis oleh Gandiva Labs dengan kepemilikan akun penuh atas nama Anda.
+          <strong>Free Maintenance & Bug Fixes 6 Bulan</strong> serta <strong>Monitoring Uptime & Keamanan 24/7</strong> disertakan tanpa biaya tambahan. <strong>Gratis Domain (.com / .my.id)</strong> & Cloud Server 100% dibantu setup gratis dengan kepemilikan akun penuh atas nama Anda.
         </p>
       </div>
 

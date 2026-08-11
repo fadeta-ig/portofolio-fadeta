@@ -42,7 +42,7 @@ import { RouterLink } from 'vue-router';
               <ArrowRight class="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </RouterLink>
             <span class="text-xs text-text-tertiary">
-              Gratis domain .com selama kuota promo tersedia
+              Termasuk Free Maintenance 6 Bulan & Monitoring 24/7
             </span>
           </div>
         </div>

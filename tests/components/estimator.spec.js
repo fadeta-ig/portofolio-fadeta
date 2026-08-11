@@ -120,7 +120,8 @@ describe('Smart Website Estimator View', () => {
     expect(wrapper.text()).toContain('Hasil Estimasi Terhitung');
     expect(wrapper.text()).toContain('Konsultasi via WhatsApp');
     expect(wrapper.text()).toContain('Salin Ringkasan Hasil');
-    expect(wrapper.text()).toContain('100% dibantu setup gratis oleh Gandiva Labs');
+    expect(wrapper.text()).toContain('Free Maintenance & Bug Fixes 6 Bulan');
+    expect(wrapper.text()).toContain('Monitoring Uptime & Keamanan 24/7');
 
     wrapper.unmount();
   });

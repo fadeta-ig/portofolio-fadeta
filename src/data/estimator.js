@@ -15,6 +15,8 @@ export const SITE_WHATSAPP_NUMBER = contact.whatsappNumber; // '6285117148742' -
  * Standard Inclusions (GRATIS / Already included in base packages)
  */
 export const STANDARD_INCLUSIONS = [
+  { id: 'free-maintenance', label: 'Gratis Maintenance & Bug Fixes 6 Bulan', badge: 'GRATIS 6 BLN', highlight: true },
+  { id: 'system-monitoring', label: 'Monitoring Uptime & Keamanan 24/7', badge: 'GRATIS 24/7', highlight: true },
   { id: 'responsive', label: 'Responsive Design (HP, Tablet & Desktop)', badge: 'GRATIS' },
   { id: 'ssl', label: 'Keamanan SSL Certificate (HTTPS)', badge: 'GRATIS' },
   { id: 'seo-basic', label: 'Basic SEO & Indexing Google Search', badge: 'GRATIS' },
@@ -377,7 +379,7 @@ export function generateWhatsAppUrl(result, customNote = '') {
     `Skala Kebutuhan    : Tier ${complexity.toUpperCase()}`,
     `Estimasi Investasi : ${priceFormatted}`,
     `Estimasi Waktu     : ${timelineText}`,
-    'Bonus Promo        : Gratis Domain (.com / .my.id)',
+    'Bonus Promo        : Gratis Domain + Free Maintenance 6 Bln + Monitoring 24/7',
     '',
     '[ fitur add-on ]',
     addonsList,
@@ -414,9 +416,11 @@ export function formatSummaryText(result) {
     `Skala Kebutuhan    : Tier ${complexity.toUpperCase()}`,
     `Estimasi Investasi : ${priceFormatted}`,
     `Estimasi Pengerjaan: ${timelineText}`,
-    'Bonus Promo        : Gratis Domain (.com / .my.id)',
+    'Bonus Promo        : Gratis Domain + Maintenance 6 Bln + Monitoring 24/7',
     '',
-    'Fitur Standar Gratis:',
+    'Fitur Standar Gratis & Garansi:',
+    '- Gratis Maintenance & Bug Fixes 6 Bulan',
+    '- Monitoring Uptime & Keamanan 24/7',
     '- Responsive Design (HP & Desktop)',
     '- Keamanan SSL Certificate (HTTPS)',
     '- Basic SEO & Indexing Google Search',

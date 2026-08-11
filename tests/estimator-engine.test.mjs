@@ -81,7 +81,7 @@ test('formatSummaryText formats clean text for clipboard copy', () => {
   const summary = formatSummaryText(result);
   assert.ok(summary.includes('Gandiva Labs — Estimasi Website'));
   assert.ok(summary.includes('Custom Website / Web App'));
-  assert.ok(summary.includes('Gratis Domain (.com / .my.id)'));
+  assert.ok(summary.includes('Gratis Maintenance & Bug Fixes 6 Bulan'));
 });
 
 test('formatPriceRange renders human readable Rupiah strings', () => {
