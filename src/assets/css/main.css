@@ -464,3 +464,12 @@
     padding-inline: 2.5rem;
   }
 }
+
+select option {
+  background-color: var(--bg-elevated);
+  color: var(--text-primary);
+}
+
+select option:disabled {
+  color: var(--text-tertiary);
+}

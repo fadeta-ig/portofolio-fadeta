@@ -409,6 +409,15 @@ async function submitForm() {
     inset 0 1px 0 var(--glass-highlight);
 }
 
+.form-field select option {
+  background-color: var(--bg-elevated);
+  color: var(--text-primary);
+}
+
+.form-field select option:disabled {
+  color: var(--text-tertiary);
+}
+
 .form-field [aria-invalid="true"] {
   border-color: var(--accent);
 }
