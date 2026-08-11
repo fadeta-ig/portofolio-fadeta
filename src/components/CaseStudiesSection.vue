@@ -51,9 +51,9 @@ function scrollToProject(index) {
       <div class="grid gap-6 lg:grid-cols-[1fr_0.6fr] lg:items-end">
         <div>
           <p class="section-kicker mb-5">Hasil kerja</p>
-          <h2 class="section-heading text-balance">Lihat konteks dan keputusan di balik setiap <span class="font-display italic text-accent">website.</span></h2>
+          <h2 class="section-heading text-balance">Hasil kerja nyata yang bisa diuji <span class="font-display italic text-accent">kualitasnya.</span></h2>
         </div>
-        <p class="max-w-xl text-base leading-relaxed text-text-secondary lg:justify-self-end lg:text-lg">Tidak ada angka performa yang dibuat-buat. Yang ditampilkan adalah kebutuhan proyek, pendekatan, dan keluaran yang memang dikerjakan.</p>
+        <p class="max-w-xl text-base leading-relaxed text-text-secondary lg:justify-self-end lg:text-lg">Kami menampilkan proyek riil dengan latar belakang masalah, langkah penyelesaian, dan hasil yang benar-benar diserahkan.</p>
       </div>
 
       <div class="mt-10">

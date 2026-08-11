@@ -53,9 +53,9 @@ function handleServiceKeydown(event, index) {
     <div ref="sectionRef" class="section-shell grid gap-8 lg:grid-cols-[minmax(0,0.72fr)_minmax(0,1.28fr)] lg:grid-rows-[1fr_auto] lg:gap-x-10 lg:gap-y-6 xl:grid-cols-[minmax(0,0.68fr)_minmax(0,1.32fr)] xl:gap-x-14">
       <div class="lg:pr-2">
         <p class="section-kicker mb-5">Bentuk solusi</p>
-        <h2 class="services-heading section-heading max-w-4xl text-balance">Pilih berdasarkan masalahnya, bukan nama <span class="font-display italic text-accent">paketnya.</span></h2>
+        <h2 class="services-heading section-heading max-w-4xl text-balance">Solusi website yang dirancang spesifik untuk kebutuhan <span class="font-display italic text-accent">bisnis Anda.</span></h2>
         <p class="mt-6 max-w-lg text-sm leading-relaxed text-text-secondary lg:text-base">
-          Nama layanan membantu memberi gambaran awal. Scope akhirnya tetap mengikuti tujuan, kondisi, dan cara bisnis Anda bekerja.
+          Setiap bisnis punya tantangan berbeda. Kami menyesuaikan ruang lingkup dan fitur sesuai kebutuhan riil operasional dan strategi penjualan Anda.
         </p>
       </div>
 
@@ -133,8 +133,8 @@ function handleServiceKeydown(event, index) {
       </div>
 
       <div class="liquid-panel rounded-[1.35rem] border border-border-default bg-bg-secondary px-5 py-5 lg:col-start-1 lg:row-start-2">
-        <p class="text-sm font-medium leading-relaxed text-text-secondary"><strong class="text-text-primary">Belum tahu bentuk yang tepat?</strong> Itu wajar. Cukup jelaskan hal yang ingin diperbaiki.</p>
-        <RouterLink to="/konsultasi" data-track="services_consultation" class="mt-4 inline-flex min-h-10 items-center justify-center rounded-full border border-text-primary px-5 text-xs font-bold text-text-primary transition-colors hover:bg-text-primary hover:text-bg-primary">Ceritakan masalah</RouterLink>
+        <p class="text-sm font-medium leading-relaxed text-text-secondary"><strong class="text-text-primary">Belum tahu jenis website yang tepat?</strong> Kami bantu beri rekomendasi sesuai kebutuhan bisnis Anda.</p>
+        <RouterLink to="/konsultasi" data-track="services_consultation" class="mt-4 inline-flex min-h-10 items-center justify-center rounded-full border border-text-primary px-5 text-xs font-bold text-text-primary transition-colors hover:bg-text-primary hover:text-bg-primary">Konsultasi Gratis</RouterLink>
       </div>
     </div>
   </section>

@@ -33,7 +33,7 @@ useGsapScrollReveal(sectionRef, { y: 34, stagger: 0.1, duration: 0.75, once: tru
       <div class="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
         <div>
           <p class="section-kicker mb-6">Tentang studio</p>
-          <h2 class="section-heading text-balance">Teknisnya rapi. Komunikasinya tetap <span class="font-display italic text-accent">manusiawi.</span></h2>
+          <h2 class="section-heading text-balance">Standar pembuatan rapi & komunikasi langsung tanpa istilah <span class="font-display italic text-accent">rumit.</span></h2>
 
           <div class="liquid-panel mt-9 rounded-[1.6rem] border border-border-default bg-bg-secondary p-6 md:p-7">
             <p class="text-[11px] font-bold uppercase tracking-[0.16em] text-text-tertiary">Di balik Gandiva Labs</p>

@@ -65,7 +65,7 @@ onUnmounted(() => window.removeEventListener('scroll', updateScrollProgress));
           <div class="max-w-5xl">
             <p class="section-kicker mb-6">Hasil kerja Gandiva Labs</p>
             <h1 class="text-balance text-[clamp(3.25rem,7.5vw,7.6rem)] font-medium leading-[0.88] tracking-[-0.06em] text-text-primary">
-              Bukan galeri tampilan. Setiap karya punya <span class="font-display italic text-accent">konteks.</span>
+              Daftar Karya & Proyek Pembuatan Website <span class="font-display italic text-accent">Bisnis.</span>
             </h1>
           </div>
 

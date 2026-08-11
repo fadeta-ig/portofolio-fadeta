@@ -327,7 +327,7 @@ async function submitForm() {
 
     <button type="submit" class="submit-button group" :disabled="isSubmitting" :aria-busy="isSubmitting">
       <LoaderCircle v-if="isSubmitting" class="h-4 w-4 animate-spin" />
-      <span>{{ isSubmitting ? 'Mengirim brief...' : 'Kirim brief untuk direview' }}</span>
+      <span>{{ isSubmitting ? 'Mengirim brief...' : 'Kirim Brief Proyek' }}</span>
       <ArrowRight v-if="!isSubmitting" class="h-4 w-4 transition-transform group-hover:translate-x-1" />
     </button>
 

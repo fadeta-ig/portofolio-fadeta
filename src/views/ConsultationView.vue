@@ -32,10 +32,10 @@ const process = [
         <div class="mx-auto max-w-4xl text-center">
           <p class="section-kicker mb-6">Form konsultasi</p>
           <h1 class="text-balance text-[clamp(3.4rem,7vw,7rem)] font-medium leading-[0.9] tracking-[-0.06em] text-text-primary">
-            Brief yang jelas membuat keputusan lebih <span class="font-display italic text-accent">tepat.</span>
+            Kirim Brief Proyek untuk Mendapatkan Saran & Estimasi <span class="font-display italic text-accent">Awal.</span>
           </h1>
           <p class="mx-auto mt-7 max-w-2xl text-base leading-relaxed text-text-secondary md:text-lg">
-            Ceritakan tujuan bisnis dan kondisi Anda sekarang. Tidak perlu menyiapkan dokumen teknis; jawaban sederhana sudah cukup untuk memulai.
+            Isi formulir singkat di bawah ini. Kami akan membaca kebutuhan bisnis Anda dan menyiapkan rekomendasi solusi terbaik.
           </p>
         </div>
 

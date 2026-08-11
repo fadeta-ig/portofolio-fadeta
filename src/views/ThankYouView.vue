@@ -24,10 +24,10 @@ const nextSteps = [
 
       <p class="mt-7 text-[11px] font-bold uppercase tracking-[0.2em] text-accent">Brief berhasil dikirim</p>
       <h1 id="thank-you-title" class="mt-5 text-balance text-[clamp(3.4rem,7vw,6.8rem)] font-medium leading-[0.9] tracking-[-0.06em] text-text-primary">
-        Terima kasih. Kami akan melihat <span class="font-display italic text-accent">konteksnya.</span>
+        Terima Kasih! Brief Anda Sudah Kami <span class="font-display italic text-accent">Terima.</span>
       </h1>
       <p class="mx-auto mt-7 max-w-2xl text-base leading-relaxed text-text-secondary md:text-lg">
-        Pesan Anda sudah masuk. Kami akan membaca kebutuhan tersebut terlebih dahulu agar pembicaraan berikutnya langsung membahas hal yang relevan.
+        Tim kami akan mempelajari detail proyek Anda dan menghubungi Anda kembali dalam waktu maksimal 1x24 jam kerja.
       </p>
 
       <div class="mx-auto mt-10 grid max-w-2xl gap-3 text-left">

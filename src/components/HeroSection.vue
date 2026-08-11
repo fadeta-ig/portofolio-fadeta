@@ -47,23 +47,23 @@ const socialLinks = [
 
 const benefits = [
   {
-    title: 'Konsultasi awal gratis',
-    text: 'Bahas kebutuhan dan arah website sebelum proyek dimulai.',
+    title: 'Konsultasi gratis 30 menit',
+    text: 'Bedah kebutuhan & alur website bisnis Anda tanpa biaya.',
     icon: MessageCircle
   },
   {
-    title: 'Biaya jelas dan terjangkau',
-    text: 'Ruang lingkup dan anggaran dibahas transparan sejak awal.',
+    title: 'Harga transparan',
+    text: 'Ruang lingkup & biaya disepakati di awal tanpa charge tersembunyi.',
     icon: BadgeDollarSign
   },
   {
-    title: 'Free maintenance 6 bulan',
-    text: 'Dukungan teknis tersedia setelah website resmi diluncurkan.',
+    title: 'Garansi 6 bulan',
+    text: 'Dukungan teknis penuh agar website selalu lancar setelah rilis.',
     icon: ShieldCheck
   },
   {
-    title: 'Siap mengikuti pertumbuhan',
-    text: 'Struktur website dibuat rapi agar mudah dikembangkan kemudian.',
+    title: 'Bisa dikembangkan kapan saja',
+    text: 'Struktur rapi yang siap ditambah halaman atau fitur baru saat bisnis bertambah besar.',
     icon: TrendingUp
   }
 ];
@@ -113,15 +113,14 @@ function showNextBenefit() {
           </div>
 
           <h1 class="hero-reveal hero-title">
-            <span>Partner website</span>
-            <span>untuk bisnis yang</span>
-            <span>siap <em>bertumbuh.</em></span>
+            <span>Website bisnis berkelas</span>
+            <span>yang memperjelas layanan &</span>
+            <span>mempermudah <em>penjualan.</em></span>
           </h1>
 
           <p class="hero-reveal hero-description">
-            Mulai dari strategi hingga pengembangan, kami membangun website yang
-            menjelaskan nilai bisnis Anda, meningkatkan kepercayaan, dan mengarahkan
-            calon pelanggan untuk bertindak.
+            Kami membangun website yang cepat dibuka, tampilan elegan, dan langsung menjelaskan
+            nilai produk Anda agar calon pembeli tidak ragu untuk menghubungi.
           </p>
 
           <div class="hero-reveal hero-actions">
@@ -131,7 +130,7 @@ function showNextBenefit() {
               class="hero-button hero-button-primary group"
             >
               <MessageCircle class="hero-button-icon" aria-hidden="true" />
-              Ceritakan masalah Anda
+              Konsultasi Proyek Gratis
               <ArrowUpRight
                 class="hero-button-arrow transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                 aria-hidden="true"
@@ -142,7 +141,7 @@ function showNextBenefit() {
               to="/portfolio"
               class="hero-button hero-button-secondary group"
             >
-              Lihat hasil kerja
+              Lihat Portofolio
               <ArrowRight
                 class="hero-button-arrow transition-transform group-hover:translate-x-1"
                 aria-hidden="true"

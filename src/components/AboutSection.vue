@@ -8,18 +8,18 @@ const sectionRef = ref(null);
 const outcomes = [
   {
     icon: Eye,
-    title: 'Mudah dipahami',
-    text: 'Orang langsung tahu bisnis Anda menawarkan apa, untuk siapa, dan kenapa layak dipertimbangkan.'
+    title: 'Langsung Paham Dalam 5 Detik',
+    text: 'Informasi utama dibuat ringkas agar pengunjung tahu apa yang Anda tawarkan tanpa perlu membaca panjang lebar.'
   },
   {
     icon: ShieldCheck,
-    title: 'Terlihat meyakinkan',
-    text: 'Pesan, visual, dan detail penting disusun rapi supaya bisnis tampil lebih siap dan profesional.'
+    title: 'Tampilan Kredibel & Rapi',
+    text: 'Desain modern dan berkelas yang membuat bisnis Anda terlihat jauh lebih tepercaya.'
   },
   {
     icon: MousePointerClick,
-    title: 'Punya arah tindakan',
-    text: 'Setiap halaman mengarahkan pengunjung ke langkah berikutnya tanpa terasa memaksa.'
+    title: 'Jalur Kontak Jelas',
+    text: 'Pengunjung diarahkan ke WhatsApp atau form kontak secara alami tanpa terasa memaksa.'
   }
 ];
 
@@ -31,13 +31,13 @@ useGsapScrollReveal(sectionRef, { y: 34, stagger: 0.1, duration: 0.75, once: tru
     <div ref="sectionRef" class="section-shell">
       <div class="grid gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:gap-20">
         <div>
-          <p class="section-kicker mb-6">Masalah yang sering terjadi</p>
-          <h2 class="section-heading text-balance">Website ada, tetapi orang masih harus <span class="font-display italic text-accent">menebak.</span></h2>
+          <p class="section-kicker mb-6">Masalah Utama Website</p>
+          <h2 class="section-heading text-balance">Website sudah ada, tapi sepi pembeli? Pengunjung bingung tidak akan <span class="font-display italic text-accent">bertindak.</span></h2>
         </div>
 
         <div class="lg:pt-3">
           <p class="max-w-2xl text-lg leading-relaxed text-text-secondary md:text-xl">
-            Tampilan yang rapi belum cukup jika pengunjung tidak segera memahami bisnisnya. Pesan, bukti, dan jalur tindakan perlu bekerja sebagai satu alur.
+            Tampilan bagus saja tidak cukup. Jika pengunjung butuh waktu lama untuk paham apa yang Anda jual, mereka akan langsung menutup halaman dan pindah ke kompetitor.
           </p>
 
           <div class="mt-10 grid gap-4 sm:grid-cols-3">

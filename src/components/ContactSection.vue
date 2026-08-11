@@ -14,12 +14,12 @@ const whatsappLink = createWhatsAppLink('Halo Gandiva Labs, saya ingin bercerita
 
     <div class="section-shell relative z-10 pb-9 pt-24 md:pt-36">
       <div class="mx-auto max-w-5xl text-center">
-        <p class="mb-7 text-[11px] font-bold uppercase tracking-[0.2em] text-[#ee8859]">Mulai dari konteksnya</p>
+        <p class="mb-7 text-[11px] font-bold uppercase tracking-[0.2em] text-[#ee8859]">Diskusi Proyek</p>
         <h2 class="text-balance text-[clamp(3rem,7vw,7rem)] font-medium leading-[0.9] tracking-[-0.06em]">
-          Belum harus tahu solusinya.<br />Ceritakan dulu <span class="font-display italic text-[#ee8859]">masalahnya.</span>
+          Siap membuat website bisnis yang lebih jelas dan <span class="font-display italic text-[#ee8859]">profesional?</span>
         </h2>
         <p class="mx-auto mt-8 max-w-2xl text-base leading-relaxed text-[#bcb4a9] md:text-xl">
-          Jelaskan apa yang sedang menghambat, siapa yang ingin dibantu, atau bagian mana yang belum bekerja baik. Dari sana, kita bisa membahas langkah yang relevan.
+          Diskusikan rencana Anda bersama kami. Kami bantu pilihkan solusi dan estimasi biaya yang paling masuk akal untuk bisnis Anda.
         </p>
 
         <div class="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
@@ -31,7 +31,7 @@ const whatsappLink = createWhatsAppLink('Halo Gandiva Labs, saya ingin bercerita
             class="group inline-flex min-h-14 w-full items-center justify-center gap-3 rounded-full bg-[#f5f0e7] px-7 text-sm font-bold text-[#171511] transition-transform hover:-translate-y-1 sm:w-auto"
           >
             <MessageCircle class="h-[18px] w-[18px]" />
-            Chat via WhatsApp
+            Konsultasi via WhatsApp
             <ArrowUpRight class="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </a>
           <RouterLink
@@ -40,7 +40,7 @@ const whatsappLink = createWhatsAppLink('Halo Gandiva Labs, saya ingin bercerita
             class="liquid-dark inline-flex min-h-14 w-full items-center justify-center gap-3 rounded-full border border-white/20 px-7 text-sm font-bold text-[#f5f0e7] transition-colors hover:border-white/45 sm:w-auto"
           >
             <ClipboardPenLine class="h-[18px] w-[18px]" />
-            Isi form konsultasi
+            Isi Form Brief Proyek
           </RouterLink>
         </div>
 

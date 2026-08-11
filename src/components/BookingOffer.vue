@@ -387,13 +387,13 @@ onBeforeUnmount(() => {
 
             <aside class="booking-value-panel" aria-label="Yang akan dibahas">
               <div>
-                <p class="booking-panel-label">Sesi singkat, arah lebih jelas</p>
-                <h3>Mulai dari kebutuhan bisnis, bukan istilah teknis.</h3>
+                <p class="booking-panel-label">Sesi Singkat 30 Menit</p>
+                <h3>Diskusi langsung dengan tim pengembangan.</h3>
               </div>
               <ul>
-                <li><span><Check aria-hidden="true" /></span> Pahami kebutuhan utama</li>
-                <li><span><Check aria-hidden="true" /></span> Tentukan prioritas yang tepat</li>
-                <li><span><Check aria-hidden="true" /></span> Susun langkah awal</li>
+                <li><span><Check aria-hidden="true" /></span> Bedah titik hambatan website</li>
+                <li><span><Check aria-hidden="true" /></span> Tentukan solusi & fitur utama</li>
+                <li><span><Check aria-hidden="true" /></span> Dapatkan estimasi & rekomendasi</li>
               </ul>
             </aside>
           </div>

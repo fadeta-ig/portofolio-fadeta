@@ -40,8 +40,8 @@ useGsapScrollReveal(sectionRef, { y: 32, stagger: 0.08, duration: 0.7, once: tru
     <div ref="sectionRef" class="section-shell grid gap-12 lg:grid-cols-[0.75fr_1.25fr] lg:gap-20">
       <div>
         <p class="section-kicker mb-6">Pertanyaan yang sering muncul</p>
-        <h2 class="section-heading text-balance">Supaya tidak ada yang terasa <span class="font-display italic text-accent">abu-abu.</span></h2>
-        <p class="mt-6 max-w-md leading-relaxed text-text-secondary">Kalau pertanyaan Anda belum terjawab di sini, kirim pesan saja. Tidak harus langsung punya brief.</p>
+        <h2 class="section-heading text-balance">Jawaban transparan sebelum Anda memulai <span class="font-display italic text-accent">proyek.</span></h2>
+        <p class="mt-6 max-w-md leading-relaxed text-text-secondary">Kalau ada hal yang ingin ditanyakan langsung, kami siap membantu diskusi via WhatsApp.</p>
       </div>
 
       <div class="grid gap-3">

@@ -3,8 +3,8 @@ export const services = [
     number: '01',
     slug: 'company-profile',
     name: 'Company Profile',
-    problem: 'Bisnis sudah berjalan, tetapi penjelasannya belum terasa meyakinkan.',
-    summary: 'Website utama yang membantu calon klien memahami profil, layanan, bukti, dan cara menghubungi bisnis Anda.',
+    problem: 'Profil bisnis terlihat biasa saja & kalah bersaing di mata calon mitra?',
+    summary: 'Website resmi berkelas yang menampilkan profil, keunggulan, dan portofolio bisnis Anda untuk membangun kepercayaan calon klien.',
     intro: 'Company profile cocok ketika informasi bisnis tersebar di banyak tempat atau tim masih harus menjelaskan hal yang sama berulang kali. Fokusnya bukan memenuhi halaman, melainkan menyusun informasi yang memang dibutuhkan calon klien.',
     fits: [
       'Bisnis belum memiliki website resmi.',
@@ -26,8 +26,8 @@ export const services = [
     number: '02',
     slug: 'landing-page',
     name: 'Landing Page',
-    problem: 'Kampanye sudah berjalan, tetapi pesannya belum fokus pada satu tindakan.',
-    summary: 'Halaman terarah untuk menjelaskan satu penawaran dan membantu pengunjung mengambil langkah yang relevan.',
+    problem: 'Iklan sudah jalan, tapi calon pembeli masih jarang yang menghubungi?',
+    summary: 'Halaman fokus yang dirancang khusus untuk menjelaskan satu penawaran produk atau layanan agar hasil iklan lebih maksimal.',
     intro: 'Landing page berguna ketika satu produk, layanan, atau kampanye membutuhkan penjelasan khusus. Kontennya dibuat ringkas, tetapi tetap memberi konteks yang cukup agar pengunjung tidak diminta bertindak terlalu cepat.',
     fits: [
       'Iklan membutuhkan halaman tujuan yang lebih relevan.',
@@ -49,8 +49,8 @@ export const services = [
     number: '03',
     slug: 'toko-online',
     name: 'Toko Online',
-    problem: 'Produk tersedia, tetapi proses memilih dan membelinya masih bergantung pada chat manual.',
-    summary: 'Katalog dan alur belanja yang membantu pelanggan menemukan produk, memahami detailnya, lalu menyelesaikan pesanan.',
+    problem: 'Kewalahan melayani pesan manual di chat satu per satu?',
+    summary: 'Website katalog dan belanja yang mempermudah pembeli memilih produk, memilih pembayaran, dan menyelesaikan pesanan sendiri.',
     intro: 'Toko online bukan sekadar katalog yang diberi tombol beli. Struktur kategori, informasi produk, metode pembayaran, pengiriman, dan cara mengelolanya perlu disesuaikan dengan operasi bisnis.',
     fits: [
       'Pesanan masih dicatat satu per satu melalui chat.',
@@ -72,8 +72,8 @@ export const services = [
     number: '04',
     slug: 'website-custom',
     name: 'Website Custom',
-    problem: 'Proses bisnis mulai rumit dan kebutuhan utamanya tidak cukup ditangani template.',
-    summary: 'Website atau sistem berbasis web yang dibangun mengikuti alur kerja, peran pengguna, dan kebutuhan pengelolaan tertentu.',
+    problem: 'Proses bisnis mulai rumit dan tidak bisa ditangani template biasa?',
+    summary: 'Aplikasi web & sistem internal yang dirancang khusus mengikuti alur kerja dan kebutuhan pengelolaan bisnis Anda.',
     intro: 'Pengembangan custom dipilih ketika ada proses spesifik yang perlu dipindahkan, dirapikan, atau dihubungkan. Sebelum membangun fitur, alurnya dipetakan agar sistem tidak sekadar menyalin kerumitan lama ke layar baru.',
     fits: [
       'Ada proses berulang yang masih bergantung pada spreadsheet atau chat.',

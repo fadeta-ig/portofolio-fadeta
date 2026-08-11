@@ -45,25 +45,25 @@ const routeConfigs = Object.freeze({
 
 const defaultCopy = Object.freeze({
   kicker: 'Konsultasi gratis · 30 menit',
-  headline: 'Punya rencana untuk website bisnis Anda? Mari mulai dari percakapan yang tepat.',
-  body: 'Baik Anda belum memiliki website maupun ingin mengembangkan yang sudah ada, Gandiva Labs siap membantu memetakan kebutuhan, prioritas, dan langkah awal yang paling masuk akal.'
+  headline: 'Ingin Memperbaiki Tampilan & Efektivitas Website Bisnis Anda?',
+  body: 'Mari jadwalkan diskusi 30 menit gratis. Kita bedah kebutuhan website Anda dan tentukan langkah awal yang paling tepat tanpa kewajiban apa pun.'
 });
 
 const routeCopy = Object.freeze({
   solution: {
     kicker: 'Konsultasi gratis · 30 menit',
-    headline: 'Belum yakin bentuk website mana yang paling sesuai untuk bisnis Anda?',
-    body: 'Ceritakan kebutuhan Anda dalam sesi singkat bersama Gandiva Labs. Kita akan melihat tujuan, konteks bisnis, dan bentuk website yang paling relevan.'
+    headline: 'Belum Yakin Bentuk Website Mana yang Paling Cocok?',
+    body: 'Diskusikan kebutuhan produk Anda dalam sesi singkat 30 menit. Kita pilihkan solusi dan estimasi biaya yang paling masuk akal.'
   },
   portfolio: {
     kicker: 'Konsultasi gratis · 30 menit',
-    headline: 'Punya gambaran website yang ingin diwujudkan?',
-    body: 'Mari bahas arah, kebutuhan, dan pendekatan yang sesuai untuk bisnis Anda dalam konsultasi gratis selama 30 menit.'
+    headline: 'Ingin Membuat Website dengan Standar Kualitas Seperti Ini?',
+    body: 'Mari bahas konsep, kebutuhan fitur, dan jadwal pengerjaan yang sesuai dengan target bisnis Anda.'
   },
   caseStudy: {
     kicker: 'Konsultasi gratis · 30 menit',
-    headline: 'Ingin membahas kemungkinan yang sesuai untuk bisnis Anda?',
-    body: 'Setiap bisnis memiliki kebutuhan yang berbeda. Mari lihat pendekatan yang paling masuk akal untuk konteks Anda.'
+    headline: 'Punya Tantangan Bisnis yang Serupa?',
+    body: 'Mari bedah titik hambatan bisnis Anda dan tentukan alur website yang tepat untuk mempermudah penjualan.'
   }
 });
 
