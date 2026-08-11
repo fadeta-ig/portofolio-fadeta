@@ -6,8 +6,10 @@
  * Fully aligned with Gandiva Labs design system and typography standards.
  */
 
+import { contact } from './contact.js';
+
 export const ESTIMATOR_VERSION = '1.0';
-export const SITE_WHATSAPP_NUMBER = '6285183042220'; // Gandiva Labs official WhatsApp
+export const SITE_WHATSAPP_NUMBER = contact.whatsappNumber; // '6285117148742' - Gandiva Labs official WhatsApp
 
 /**
  * Standard Inclusions (GRATIS / Already included in base packages)

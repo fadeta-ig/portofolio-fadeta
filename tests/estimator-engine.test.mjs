@@ -66,7 +66,7 @@ test('generateWhatsAppUrl outputs valid encoded WhatsApp link', () => {
   });
 
   const url = generateWhatsAppUrl(result, 'Tolong beri diskon');
-  assert.match(url, /^https:\/\/wa\.me\/6285183042220\?text=/);
+  assert.match(url, /^https:\/\/wa\.me\/6285117148742\?text=/);
   assert.ok(url.includes(encodeURIComponent('Company Profile')));
   assert.ok(url.includes(encodeURIComponent('Multi-bahasa')));
   assert.ok(url.includes(encodeURIComponent('Tolong beri diskon')));
