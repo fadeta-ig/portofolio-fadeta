@@ -8,18 +8,18 @@ const sectionRef = ref(null);
 const outcomes = [
   {
     icon: Eye,
-    title: 'Langsung Paham Dalam 5 Detik',
-    text: 'Informasi utama dibuat ringkas agar pengunjung tahu apa yang Anda tawarkan tanpa perlu membaca panjang lebar.'
+    title: 'Profil Resmi & Kredibel',
+    text: 'Punya rujukan resmi di internet yang langsung membangun kepercayaan calon pembeli.'
   },
   {
     icon: ShieldCheck,
-    title: 'Tampilan Kredibel & Rapi',
-    text: 'Desain modern dan berkelas yang membuat bisnis Anda terlihat jauh lebih tepercaya.'
+    title: 'Alur Pesanan Otomatis',
+    text: 'Mempermudah pembeli memahami produk dan bertindak tanpa bergantung pada chat manual.'
   },
   {
     icon: MousePointerClick,
-    title: 'Jalur Kontak Jelas',
-    text: 'Pengunjung diarahkan ke WhatsApp atau form kontak secara alami tanpa terasa memaksa.'
+    title: 'Sistem Rapi & Terpusat',
+    text: 'Data produk, pesanan, dan informasi bisnis tersusun rapi dalam satu wadah.'
   }
 ];
 
@@ -31,13 +31,13 @@ useGsapScrollReveal(sectionRef, { y: 34, stagger: 0.1, duration: 0.75, once: tru
     <div ref="sectionRef" class="section-shell">
       <div class="grid gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:gap-20">
         <div>
-          <p class="section-kicker mb-6">Masalah Utama Website</p>
-          <h2 class="section-heading text-balance">Website sudah ada, tapi sepi pembeli? Pengunjung bingung tidak akan <span class="font-display italic text-accent">bertindak.</span></h2>
+          <p class="section-kicker mb-6">Solusi Digital Bisnis</p>
+          <h2 class="section-heading text-balance">Bisnis jalan, tapi belum punya website & sistem <span class="font-display italic text-accent">resmi?</span></h2>
         </div>
 
         <div class="lg:pt-3">
           <p class="max-w-2xl text-lg leading-relaxed text-text-secondary md:text-xl">
-            Tampilan bagus saja tidak cukup. Jika pengunjung butuh waktu lama untuk paham apa yang Anda jual, mereka akan langsung menutup halaman dan pindah ke kompetitor.
+            Tanpa website dan sistem yang rapi, calon pembeli sering ragu dan tim Anda harus menjelaskan hal yang sama berulang kali secara manual.
           </p>
 
           <div class="mt-10 grid gap-4 sm:grid-cols-3">

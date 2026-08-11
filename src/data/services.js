@@ -3,7 +3,7 @@ export const services = [
     number: '01',
     slug: 'company-profile',
     name: 'Company Profile',
-    problem: 'Profil bisnis terlihat biasa saja & kalah bersaing di mata calon mitra?',
+    problem: 'Belum memiliki website resmi & sulit meyakinkan calon mitra?',
     summary: 'Website resmi berkelas yang menampilkan profil, keunggulan, dan portofolio bisnis Anda untuk membangun kepercayaan calon klien.',
     intro: 'Company profile cocok ketika informasi bisnis tersebar di banyak tempat atau tim masih harus menjelaskan hal yang sama berulang kali. Fokusnya bukan memenuhi halaman, melainkan menyusun informasi yang memang dibutuhkan calon klien.',
     fits: [
