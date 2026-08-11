@@ -24,7 +24,8 @@ const navItems = [
   { label: 'Solusi', detail: 'Layanan berdasarkan kebutuhan', id: 'services' },
   { label: 'Hasil', detail: 'Karya dan konteks proyek', path: '/portfolio' },
   { label: 'Cara kerja', detail: 'Proses yang transparan', id: 'process' },
-  { label: 'Tentang', detail: 'Kenali Gandiva Labs', id: 'studio' }
+  { label: 'Tentang', detail: 'Kenali Gandiva Labs', id: 'studio' },
+  { label: 'Hitung Biaya', detail: 'Estimasi investasi website', path: '/kalkulator-website' }
 ];
 
 function hrefFor(item) {

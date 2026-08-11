@@ -6,6 +6,7 @@ const PortfolioView = () => import('./views/PortfolioView.vue');
 const ServiceView = () => import('./views/ServiceView.vue');
 const CaseStudyView = () => import('./views/CaseStudyView.vue');
 const ConsultationView = () => import('./views/ConsultationView.vue');
+const EstimatorView = () => import('./views/EstimatorView.vue');
 const PrivacyView = () => import('./views/PrivacyView.vue');
 const ThankYouView = () => import('./views/ThankYouView.vue');
 
@@ -24,6 +25,17 @@ export const routes = [
       title: 'Partner Pembuatan Website Bisnis | Gandiva Labs',
       description: defaultDescription,
       canonicalPath: '/'
+    }
+  },
+  {
+    path: '/kalkulator-website',
+    alias: '/website-estimator',
+    name: 'estimator',
+    component: EstimatorView,
+    meta: {
+      title: 'Kalkulator Harga Website 2026 | Gandiva Labs',
+      description: 'Hitung estimasi investasi website berdasarkan kebutuhan bisnis Anda. Pilih jenis website dan fitur yang dibutuhkan, lalu dapatkan estimasi dalam hitungan detik.',
+      canonicalPath: '/kalkulator-website'
     }
   },
   {
@@ -112,6 +124,7 @@ export function resolveRouteSeo(to) {
 
 export const prerenderRoutes = [
   '/',
+  '/kalkulator-website',
   '/portfolio',
   ...services.map((service) => `/solusi/${service.slug}`),
   ...featuredProjects.map((project) => `/hasil/${project.slug}`),

@@ -25,6 +25,7 @@ async function mountHero() {
     history: createMemoryHistory(),
     routes: [
       { path: '/', component: { template: '<main />' } },
+      { path: '/kalkulator-website', component: { template: '<main />' } },
       { path: '/portfolio', component: { template: '<main />' } },
       { path: '/konsultasi', component: { template: '<main />' } },
       { path: '/hasil/:slug', component: { template: '<main />' } }
@@ -45,9 +46,9 @@ describe('Gandiva Labs hero', () => {
     const wrapper = await mountHero();
     const headline = wrapper.get('h1').text();
 
-    expect(headline).toContain('Partner website');
-    expect(headline).toContain('bisnis yang');
-    expect(headline).toContain('siap bertumbuh.');
+    expect(headline).toContain('Bikin bisnis');
+    expect(headline).toContain('meyakinkan');
+    expect(headline).toContain('internet');
     expect(wrapper.text()).not.toContain('01 / 04');
     expect(wrapper.text()).not.toContain('Website yang masuk akal');
     expect(wrapper.find('.hero-wordmark').exists()).toBe(false);
@@ -75,12 +76,12 @@ describe('Gandiva Labs hero', () => {
       'https://www.instagram.com/gandivalabs'
     ]);
     expect(wrapper.findAll('.hero-brand-icon')).toHaveLength(3);
-    expect(wrapper.get('.hero-benefit-card').text()).toContain('Konsultasi awal gratis');
+    expect(wrapper.get('.hero-benefit-card').text()).toContain('Konsultasi gratis');
 
     const navigation = wrapper.findAll('.hero-benefit-navigation button');
     expect(navigation).toHaveLength(2);
     await navigation[1].trigger('click');
-    expect(wrapper.get('.hero-benefit-card').text()).toContain('Biaya jelas dan terjangkau');
+    expect(wrapper.get('.hero-benefit-card').text()).toContain('Harga transparan');
 
     wrapper.unmount();
   });

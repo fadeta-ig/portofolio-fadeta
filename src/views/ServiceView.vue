@@ -92,6 +92,16 @@ const whatsappLink = computed(() => createWhatsAppLink(`Halo Gandiva Labs, saya 
             Bahas konteks Anda <ArrowRight class="h-4 w-4" />
           </RouterLink>
         </div>
+
+        <div class="mt-6 rounded-[1.75rem] border border-border-default bg-bg-card p-6 md:flex md:items-center md:justify-between md:p-8">
+          <div>
+            <p class="text-xs font-mono font-bold uppercase tracking-wider text-accent">Belum Tahu Budget & Fitur yang Sesuai?</p>
+            <h3 class="mt-1 text-lg font-bold text-text-primary">Hitung estimasi awal investasi website Anda dalam 60 detik</h3>
+          </div>
+          <RouterLink to="/kalkulator-website" class="mt-4 inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-xs font-bold text-neutral-950 md:mt-0 hover:opacity-90">
+            Coba Website Estimator <ArrowRight class="h-4 w-4" />
+          </RouterLink>
+        </div>
       </div>
     </section>
 

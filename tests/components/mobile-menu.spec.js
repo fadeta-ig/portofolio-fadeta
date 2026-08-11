@@ -22,6 +22,7 @@ function createTestRouter() {
     history: createMemoryHistory(),
     routes: [
       { path: '/', component: { template: '<main />' } },
+      { path: '/kalkulator-website', component: { template: '<main />' } },
       { path: '/portfolio', component: { template: '<main />' } },
       { path: '/konsultasi', component: { template: '<main />' } }
     ]
@@ -59,7 +60,7 @@ describe('mobile navigation dialog', () => {
 
     const dialog = document.getElementById('mobile-menu');
     expect(dialog).not.toBeNull();
-    expect(dialog.querySelectorAll('.mobile-menu-link')).toHaveLength(4);
+    expect(dialog.querySelectorAll('.mobile-menu-link')).toHaveLength(5);
     expect(dialog.querySelector('.mobile-menu-footer')).not.toBeNull();
     expect(document.getElementById('app').inert).toBe(true);
     expect(document.body.style.overflow).toBe('hidden');

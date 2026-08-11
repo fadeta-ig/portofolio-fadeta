@@ -46,18 +46,18 @@ const routeConfigs = Object.freeze({
 const defaultCopy = Object.freeze({
   kicker: 'Konsultasi gratis · 30 menit',
   headline: 'Ingin Memperbaiki Tampilan & Efektivitas Website Bisnis Anda?',
-  body: 'Mari jadwalkan diskusi 30 menit gratis. Kita bedah kebutuhan website Anda dan tentukan langkah awal yang paling tepat tanpa kewajiban apa pun.'
+  body: 'Mari jadwalkan diskusi 30 menit gratis. Kita bedah kebutuhan website Anda, baik bagi yang belum memiliki website maupun yang ingin mengembangkan yang sudah ada, dan tentukan langkah awal yang paling tepat tanpa kewajiban apa pun.'
 });
 
 const routeCopy = Object.freeze({
   solution: {
     kicker: 'Konsultasi gratis · 30 menit',
-    headline: 'Belum Yakin Bentuk Website Mana yang Paling Cocok?',
+    headline: 'Belum Yakin Solusi Website Mana yang Paling Sesuai?',
     body: 'Diskusikan kebutuhan produk Anda dalam sesi singkat 30 menit. Kita pilihkan solusi dan estimasi biaya yang paling masuk akal.'
   },
   portfolio: {
     kicker: 'Konsultasi gratis · 30 menit',
-    headline: 'Ingin Membuat Website dengan Standar Kualitas Seperti Ini?',
+    headline: 'Punya Konsep Website yang Ingin Diwujudkan dengan Standar Kualitas Seperti Ini?',
     body: 'Mari bahas konsep, kebutuhan fitur, dan jadwal pengerjaan yang sesuai dengan target bisnis Anda.'
   },
   caseStudy: {
