@@ -113,9 +113,8 @@ function showNextBenefit() {
           </div>
 
           <h1 class="hero-reveal hero-title">
-            <span>Website bisnis berkelas</span>
-            <span>yang memperjelas layanan &</span>
-            <span>mempermudah <em>penjualan.</em></span>
+            <span>Bikin bisnis Anda</span>
+            <span>meyakinkan di <em>internet.</em></span>
           </h1>
 
           <p class="hero-reveal hero-description">
