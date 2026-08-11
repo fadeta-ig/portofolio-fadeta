@@ -7,6 +7,7 @@ const root = process.cwd();
 const outputDirectory = resolve(root, 'public/og');
 const defaultOutputFile = resolve(root, 'public/og.png');
 const heroImagePath = resolve(root, 'public/gandiva-hero-editorial-v2.webp');
+const logoMarkPath = resolve(root, 'public/gandiva-mark-light.webp');
 const regularFontPath = resolve(root, 'scripts/assets/social-font/Manrope-Regular.ttf');
 const boldFontPath = resolve(root, 'scripts/assets/social-font/Manrope-Bold.ttf');
 const selectedSlug = process.argv
@@ -134,20 +135,24 @@ async function createPreview(project) {
   const titleLines = wrapText(project.title, 15, 3);
   const summaryLines = wrapText(project.summary, 42, 4);
 
-  // Pango loads `fontfile` per render. Keep these operations sequential so
-  // native font registration cannot race on Windows build runners.
+  const logoMark = await sharp(logoMarkPath)
+    .resize(40, 31, { fit: 'contain' })
+    .png()
+    .toBuffer();
+
   const brand = await createTextLayer({
-    text: 'Gandiva Labs',
+    text: 'GANDIVA LABS',
     color: '#f5f0e7',
-    fontSize: 22,
+    fontSize: 20,
     fontFile: boldFontPath,
     fontName: 'Manrope Bold',
-    width: 360
+    width: 300,
+    letterSpacing: 1.8
   });
   const category = await createTextLayer({
     text: project.category.toUpperCase(),
     color: project.accent,
-    fontSize: 15,
+    fontSize: 14,
     fontFile: boldFontPath,
     fontName: 'Manrope Bold',
     width: 430,
@@ -158,7 +163,7 @@ async function createPreview(project) {
     titleLayers.push(await createTextLayer({
       text: line,
       color: '#f5f0e7',
-      fontSize: 47,
+      fontSize: 45,
       fontFile: boldFontPath,
       fontName: 'Manrope Bold',
       width: 440
@@ -168,8 +173,8 @@ async function createPreview(project) {
   for (const line of summaryLines) {
     summaryLayers.push(await createTextLayer({
       text: line,
-      color: '#bdb5aa',
-      fontSize: 20,
+      color: '#b6aea3',
+      fontSize: 18,
       fontFile: regularFontPath,
       fontName: 'Manrope',
       width: 440
@@ -192,48 +197,47 @@ async function createPreview(project) {
     <svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stop-color="#171511"/>
-          <stop offset="0.58" stop-color="#211d18"/>
-          <stop offset="1" stop-color="#2a211b"/>
+          <stop offset="0" stop-color="#12110f"/>
+          <stop offset="0.58" stop-color="#181613"/>
+          <stop offset="1" stop-color="#211d18"/>
         </linearGradient>
         <radialGradient id="glow">
-          <stop offset="0" stop-color="${project.accent}" stop-opacity="0.36"/>
+          <stop offset="0" stop-color="${project.accent}" stop-opacity="0.32"/>
           <stop offset="1" stop-color="${project.accent}" stop-opacity="0"/>
         </radialGradient>
       </defs>
       <rect width="1200" height="630" fill="url(#background)"/>
       <circle cx="1070" cy="60" r="390" fill="url(#glow)"/>
-      <path d="M0 1H1200" stroke="${project.accent}" stroke-opacity="0.8" stroke-width="2"/>
+      <rect x="44" y="44" width="1112" height="542" rx="24" fill="none" stroke="#ffffff" stroke-opacity="0.1" stroke-width="1.5"/>
       <rect x="526" y="108" width="634" height="410" rx="26" fill="#f5f0e7"/>
       <circle cx="556" cy="133" r="5" fill="#d6654f"/>
       <circle cx="575" cy="133" r="5" fill="#d1aa7c"/>
       <circle cx="594" cy="133" r="5" fill="#8fa586"/>
       <rect x="615" y="127" width="244" height="12" rx="6" fill="#ded5c7"/>
-      <circle cx="62" cy="64" r="6" fill="${project.accent}"/>
-      <rect x="62" y="557" width="54" height="2" fill="${project.accent}"/>
     </svg>
   `);
 
   const titleTop = 168;
-  const summaryTop = titleTop + (titleLayers.length * 57) + 23;
+  const summaryTop = titleTop + (titleLayers.length * 54) + 20;
   const textComposites = [
     ...titleLayers.map((layer, index) => ({
       input: layer.data,
-      left: 62,
-      top: titleTop + (index * 57)
+      left: 64,
+      top: titleTop + (index * 54)
     })),
     ...summaryLayers.map((layer, index) => ({
       input: layer.data,
-      left: 62,
-      top: summaryTop + (index * 31)
+      left: 64,
+      top: summaryTop + (index * 28)
     }))
   ];
 
   await sharp(artwork)
     .composite([
       { input: roundedScreenshot, left: 546, top: 158 },
-      { input: brand.data, left: 79, top: 50 },
-      { input: category.data, left: 62, top: 130 },
+      { input: logoMark, left: 64, top: 60 },
+      { input: brand.data, left: 114, top: 64 },
+      { input: category.data, left: 64, top: 128 },
       ...textComposites
     ])
     .jpeg({ quality: 88, mozjpeg: true, chromaSubsampling: '4:4:4' })
@@ -253,109 +257,156 @@ async function createPreview(project) {
 }
 
 async function createDefaultPreview() {
+  const logoMark = await sharp(logoMarkPath)
+    .resize(46, 35, { fit: 'contain' })
+    .png()
+    .toBuffer();
+
   const brand = await createTextLayer({
-    text: 'Gandiva Labs',
-    color: '#f7f3ec',
+    text: 'GANDIVA LABS',
+    color: '#f5f0e7',
     fontSize: 22,
     fontFile: boldFontPath,
     fontName: 'Manrope Bold',
-    width: 260
+    width: 280,
+    letterSpacing: 2.0
   });
-  const eyebrow = await createTextLayer({
-    text: 'WEBSITE STUDIO',
+
+  const category = await createTextLayer({
+    text: 'WEBSITE STUDIO & DIGITAL ESTIMATOR',
     color: '#ee8859',
-    fontSize: 14,
+    fontSize: 13,
     fontFile: boldFontPath,
     fontName: 'Manrope Bold',
-    width: 320,
-    letterSpacing: 2.8
+    width: 480,
+    letterSpacing: 2.5
   });
-  const titleLines = ['Partner website', 'untuk bisnis yang', 'siap bertumbuh.'];
+
+  const titleLines = ['Partner Website Bisnis', 'dengan Standar', 'Desain Tinggi.'];
   const titleLayers = [];
   for (const line of titleLines) {
     titleLayers.push(await createTextLayer({
       text: line,
-      color: line === 'siap bertumbuh.' ? '#ee8859' : '#f7f3ec',
-      fontSize: 56,
+      color: line === 'Desain Tinggi.' ? '#ee8859' : '#f5f0e7',
+      fontSize: 50,
       fontFile: boldFontPath,
       fontName: 'Manrope Bold',
+      width: 630
+    }));
+  }
+
+  const descText = 'Membangun website bisnis modern, cepat, & terpercaya. Dilengkapi Smart Estimator interaktif dan garansi maintenance.';
+  const descLines = wrapText(descText, 45, 3);
+  const descLayers = [];
+  for (const line of descLines) {
+    descLayers.push(await createTextLayer({
+      text: line,
+      color: '#b6aea3',
+      fontSize: 17,
+      fontFile: regularFontPath,
+      fontName: 'Manrope',
       width: 610
     }));
   }
-  const description = await createTextLayer({
-    text: 'Website yang memperjelas nilai bisnis dan mengarahkan calon pelanggan untuk bertindak.',
-    color: '#c7c3bb',
-    fontSize: 18,
-    fontFile: regularFontPath,
-    fontName: 'Manrope',
-    width: 540,
-    spacing: 3
-  });
-  const cardLabel = await createTextLayer({
-    text: 'KEUNGGULAN GANDIVA',
-    color: '#c9c5bf',
-    fontSize: 11,
-    fontFile: boldFontPath,
-    fontName: 'Manrope Bold',
-    width: 220,
-    letterSpacing: 1.6
-  });
-  const cardTitle = await createTextLayer({
-    text: 'Konsultasi awal gratis',
-    color: '#ffffff',
-    fontSize: 19,
-    fontFile: boldFontPath,
-    fontName: 'Manrope Bold',
-    width: 235
-  });
+
+  // 4 Key Offerings Cards (2x2 Grid Pills on the Right side)
+  const offers = [
+    { title: 'ESTIMASI SEKETIKA', detail: 'Hitung Biaya 30–60 Detik', accent: '#ee8859' },
+    { title: 'MAINTENANCE 6 BLN', detail: 'Garansi Technical Support', accent: '#f5f0e7' },
+    { title: 'MONITORING 24/7', detail: 'Server & Keamanan Uptime', accent: '#f5f0e7' },
+    { title: 'GRATIS DOMAIN', detail: 'Include .com / .my.id', accent: '#ee8859' }
+  ];
+
+  const offerLayers = [];
+  for (const o of offers) {
+    const titleL = await createTextLayer({
+      text: o.title,
+      color: o.accent,
+      fontSize: 11,
+      fontFile: boldFontPath,
+      fontName: 'Manrope Bold',
+      width: 320,
+      letterSpacing: 1.5
+    });
+    const detailL = await createTextLayer({
+      text: o.detail,
+      color: '#f5f0e7',
+      fontSize: 14,
+      fontFile: boldFontPath,
+      fontName: 'Manrope Bold',
+      width: 320
+    });
+    offerLayers.push({ title: titleL, detail: detailL });
+  }
 
   const backdrop = await sharp(heroImagePath)
     .resize(1200, 630, { fit: 'cover', position: 'right' })
-    .modulate({ brightness: 0.7, saturation: 0.78 })
+    .modulate({ brightness: 0.35, saturation: 0.75 })
     .png()
     .toBuffer();
+
   const artwork = Buffer.from(`
     <svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <linearGradient id="leftShadow" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0" stop-color="#060708" stop-opacity="0.99"/>
-          <stop offset="0.56" stop-color="#070809" stop-opacity="0.86"/>
-          <stop offset="1" stop-color="#070809" stop-opacity="0"/>
+        <linearGradient id="darkBg" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#12110f" stop-opacity="0.99"/>
+          <stop offset="58%" stop-color="#181613" stop-opacity="0.94"/>
+          <stop offset="100%" stop-color="#12110f" stop-opacity="0.75"/>
         </linearGradient>
-        <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stop-color="#ffffff" stop-opacity="0.24"/>
-          <stop offset="1" stop-color="#ffffff" stop-opacity="0.08"/>
-        </linearGradient>
-        <linearGradient id="icon" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stop-color="#ffe3ca"/>
-          <stop offset="1" stop-color="#d77543"/>
-        </linearGradient>
+        <radialGradient id="glowR" cx="85%" cy="25%" r="65%">
+          <stop offset="0%" stop-color="#ee8859" stop-opacity="0.32"/>
+          <stop offset="100%" stop-color="#12110f" stop-opacity="0"/>
+        </radialGradient>
       </defs>
-      <rect width="1200" height="630" fill="url(#leftShadow)"/>
-      <rect x="48" y="34" width="1104" height="64" rx="22" fill="url(#glass)" stroke="#ffffff" stroke-opacity="0.28"/>
-      <rect x="64" y="49" width="34" height="34" rx="12" fill="#f7f3ec"/>
-      <path d="M73 66c5-8 12-8 16 0-4 7-11 7-16 0Z" fill="#171511"/>
-      <path d="M448 65h62M536 65h48M622 65h72" stroke="#f7f3ec" stroke-opacity="0.58" stroke-width="3" stroke-linecap="round"/>
-      <rect x="942" y="46" width="176" height="40" rx="20" fill="#f7f3ec"/>
-      <circle cx="970" cy="66" r="7" fill="none" stroke="#171511" stroke-width="2"/>
-      <rect x="764" y="448" width="356" height="132" rx="26" fill="url(#glass)" stroke="#ffffff" stroke-opacity="0.28"/>
-      <rect x="780" y="464" width="88" height="100" rx="17" fill="url(#icon)" stroke="#ffffff" stroke-opacity="0.45"/>
-      <path d="M813 502c-7 0-13 5-13 12 0 4 1 7 4 10l-2 9 9-4c2 1 5 2 8 2 8 0 14-6 14-14s-6-15-14-15Z" fill="none" stroke="#2b160e" stroke-width="3" stroke-linejoin="round"/>
-      <circle cx="1064" cy="538" r="17" fill="#ffffff" fill-opacity="0.85"/>
-      <path d="M1068 532l6 6-6 6M1053 538h20" stroke="#171511" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+      <rect width="1200" height="630" fill="url(#darkBg)"/>
+      <rect width="1200" height="630" fill="url(#glowR)"/>
+
+      <!-- Ambient Glass Outer Frame -->
+      <rect x="44" y="44" width="1112" height="542" rx="24" fill="none" stroke="#ffffff" stroke-opacity="0.12" stroke-width="1.5"/>
+
+      <!-- Divider line -->
+      <line x1="710" y1="110" x2="710" y2="520" stroke="#ffffff" stroke-opacity="0.1" stroke-width="1.5" stroke-dasharray="6 6"/>
+
+      <!-- Right Column: 4 Value Cards Containers -->
+      <!-- Card 1 -->
+      <rect x="740" y="130" width="370" height="85" rx="16" fill="#1b1916" fill-opacity="0.85" stroke="#ee8859" stroke-opacity="0.35" stroke-width="1.5"/>
+      <!-- Card 2 -->
+      <rect x="740" y="230" width="370" height="85" rx="16" fill="#1b1916" fill-opacity="0.85" stroke="#ffffff" stroke-opacity="0.12" stroke-width="1.5"/>
+      <!-- Card 3 -->
+      <rect x="740" y="330" width="370" height="85" rx="16" fill="#1b1916" fill-opacity="0.85" stroke="#ffffff" stroke-opacity="0.12" stroke-width="1.5"/>
+      <!-- Card 4 -->
+      <rect x="740" y="430" width="370" height="85" rx="16" fill="#1b1916" fill-opacity="0.85" stroke="#ee8859" stroke-opacity="0.35" stroke-width="1.5"/>
     </svg>
   `);
 
+  const titleTop = 185;
+  const descTop = titleTop + (titleLayers.length * 56) + 16;
+
+  const composites = [
+    { input: artwork },
+    { input: logoMark, left: 74, top: 68 },
+    { input: brand.data, left: 130, top: 72 },
+    { input: category.data, left: 74, top: 140 },
+    ...titleLayers.map((layer, index) => ({ input: layer.data, left: 74, top: titleTop + (index * 56) })),
+    ...descLayers.map((layer, index) => ({ input: layer.data, left: 74, top: descTop + (index * 26) })),
+
+    // Offer Card 1
+    { input: offerLayers[0].title.data, left: 765, top: 148 },
+    { input: offerLayers[0].detail.data, left: 765, top: 173 },
+    // Offer Card 2
+    { input: offerLayers[1].title.data, left: 765, top: 248 },
+    { input: offerLayers[1].detail.data, left: 765, top: 273 },
+    // Offer Card 3
+    { input: offerLayers[2].title.data, left: 765, top: 348 },
+    { input: offerLayers[2].detail.data, left: 765, top: 373 },
+    // Offer Card 4
+    { input: offerLayers[3].title.data, left: 765, top: 448 },
+    { input: offerLayers[3].detail.data, left: 765, top: 473 }
+  ];
+
   await sharp(backdrop)
-    .composite([
-      { input: artwork },
-      { input: brand.data, left: 112, top: 55 },
-      { input: eyebrow.data, left: 66, top: 142 },
-      ...titleLayers.map((layer, index) => ({ input: layer.data, left: 62, top: 180 + (index * 64) })),
-      { input: description.data, left: 64, top: 402 },
-      { input: cardLabel.data, left: 886, top: 470 },
-      { input: cardTitle.data, left: 886, top: 497 }
-    ])
+    .composite(composites)
     .png({ compressionLevel: 9, palette: true, quality: 90 })
     .toFile(defaultOutputFile);
 

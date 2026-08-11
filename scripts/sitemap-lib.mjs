@@ -48,13 +48,35 @@ export function collectCanonicalUrls(records, expectedOrigin) {
   });
 }
 
-export function buildSitemap(urls) {
+export function getUrlPriorityAndFrequency(url) {
+  const pathname = new URL(url).pathname;
+  if (pathname === '/') return { priority: '1.0', changefreq: 'weekly' };
+  if (pathname === '/kalkulator-website' || pathname === '/portfolio' || pathname === '/konsultasi') {
+    return { priority: '0.9', changefreq: 'weekly' };
+  }
+  if (pathname.startsWith('/solusi/') || pathname.startsWith('/hasil/')) {
+    return { priority: '0.8', changefreq: 'monthly' };
+  }
+  return { priority: '0.3', changefreq: 'yearly' };
+}
+
+export function buildSitemap(urls, lastmodDate = new Date().toISOString().split('T')[0]) {
   if (!urls.length) throw new Error('Tidak ada halaman publik untuk dimasukkan ke sitemap.');
 
   return [
     '<?xml version="1.0" encoding="UTF-8"?>',
     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-    ...urls.map((url) => `  <url>\n    <loc>${escapeXml(url)}</loc>\n  </url>`),
+    ...urls.map((url) => {
+      const { priority, changefreq } = getUrlPriorityAndFrequency(url);
+      return [
+        '  <url>',
+        `    <loc>${escapeXml(url)}</loc>`,
+        `    <lastmod>${lastmodDate}</lastmod>`,
+        `    <changefreq>${changefreq}</changefreq>`,
+        `    <priority>${priority}</priority>`,
+        '  </url>'
+      ].join('\n');
+    }),
     '</urlset>',
     ''
   ].join('\n');

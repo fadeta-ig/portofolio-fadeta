@@ -18,6 +18,40 @@ function breadcrumb(items) {
   };
 }
 
+const homeFaqs = [
+  {
+    question: 'Berapa biaya pembuatan website?',
+    answer: 'Biaya mengikuti jenis website (Landing Page start 750k, Company Profile start 1.8M, Toko Online start 3.5M, Custom Web App start 2M), jumlah halaman, dan fitur add-on yang dipilih.'
+  },
+  {
+    question: 'Berapa lama proses pengerjaannya?',
+    answer: 'Proses pengerjaan berkisar antara 1–2 minggu untuk Landing Page dan Company Profile, hingga 3–4 minggu untuk Toko Online dan Sistem Custom.'
+  },
+  {
+    question: 'Apakah sudah termasuk domain, hosting, dan maintenance?',
+    answer: 'Ya, setiap paket proyek Gandiva Labs menyertakan Gratis Domain (.com / .my.id), Bantuan Setup Hosting 100%, Free Maintenance & Bug Fixes 6 Bulan, dan Monitoring 24/7.'
+  },
+  {
+    question: 'Kalau belum punya materi atau susunan konten?',
+    answer: 'Gandiva Labs membantu menyusun struktur pesan utama, copywriting ringkasan bisnis, dan tata letak halaman tanpa membuat Anda kebingungan.'
+  }
+];
+
+function faqSchema(canonicalUrl) {
+  return {
+    '@type': 'FAQPage',
+    '@id': `${canonicalUrl}#faq`,
+    mainEntity: homeFaqs.map((faq) => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.answer
+      }
+    }))
+  };
+}
+
 function routeSchema(route, canonicalUrl, title, description) {
   const basePage = {
     '@type': route.name === 'portfolio' ? 'CollectionPage' : route.name === 'consultation' ? 'ContactPage' : 'WebPage',
@@ -74,7 +108,37 @@ function routeSchema(route, canonicalUrl, title, description) {
     ];
   }
 
-  if (route.name === 'home') return [];
+  if (route.name === 'estimator') {
+    return [
+      basePage,
+      {
+        '@type': 'WebApplication',
+        '@id': `${canonicalUrl}#app`,
+        name: 'Smart Website Estimator — Gandiva Labs',
+        description,
+        url: canonicalUrl,
+        applicationCategory: 'BusinessApplication',
+        operatingSystem: 'All',
+        browserRequirements: 'Requires JavaScript. Requires HTML5.',
+        offers: {
+          '@type': 'Offer',
+          price: '0',
+          priceCurrency: 'IDR'
+        },
+        provider: { '@id': `${siteUrl}/#organization` }
+      },
+      faqSchema(canonicalUrl),
+      breadcrumb([
+        { name: 'Beranda', url: `${siteUrl}/` },
+        { name: 'Kalkulator Website', url: canonicalUrl }
+      ])
+    ];
+  }
+
+  if (route.name === 'home') {
+    return [basePage, faqSchema(canonicalUrl)];
+  }
+
   return [basePage, breadcrumb([
     { name: 'Beranda', url: `${siteUrl}/` },
     { name: title.split('|')[0].trim(), url: canonicalUrl }
