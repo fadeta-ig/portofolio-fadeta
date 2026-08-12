@@ -24,8 +24,8 @@ export const featuredProjects = [
     image: shinyoungImg,
     socialImage: '/og/shinyoung-beauty.jpg',
     socialImageAlt: 'Studi kasus Shinyoung Beauty oleh Gandiva Labs dengan tampilan toko online kecantikan.',
-    width: 1672,
-    height: 939
+    width: 960,
+    height: 540
   },
   {
     id: '02',
@@ -47,8 +47,8 @@ export const featuredProjects = [
     image: mahakaryaImg,
     socialImage: '/og/mahakarya-kosmetika.jpg',
     socialImageAlt: 'Studi kasus Mahakarya Kosmetika oleh Gandiva Labs dengan tampilan website manufaktur kosmetik.',
-    width: 1672,
-    height: 939
+    width: 960,
+    height: 540
   },
   {
     id: '03',
@@ -70,8 +70,8 @@ export const featuredProjects = [
     image: wijayaImg,
     socialImage: '/og/wijaya-inovasi.jpg',
     socialImageAlt: 'Studi kasus Wijaya Inovasi oleh Gandiva Labs dengan tampilan company profile manufaktur.',
-    width: 1672,
-    height: 939
+    width: 960,
+    height: 540
   },
   {
     id: '04',
@@ -93,8 +93,8 @@ export const featuredProjects = [
     image: ktiaImg,
     socialImage: '/og/karya-teknik-internusa-abadi.jpg',
     socialImageAlt: 'Studi kasus Karya Teknik Internusa Abadi oleh Gandiva Labs dengan tampilan website galangan kapal.',
-    width: 1672,
-    height: 939
+    width: 960,
+    height: 540
   }
 ];
 

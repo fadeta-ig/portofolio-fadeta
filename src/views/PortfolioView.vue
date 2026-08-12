@@ -33,9 +33,17 @@ const iconMap = {
   warehouse: PackageSearch
 };
 
+let scrollTicking = false;
+
 function updateScrollProgress() {
-  const height = document.documentElement.scrollHeight - window.innerHeight;
-  scrollProgress.value = height > 0 ? Math.min((window.scrollY / height) * 100, 100) : 0;
+  if (!scrollTicking) {
+    requestAnimationFrame(() => {
+      const height = document.documentElement.scrollHeight - window.innerHeight;
+      scrollProgress.value = height > 0 ? Math.min((window.scrollY / height) * 100, 100) : 0;
+      scrollTicking = false;
+    });
+    scrollTicking = true;
+  }
 }
 
 onMounted(() => {

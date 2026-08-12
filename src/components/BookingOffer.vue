@@ -139,17 +139,24 @@ function evaluateTrigger({ exitIntent = false } = {}) {
   }
 }
 
-function handleScroll() {
-  if (!triggerConfig || hasShownInMemory) return;
-  const documentHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
-  const progress = documentHeight > 0
-    ? (window.scrollY + window.innerHeight) / documentHeight
-    : 0;
+let scrollTicking = false;
 
-  if (progress >= triggerConfig.scrollProgress) {
-    scrollReached = true;
-    evaluateTrigger();
-  }
+function handleScroll() {
+  if (!triggerConfig || hasShownInMemory || scrollTicking) return;
+  scrollTicking = true;
+  requestAnimationFrame(() => {
+    scrollTicking = false;
+    if (!triggerConfig || hasShownInMemory) return;
+    const documentHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
+    const progress = documentHeight > 0
+      ? (window.scrollY + window.innerHeight) / documentHeight
+      : 0;
+
+    if (progress >= triggerConfig.scrollProgress) {
+      scrollReached = true;
+      evaluateTrigger();
+    }
+  });
 }
 
 function handleExitIntent(event) {

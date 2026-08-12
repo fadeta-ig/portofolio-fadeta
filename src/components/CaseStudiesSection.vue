@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 import { ArrowDown, ArrowRight, ArrowUpRight } from '@lucide/vue';
 import { useGsapScrollReveal } from '../composables/useGsapScrollReveal';
 import { featuredProjects } from '../data/projects';
@@ -7,28 +7,48 @@ import { featuredProjects } from '../data/projects';
 const sectionRef = ref(null);
 const portfolioScrollRef = ref(null);
 const activeProjectIndex = ref(0);
+let cardObserver = null;
 
 useGsapScrollReveal(sectionRef, { y: 30, stagger: 0.08, duration: 0.75, triggerStart: 'top 84%', once: true });
 
-function updateActiveProject() {
+function setupCardObserver() {
+  if (cardObserver) cardObserver.disconnect();
   const container = portfolioScrollRef.value;
   if (!container) return;
 
-  const containerTop = container.getBoundingClientRect().top;
   const cards = Array.from(container.querySelectorAll('[data-project-card]'));
-  let closestIndex = 0;
-  let closestDistance = Number.POSITIVE_INFINITY;
+  if (!cards.length) return;
 
-  cards.forEach((card, index) => {
-    const distance = Math.abs(card.getBoundingClientRect().top - containerTop);
-    if (distance < closestDistance) {
-      closestDistance = distance;
-      closestIndex = index;
+  cardObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const index = cards.indexOf(entry.target);
+          if (index !== -1) {
+            activeProjectIndex.value = index;
+          }
+        }
+      });
+    },
+    {
+      root: container,
+      threshold: 0.55
     }
-  });
+  );
 
-  activeProjectIndex.value = closestIndex;
+  cards.forEach((card) => cardObserver.observe(card));
 }
+
+onMounted(() => {
+  setupCardObserver();
+});
+
+onUnmounted(() => {
+  if (cardObserver) {
+    cardObserver.disconnect();
+    cardObserver = null;
+  }
+});
 
 function scrollToProject(index) {
   const container = portfolioScrollRef.value;
@@ -88,7 +108,6 @@ function scrollToProject(index) {
           role="region"
           aria-label="Daftar proyek pilihan. Gulir ke bawah untuk berpindah proyek."
           tabindex="0"
-          @scroll.passive="updateActiveProject"
         >
           <article
             v-for="project in featuredProjects"

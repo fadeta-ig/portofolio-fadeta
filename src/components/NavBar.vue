@@ -108,19 +108,41 @@ function handleViewportChange() {
   if (window.innerWidth >= 1024 && isMobileMenuOpen.value) {
     closeMobileMenu();
   }
-  updateHeroNavState();
 }
 
-function updateHeroNavState() {
+let heroObserver = null;
+
+function setupHeroObserver() {
+  if (heroObserver) {
+    heroObserver.disconnect();
+    heroObserver = null;
+  }
+
   if (route.path !== '/') {
     isHeroNav.value = false;
     return;
   }
 
   const hero = document.getElementById('hero');
-  isHeroNav.value = hero
-    ? hero.getBoundingClientRect().bottom > 104
-    : window.scrollY < 120;
+  if (!hero) {
+    isHeroNav.value = window.scrollY < 120;
+    return;
+  }
+
+  heroObserver = new IntersectionObserver(
+    (entries) => {
+      const entry = entries[0];
+      if (entry) {
+        isHeroNav.value = entry.isIntersecting;
+      }
+    },
+    {
+      rootMargin: '-104px 0px 0px 0px',
+      threshold: 0
+    }
+  );
+
+  heroObserver.observe(hero);
 }
 
 watch(isMobileMenuOpen, async (isOpen) => {
@@ -154,19 +176,18 @@ watch(isMobileMenuOpen, async (isOpen) => {
 
 watch(() => route.path, async () => {
   await nextTick();
-  updateHeroNavState();
+  setupHeroObserver();
 });
 
 onMounted(() => {
   window.addEventListener('resize', handleViewportChange, { passive: true });
-  window.addEventListener('scroll', updateHeroNavState, { passive: true });
-  updateHeroNavState();
-
+  setupHeroObserver();
 });
 
 onUnmounted(() => {
   window.removeEventListener('resize', handleViewportChange);
-  window.removeEventListener('scroll', updateHeroNavState);
+  heroObserver?.disconnect();
+  heroObserver = null;
   document.getElementById('app')?.removeAttribute('inert');
   document.body.style.overflow = previousBodyOverflow;
 });
