@@ -1,7 +1,11 @@
 import shinyoungImg from '../assets/screenshots/shinyoung.webp';
+import shinyoungMobileImg from '../assets/screenshots/shinyoung-mobile.webp';
 import mahakaryaImg from '../assets/screenshots/mahakarya.webp';
+import mahakaryaMobileImg from '../assets/screenshots/mahakarya-mobile.webp';
 import wijayaImg from '../assets/screenshots/wijaya.webp';
+import wijayaMobileImg from '../assets/screenshots/wijaya-mobile.webp';
 import ktiaImg from '../assets/screenshots/ktia.webp';
+import ktiaMobileImg from '../assets/screenshots/ktia-mobile.webp';
 
 export const featuredProjects = [
   {
@@ -22,6 +26,7 @@ export const featuredProjects = [
     contribution: ['WordPress', 'WooCommerce', 'Custom AI plugin'],
     link: 'https://shinyoungbeauty.com/',
     image: shinyoungImg,
+    imageMobile: shinyoungMobileImg,
     socialImage: '/og/shinyoung-beauty.jpg',
     socialImageAlt: 'Studi kasus Shinyoung Beauty oleh Gandiva Labs dengan tampilan toko online kecantikan.',
     width: 960,
@@ -45,6 +50,7 @@ export const featuredProjects = [
     contribution: ['Strategi halaman', 'WordPress', 'Pengembangan web'],
     link: 'https://mahakaryakosmetika.co.id/',
     image: mahakaryaImg,
+    imageMobile: mahakaryaMobileImg,
     socialImage: '/og/mahakarya-kosmetika.jpg',
     socialImageAlt: 'Studi kasus Mahakarya Kosmetika oleh Gandiva Labs dengan tampilan website manufaktur kosmetik.',
     width: 960,
@@ -68,6 +74,7 @@ export const featuredProjects = [
     contribution: ['Arsitektur konten', 'WordPress', 'SEO on-page dasar'],
     link: 'https://wijayainovasi.co.id/',
     image: wijayaImg,
+    imageMobile: wijayaMobileImg,
     socialImage: '/og/wijaya-inovasi.jpg',
     socialImageAlt: 'Studi kasus Wijaya Inovasi oleh Gandiva Labs dengan tampilan company profile manufaktur.',
     width: 960,
@@ -91,6 +98,7 @@ export const featuredProjects = [
     contribution: ['Arsitektur konten', 'Company profile', 'Pengembangan web'],
     link: null,
     image: ktiaImg,
+    imageMobile: ktiaMobileImg,
     socialImage: '/og/karya-teknik-internusa-abadi.jpg',
     socialImageAlt: 'Studi kasus Karya Teknik Internusa Abadi oleh Gandiva Labs dengan tampilan website galangan kapal.',
     width: 960,

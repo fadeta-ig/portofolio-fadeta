@@ -9,7 +9,7 @@ export default defineConfig({
     tailwindcss(),
   ],
   build: {
-    cssCodeSplit: true,
+    cssCodeSplit: false,
     rollupOptions: {
       output: {
         manualChunks(id) {

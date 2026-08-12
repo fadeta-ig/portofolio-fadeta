@@ -116,7 +116,17 @@ function scrollToProject(index) {
             class="liquid-panel group grid h-full min-h-full shrink-0 snap-start snap-always overflow-hidden rounded-[1.6rem] border border-border-default bg-bg-card shadow-[var(--shadow-sm)] md:grid-cols-[1.12fr_0.88fr]"
           >
             <RouterLink :to="`/hasil/${project.slug}`" class="block aspect-[16/10] overflow-hidden bg-bg-tertiary sm:aspect-[16/9] md:aspect-auto md:h-full" :aria-label="`Baca studi kasus ${project.title}`">
-              <img :src="project.image" :alt="`Tampilan website ${project.title}`" :width="project.width" :height="project.height" loading="lazy" decoding="async" class="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.025]" />
+              <img
+                :src="project.image"
+                :srcset="project.imageMobile ? `${project.imageMobile} 640w, ${project.image} 960w` : undefined"
+                sizes="(max-width: 768px) 90vw, 792px"
+                :alt="`Tampilan website ${project.title}`"
+                :width="project.width"
+                :height="project.height"
+                loading="lazy"
+                decoding="async"
+                class="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.025]"
+              />
             </RouterLink>
             <div class="flex min-h-0 flex-col justify-center p-6 md:p-8 lg:p-10">
               <p class="text-[10px] font-bold uppercase tracking-[0.14em] text-accent">{{ project.category }}</p>

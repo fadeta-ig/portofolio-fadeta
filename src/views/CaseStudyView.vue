@@ -29,7 +29,16 @@ const project = computed(() => featuredProjects.find((item) => item.slug === rou
         </div>
 
         <div class="liquid-panel mt-14 overflow-hidden rounded-[1.75rem] border border-border-default bg-bg-secondary shadow-[var(--shadow-sm)]">
-          <img :src="project.image" :alt="`Tampilan website ${project.title}`" :width="project.width" :height="project.height" class="w-full object-cover object-top" decoding="async" />
+          <img
+            :src="project.image"
+            :srcset="project.imageMobile ? `${project.imageMobile} 640w, ${project.image} 960w` : undefined"
+            sizes="(max-width: 768px) 100vw, 1200px"
+            :alt="`Tampilan website ${project.title}`"
+            :width="project.width"
+            :height="project.height"
+            class="w-full object-cover object-top"
+            decoding="async"
+          />
         </div>
       </div>
     </section>
