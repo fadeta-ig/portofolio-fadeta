@@ -392,8 +392,10 @@ if (existsSync(scrollRevealFile)) {
   check(revealSource.includes('IntersectionObserver'), 'Animasi scroll belum ditunda hingga section terlihat.');
 }
 
-const themeScriptMatch = sourceIndex.match(/<script>([\s\S]*?)<\/script>/);
-check(Boolean(themeScriptMatch), 'Theme boot script sebelum Vue tidak ditemukan.');
+const distIndexFile = resolve(dist, 'index.html');
+const distIndex = existsSync(distIndexFile) ? readFileSync(distIndexFile, 'utf8') : '';
+const themeScriptMatch = distIndex.match(/<script>([\s\S]*?)<\/script>/);
+check(Boolean(themeScriptMatch), 'Theme boot script sebelum Vue tidak ditemukan di hasil prerender.');
 const themeScript = themeScriptMatch?.[1] ?? '';
 const themeHash = `sha256-${createHash('sha256').update(themeScript).digest('base64')}`;
 check(themeScript.includes('gandiva-theme'), 'Theme boot script tidak membaca preferensi tersimpan.');
