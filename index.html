@@ -1,58 +1,62 @@
 <!doctype html>
 <html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="google-site-verification" content="eZ4UGHZvXttkQjf2Q3YiSMjk3Vlxv-pen8Hn4R32rVA" />
-    <link rel="icon" href="/favicon.ico" sizes="32x32 48x48" />
-    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
-    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link rel="manifest" href="/site.webmanifest" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Gandiva Labs adalah jasa pembuatan website bisnis yang membantu memperjelas nilai usaha, membangun kepercayaan, dan mendorong calon pelanggan bertindak." />
-    <meta name="author" content="Gandiva Labs" />
-    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-    <meta name="theme-color" content="#eef1ef" />
-    <script>
-      (() => {
-        const root = document.documentElement;
-        const themeColor = document.querySelector('meta[name="theme-color"]');
-        let storedTheme = null;
-        try {
-          storedTheme = window.localStorage.getItem('gandiva-theme');
-        } catch {}
-        const isDark = storedTheme === 'dark'
-          || (storedTheme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches);
-        root.dataset.theme = isDark ? 'dark' : 'light';
-        root.style.colorScheme = isDark ? 'dark' : 'light';
-        if (themeColor) themeColor.content = isDark ? '#12110f' : '#eef1ef';
-      })();
-    </script>
 
-    <meta property="og:type" content="website" />
-    <meta property="og:locale" content="id_ID" />
-    <meta property="og:site_name" content="Gandiva Labs" />
-    <meta property="og:title" content="Jasa Pembuatan Website Bisnis | Gandiva Labs" />
-    <meta property="og:description" content="Website bisnis yang memperjelas nilai usaha, membangun kepercayaan, dan mendorong calon pelanggan bertindak." />
-    <meta property="og:url" content="https://www.gandivalabs.my.id/" />
-    <meta property="og:image" content="https://www.gandivalabs.my.id/og.png" />
-    <meta property="og:image:secure_url" content="https://www.gandivalabs.my.id/og.png" />
-    <meta property="og:image:type" content="image/png" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Gandiva Labs — jasa pembuatan website bisnis." />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="google-site-verification" content="eZ4UGHZvXttkQjf2Q3YiSMjk3Vlxv-pen8Hn4R32rVA" />
+  <link rel="icon" href="/favicon.ico" sizes="32x32 48x48" />
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="Gandiva Labs adalah jasa pembuatan website bisnis yang membantu memperjelas nilai usaha, membangun kepercayaan, dan mendorong calon pelanggan bertindak." />
+  <meta name="author" content="Gandiva Labs" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <meta name="theme-color" content="#eef1ef" />
+  <script>
+    (() => {
+      const root = document.documentElement;
+      const themeColor = document.querySelector('meta[name="theme-color"]');
+      let storedTheme = null;
+      try {
+        storedTheme = window.localStorage.getItem('gandiva-theme');
+      } catch { }
+      const isDark = storedTheme === 'dark'
+        || (storedTheme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+      root.dataset.theme = isDark ? 'dark' : 'light';
+      root.style.colorScheme = isDark ? 'dark' : 'light';
+      if (themeColor) themeColor.content = isDark ? '#12110f' : '#eef1ef';
+    })();
+  </script>
 
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@gandivalabs" />
-    <meta name="twitter:title" content="Jasa Pembuatan Website Bisnis | Gandiva Labs" />
-    <meta name="twitter:description" content="Website bisnis yang memperjelas nilai usaha, membangun kepercayaan, dan mendorong calon pelanggan bertindak." />
-    <meta name="twitter:image" content="https://www.gandivalabs.my.id/og.png" />
-    <meta name="twitter:image:alt" content="Gandiva Labs — jasa pembuatan website bisnis." />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="id_ID" />
+  <meta property="og:site_name" content="Gandiva Labs" />
+  <meta property="og:title" content="Jasa Pembuatan Website Bisnis | Gandiva Labs" />
+  <meta property="og:description"
+    content="Website bisnis yang memperjelas nilai usaha, membangun kepercayaan, dan mendorong calon pelanggan bertindak." />
+  <meta property="og:url" content="https://www.gandivalabs.my.id/" />
+  <meta property="og:image" content="https://www.gandivalabs.my.id/og.png" />
+  <meta property="og:image:secure_url" content="https://www.gandivalabs.my.id/og.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Gandiva Labs — jasa pembuatan website bisnis." />
 
-    <link rel="canonical" href="https://www.gandivalabs.my.id/" />
-    <title>Jasa Pembuatan Website Bisnis | Gandiva Labs</title>
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@gandivalabs" />
+  <meta name="twitter:title" content="Jasa Pembuatan Website Bisnis | Gandiva Labs" />
+  <meta name="twitter:description"
+    content="Website bisnis yang memperjelas nilai usaha, membangun kepercayaan, dan mendorong calon pelanggan bertindak." />
+  <meta name="twitter:image" content="https://www.gandivalabs.my.id/og.png" />
+  <meta name="twitter:image:alt" content="Gandiva Labs — jasa pembuatan website bisnis." />
 
-    <script type="application/ld+json">
+  <link rel="canonical" href="https://www.gandivalabs.my.id/" />
+  <title>Jasa Pembuatan Website Bisnis | Gandiva Labs</title>
+
+  <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@graph": [
@@ -92,23 +96,23 @@
             "telephone": "+62-851-1714-8742",
             "address": {
               "@type": "PostalAddress",
-              "streetAddress": "[DIISI-OWNER: jalan + nomor]",
-              "addressLocality": "Surabaya",
+              "streetAddress": "Jl Cipunegara Kaweron, Talun",
+              "addressLocality": "Blitar - Surabaya",
               "addressRegion": "Jawa Timur",
-              "postalCode": "[DIISI-OWNER: kode pos]",
+              "postalCode": "66183",
               "addressCountry": "ID"
             },
             "geo": {
               "@type": "GeoCoordinates",
-              "latitude": "[DIISI-OWNER: latitude]",
-              "longitude": "[DIISI-OWNER: longitude]"
+              "latitude": "-8.1333",
+              "longitude": "112.1833"
             },
             "openingHoursSpecification": [
               {
                 "@type": "OpeningHoursSpecification",
-                "dayOfWeek": "[DIISI-OWNER: hari operasional]",
-                "opens": "[DIISI-OWNER: jam buka]",
-                "closes": "[DIISI-OWNER: jam tutup]"
+                "dayOfWeek": "Senin-Sabtu",
+                "opens": "08.00",
+                "closes": "21.00"
               }
             ],
             "areaServed": [
@@ -116,7 +120,7 @@
               { "@type": "City", "name": "Surabaya" },
               { "@type": "State", "name": "Jawa Timur" }
             ],
-            "hasMap": "[DIISI-OWNER: URL Google Maps / Google Business Profile]",
+            "hasMap": "https://share.google/NfMMJnOxszgWd3lnO",
             "sameAs": [
               "https://github.com/fadeta-ig",
               "https://www.linkedin.com/in/fadetaig",
@@ -138,13 +142,16 @@
       }
     </script>
 
-    <link rel="preconnect" href="https://challenges.cloudflare.com" crossorigin />
-    <link rel="dns-prefetch" href="https://challenges.cloudflare.com" />
+  <link rel="preconnect" href="https://challenges.cloudflare.com" crossorigin />
+  <link rel="dns-prefetch" href="https://challenges.cloudflare.com" />
 
-    <link rel="preload" href="/fonts/instrument-serif/instrument-serif-italic-latin-v5.woff2" as="font" type="font/woff2" crossorigin />
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+  <link rel="preload" href="/fonts/instrument-serif/instrument-serif-italic-latin-v5.woff2" as="font" type="font/woff2"
+    crossorigin />
+</head>
+
+<body>
+  <div id="app"></div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+
 </html>
