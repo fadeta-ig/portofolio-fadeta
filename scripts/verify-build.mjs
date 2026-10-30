@@ -1,4 +1,3 @@
-import { createHash } from 'node:crypto';
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { extname, join, resolve } from 'node:path';
 import sharp from 'sharp';
@@ -394,15 +393,24 @@ if (existsSync(scrollRevealFile)) {
 
 const distIndexFile = resolve(dist, 'index.html');
 const distIndex = existsSync(distIndexFile) ? readFileSync(distIndexFile, 'utf8') : '';
-const themeScriptMatch = distIndex.match(/<script>([\s\S]*?)<\/script>/);
-check(Boolean(themeScriptMatch), 'Theme boot script sebelum Vue tidak ditemukan di hasil prerender.');
-const themeScript = themeScriptMatch?.[1] ?? '';
-const themeHash = `sha256-${createHash('sha256').update(themeScript).digest('base64')}`;
-check(themeScript.includes('gandiva-theme'), 'Theme boot script tidak membaca preferensi tersimpan.');
-check(themeScript.includes('prefers-color-scheme: dark'), 'Theme boot script tidak mengikuti preferensi OS.');
+const distThemeBootFile = resolve(dist, 'theme-boot.js');
+const themeBootSource = existsSync(distThemeBootFile) ? readFileSync(distThemeBootFile, 'utf8') : '';
+check(existsSync(distThemeBootFile), 'Theme boot eksternal (theme-boot.js) tidak ada di hasil build.');
+check(themeBootSource.includes('gandiva-theme'), 'Theme boot script tidak membaca preferensi tersimpan.');
+check(themeBootSource.includes('prefers-color-scheme: dark'), 'Theme boot script tidak mengikuti preferensi OS.');
 check(
-  sourceIndex.indexOf('<script>') < sourceIndex.indexOf('<script type="module"'),
+  distIndex.includes('<script src="/theme-boot.js">'),
+  'Hasil prerender tidak memuat theme boot eksternal.'
+);
+check(
+  distIndex.indexOf('<script src="/theme-boot.js">') < distIndex.indexOf('<script type="module"'),
   'Theme boot script harus berjalan sebelum Vue.'
+);
+const inlineExecutableScripts = [...distIndex.matchAll(/<script(?![^>]*\bsrc=)([^>]*)>/g)]
+  .filter((match) => !/type=["']application\/ld\+json["']/i.test(match[1]));
+check(
+  inlineExecutableScripts.length === 0,
+  'Skrip inline executable terdeteksi di hasil prerender; pindahkan ke file eksternal agar CSP tanpa hash tetap valid.'
 );
 const packageJson = existsSync(packageFile)
   ? JSON.parse(readFileSync(packageFile, 'utf8'))
@@ -459,7 +467,7 @@ if (existsSync(vercelConfigFile)) {
 
     const csp = headerMap.get('content-security-policy') ?? '';
     check(csp.includes("default-src 'self'"), 'CSP belum membatasi default-src ke origin sendiri.');
-    check(csp.includes(`'${themeHash}'`), `CSP belum mengizinkan theme boot script (${themeHash}).`);
+    check(!csp.includes('sha256-'), 'CSP masih memakai hash inline; theme boot sudah eksternal sehingga hash tidak diperlukan.');
     check(csp.includes('challenges.cloudflare.com'), 'CSP belum mengizinkan Turnstile.');
     check(csp.includes('calendar.google.com'), 'CSP belum mengizinkan Google Calendar.');
     check(csp.includes('googletagmanager.com'), 'CSP belum mengizinkan analytics yang digunakan.');

@@ -15,21 +15,7 @@
   <meta name="author" content="Gandiva Labs" />
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
   <meta name="theme-color" content="#eef1ef" />
-  <script>
-    (() => {
-      const root = document.documentElement;
-      const themeColor = document.querySelector('meta[name="theme-color"]');
-      let storedTheme = null;
-      try {
-        storedTheme = window.localStorage.getItem('gandiva-theme');
-      } catch { }
-      const isDark = storedTheme === 'dark'
-        || (storedTheme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches);
-      root.dataset.theme = isDark ? 'dark' : 'light';
-      root.style.colorScheme = isDark ? 'dark' : 'light';
-      if (themeColor) themeColor.content = isDark ? '#12110f' : '#eef1ef';
-    })();
-  </script>
+  <script src="/theme-boot.js"></script>
 
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="id_ID" />
