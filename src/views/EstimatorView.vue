@@ -189,6 +189,9 @@ function confirmRestart() {
           <p class="mx-auto max-w-2xl text-base leading-relaxed text-text-secondary md:text-lg">
             Pilih kebutuhan bisnis Anda dan dapatkan gambaran jenis website, fitur rekomendasi, serta estimasi investasinya dalam kurang dari 1 menit.
           </p>
+          <p class="mx-auto max-w-2xl text-sm leading-relaxed text-text-tertiary">
+            Harga pembuatan website berbeda untuk setiap bisnis karena mengikuti jenis website, tujuan, dan kompleksitasnya. Estimator ini memberi gambaran awal yang transparan sebelum Anda berdiskusi lebih lanjut melalui <RouterLink to="/konsultasi" class="font-bold text-text-secondary underline decoration-border-default underline-offset-2 hover:text-accent">konsultasi</RouterLink> atau melihat <RouterLink to="/portfolio" class="font-bold text-text-secondary underline decoration-border-default underline-offset-2 hover:text-accent">hasil kerja</RouterLink> kami.
+          </p>
         </div>
 
         <!-- Call to action button -->

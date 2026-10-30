@@ -1,6 +1,9 @@
 <script setup>
 import { CheckCircle2, FileSearch, Route, Send } from '@lucide/vue';
 import ConsultationForm from '../components/ConsultationForm.vue';
+import { contact, createWhatsAppLink } from '../data/contact';
+
+const whatsappLink = createWhatsAppLink('Halo Gandiva Labs, saya ingin berdiskusi langsung sebelum mengisi form brief.');
 
 const process = [
   {
@@ -59,6 +62,14 @@ const process = [
               <CheckCircle2 class="mt-0.5 h-4 w-4 shrink-0 text-accent" />
               <span>Mengisi form tidak mengikat Anda pada pembelian atau kontrak apa pun.</span>
             </div>
+
+            <address class="mt-6 border-t border-border-default pt-6 text-xs not-italic leading-relaxed text-text-secondary">
+              <span class="font-bold text-text-primary">Gandiva Labs</span> · {{ contact.location }}<br />
+              {{ contact.serviceArea }}<br />
+              <a :href="contact.phoneHref" class="font-bold text-text-primary hover:text-accent">{{ contact.phoneDisplay }}</a> ·
+              <a :href="`mailto:${contact.email}`" class="hover:text-accent">{{ contact.email }}</a> ·
+              <a :href="whatsappLink" target="_blank" rel="noopener noreferrer" class="hover:text-accent">WhatsApp</a>
+            </address>
           </aside>
 
           <div class="card-surface rounded-[1.75rem] p-5 md:p-8 lg:p-10">

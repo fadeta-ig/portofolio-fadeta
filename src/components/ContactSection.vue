@@ -15,9 +15,9 @@ const whatsappLink = createWhatsAppLink('Halo Gandiva Labs, saya ingin bercerita
     <div class="section-shell relative z-10 pb-9 pt-24 md:pt-36">
       <div class="mx-auto max-w-5xl text-center">
         <p class="mb-7 text-[11px] font-bold uppercase tracking-[0.2em] text-[#ee8859]">Diskusi Proyek</p>
-        <h2 class="text-balance text-[clamp(3rem,7vw,7rem)] font-medium leading-[0.9] tracking-[-0.06em]">
+        <p class="text-balance text-[clamp(3rem,7vw,7rem)] font-medium leading-[0.9] tracking-[-0.06em]" role="heading" aria-level="2">
           Siap membuat website bisnis yang lebih jelas dan <span class="font-display italic text-[#ee8859]">profesional?</span>
-        </h2>
+        </p>
         <p class="mx-auto mt-8 max-w-2xl text-base leading-relaxed text-[#bcb4a9] md:text-xl">
           Diskusikan rencana Anda bersama kami. Kami bantu pilihkan solusi dan estimasi biaya yang paling masuk akal untuk bisnis Anda.
         </p>
@@ -44,7 +44,14 @@ const whatsappLink = createWhatsAppLink('Halo Gandiva Labs, saya ingin bercerita
           </RouterLink>
         </div>
 
-        <p class="mt-6 text-xs text-[#827a70]">Balasan mengikuti jam operasional · {{ contact.location }}</p>
+        <address class="mt-6 text-xs not-italic leading-relaxed text-[#827a70]">
+          <span class="font-bold text-[#aaa298]">Gandiva Labs</span> ·
+          <a :href="contact.phoneHref" class="underline decoration-white/20 underline-offset-2 transition-colors hover:text-[#f5f0e7]">{{ contact.phoneDisplay }}</a> ·
+          <a :href="`mailto:${contact.email}`" class="underline decoration-white/20 underline-offset-2 transition-colors hover:text-[#f5f0e7]">{{ contact.email }}</a>
+          <br />
+          {{ contact.location }} · {{ contact.serviceArea }} · Balasan mengikuti jam operasional
+        </address>
+        <!-- TODO(OWNER): tambah alamat jalan, jam operasional rinci, dan tautan "Lihat di Google Maps" setelah Google Business Profile terverifikasi. -->
       </div>
 
       <div class="mt-24 flex flex-col gap-8 border-t border-white/15 pt-8 md:flex-row md:items-end md:justify-between">

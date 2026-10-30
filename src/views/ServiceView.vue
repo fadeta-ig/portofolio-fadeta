@@ -4,10 +4,17 @@ import { useRoute } from 'vue-router';
 import { ArrowLeft, ArrowRight, Check, MessageCircle } from '@lucide/vue';
 import ContactSection from '../components/ContactSection.vue';
 import { findService } from '../data/services';
+import { featuredProjects } from '../data/projects';
 import { createWhatsAppLink } from '../data/contact';
 
 const route = useRoute();
 const service = computed(() => findService(route.params.slug));
+const relatedProjects = computed(() => {
+  const slugs = service.value?.relatedProjects ?? [];
+  return slugs
+    .map((slug) => featuredProjects.find((project) => project.slug === slug))
+    .filter(Boolean);
+});
 const whatsappLink = computed(() => createWhatsAppLink(`Halo Gandiva Labs, saya ingin membahas kebutuhan ${service.value?.name ?? 'website'} untuk bisnis saya.`));
 </script>
 
@@ -91,6 +98,24 @@ const whatsappLink = computed(() => createWhatsAppLink(`Halo Gandiva Labs, saya 
           <RouterLink to="/konsultasi" class="mt-7 inline-flex min-h-12 shrink-0 items-center justify-center gap-2 rounded-full bg-[#f5f0e7] px-6 text-sm font-bold text-[#171511] md:mt-0">
             Bahas konteks Anda <ArrowRight class="h-4 w-4" />
           </RouterLink>
+        </div>
+
+        <div class="mt-6 rounded-[1.75rem] border border-border-default bg-bg-card p-6 md:p-8">
+          <p class="text-[10px] font-bold uppercase tracking-[0.16em] text-accent">Hasil kerja terkait</p>
+          <h2 class="mt-3 text-2xl font-bold tracking-[-0.035em] text-text-primary md:text-3xl">Contoh website {{ service.name }} yang sudah dikerjakan</h2>
+          <ul v-if="relatedProjects.length" class="mt-6 grid gap-3 sm:grid-cols-2">
+            <li v-for="project in relatedProjects" :key="project.slug">
+              <RouterLink :to="`/hasil/${project.slug}`" class="group flex items-center justify-between gap-3 rounded-2xl border border-border-default p-4 transition-colors hover:border-accent/50">
+                <span>
+                  <span class="block text-sm font-bold text-text-primary group-hover:text-accent">{{ project.title }}</span>
+                  <span class="mt-1 block text-xs text-text-secondary">{{ project.category }}</span>
+                </span>
+                <ArrowRight class="h-4 w-4 shrink-0 text-text-tertiary transition-transform group-hover:translate-x-1 group-hover:text-accent" />
+              </RouterLink>
+            </li>
+          </ul>
+          <p v-else class="mt-4 max-w-2xl text-sm leading-relaxed text-text-secondary">Belum ada studi kasus khusus {{ service.name }} yang dipublikasikan. Lihat semua hasil kerja untuk melihat pendekatan yang dipakai di proyek lain.</p>
+          <RouterLink to="/portfolio" class="mt-6 inline-flex items-center gap-2 text-sm font-bold text-text-primary hover:text-accent">Lihat semua hasil kerja <ArrowRight class="h-4 w-4" /></RouterLink>
         </div>
 
         <div class="mt-6 rounded-[1.75rem] border border-border-default bg-bg-card p-6 md:flex md:items-center md:justify-between md:p-8">

@@ -28,5 +28,9 @@ export const faqs = [
   {
     question: 'Bagaimana dengan domain dan hosting?',
     answer: 'Gandiva Labs dapat membantu memilih dan menyiapkan domain serta hosting yang sesuai, lalu memastikan akses kepemilikannya tetap jelas untuk bisnis Anda.'
+  },
+  {
+    question: 'Apakah melayani bisnis di Blitar dan luar Surabaya?',
+    answer: 'Ya. Gandiva Labs berbasis di Surabaya dan melayani pembuatan website untuk bisnis di Blitar, Surabaya, dan Jawa Timur. Diskusi awal, review desain, dan serah terima dapat dilakukan online melalui WhatsApp, form brief, atau panggilan video.'
   }
 ];

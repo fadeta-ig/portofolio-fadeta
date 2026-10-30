@@ -21,6 +21,7 @@ export const services = [
     scale: 'Strukturnya dapat disiapkan untuk penambahan studi kasus, artikel, layanan baru, atau halaman lokasi saat bisnis membutuhkannya.',
     seoTitle: 'Jasa Website Company Profile | Gandiva Labs',
     seoDescription: 'Website company profile yang menyusun profil, layanan, bukti, dan jalur kontak agar bisnis lebih mudah dipahami calon klien.',
+    relatedProjects: ['mahakarya-kosmetika', 'wijaya-inovasi', 'karya-teknik-internusa-abadi', 'nusamitra-consulting'],
     socialImage: '/og/company-profile.jpg',
     socialImageAlt: 'Layanan Company Profile oleh Gandiva Labs untuk website resmi bisnis.'
   },
@@ -46,6 +47,7 @@ export const services = [
     scale: 'Setelah tayang, pesan dan bagian halaman dapat disesuaikan berdasarkan sumber trafik, pertanyaan calon pelanggan, dan data interaksi yang tersedia.',
     seoTitle: 'Jasa Landing Page untuk Bisnis | Gandiva Labs',
     seoDescription: 'Landing page yang fokus pada satu penawaran, menjawab keraguan penting, dan mengarahkan pengunjung ke tindakan yang relevan.',
+    relatedProjects: [],
     socialImage: '/og/landing-page.jpg',
     socialImageAlt: 'Layanan Landing Page oleh Gandiva Labs untuk penawaran bisnis yang fokus.'
   },
@@ -71,6 +73,7 @@ export const services = [
     scale: 'Fitur tambahan seperti promosi, integrasi operasional, laporan, atau otomatisasi diprioritaskan setelah alur jual-beli intinya stabil.',
     seoTitle: 'Jasa Pembuatan Toko Online | Gandiva Labs',
     seoDescription: 'Toko online dengan katalog, informasi produk, dan alur checkout yang disusun mengikuti kebutuhan pelanggan dan operasi bisnis.',
+    relatedProjects: ['shinyoung-beauty'],
     socialImage: '/og/toko-online.jpg',
     socialImageAlt: 'Layanan Toko Online oleh Gandiva Labs untuk katalog dan belanja mandiri.'
   },
@@ -96,6 +99,7 @@ export const services = [
     scale: 'Pengembangan dilakukan bertahap. Fitur berikutnya dipilih berdasarkan penggunaan nyata, kebutuhan operasional, dan prioritas bisnis.',
     seoTitle: 'Jasa Website Custom & Sistem Web | Gandiva Labs',
     seoDescription: 'Website custom dan sistem berbasis web yang disusun dari alur kerja nyata, prioritas fitur, serta kebutuhan pengelolaan bisnis.',
+    relatedProjects: [],
     socialImage: '/og/website-custom.jpg',
     socialImageAlt: 'Layanan Website Custom oleh Gandiva Labs untuk sistem mengikuti alur bisnis.'
   }

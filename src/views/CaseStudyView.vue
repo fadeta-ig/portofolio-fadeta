@@ -4,9 +4,11 @@ import { useRoute } from 'vue-router';
 import { ArrowLeft, ArrowRight, ArrowUpRight, Check } from '@lucide/vue';
 import ContactSection from '../components/ContactSection.vue';
 import { featuredProjects } from '../data/projects';
+import { findService } from '../data/services';
 
 const route = useRoute();
 const project = computed(() => featuredProjects.find((item) => item.slug === route.params.slug));
+const relatedService = computed(() => (project.value?.relatedService ? findService(project.value.relatedService) : null));
 </script>
 
 <template>
@@ -81,6 +83,11 @@ const project = computed(() => featuredProjects.find((item) => item.slug === rou
             <p class="mt-5 flex items-start gap-3 text-sm leading-relaxed text-[#aaa298]"><Check class="mt-0.5 h-4 w-4 shrink-0 text-[#ee8859]" /> Ringkasan ini hanya menyatakan lingkup dan keluaran proyek; tidak menggunakan angka performa yang belum diverifikasi.</p>
           </div>
         </div>
+
+        <nav v-if="relatedService" aria-label="Solusi terkait" class="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3 rounded-[1.75rem] border border-border-default bg-bg-card p-6 md:p-8">
+          <p class="text-sm text-text-secondary">Solusi terkait: <RouterLink :to="`/solusi/${relatedService.slug}`" class="font-bold text-text-primary hover:text-accent">{{ relatedService.name }}</RouterLink></p>
+          <RouterLink to="/portfolio" class="inline-flex items-center gap-2 text-sm font-bold text-text-primary hover:text-accent">Lihat semua hasil kerja <ArrowRight class="h-4 w-4" /></RouterLink>
+        </nav>
 
         <div class="liquid-panel mt-6 rounded-[1.75rem] border border-border-default bg-bg-card p-7 md:flex md:items-center md:justify-between md:gap-8 md:p-10">
           <h2 class="max-w-2xl text-2xl font-bold tracking-[-0.035em] text-text-primary md:text-3xl">Punya konteks yang mirip? Mulai dari masalahnya, lalu kita tentukan bentuk yang tepat.</h2>

@@ -57,12 +57,16 @@ function routeSchema(route, canonicalUrl, title, description) {
         name: service.name,
         description: service.summary,
         url: canonicalUrl,
-        areaServed: { '@type': 'Country', name: 'Indonesia' },
-        provider: { '@id': `${siteUrl}/#organization` }
+        areaServed: [
+          { '@type': 'City', name: 'Blitar' },
+          { '@type': 'City', name: 'Surabaya' },
+          { '@type': 'State', name: 'Jawa Timur' },
+          { '@type': 'Country', name: 'Indonesia' }
+        ],
+        provider: { '@id': `${siteUrl}/#localbusiness` }
       },
       breadcrumb([
         { name: 'Beranda', url: `${siteUrl}/` },
-        { name: 'Solusi', url: `${siteUrl}/#services` },
         { name: service.name, url: canonicalUrl }
       ])
     ];
@@ -74,12 +78,14 @@ function routeSchema(route, canonicalUrl, title, description) {
     return [
       basePage,
       {
-        '@type': 'CreativeWork',
+        '@type': 'Article',
         '@id': `${canonicalUrl}#project`,
+        headline: project.title,
         name: project.title,
         description: project.description,
         url: canonicalUrl,
         inLanguage: 'id-ID',
+        author: { '@id': `${siteUrl}/#organization` },
         creator: { '@id': `${siteUrl}/#organization` }
       },
       breadcrumb([
@@ -206,6 +212,8 @@ export function useSeo() {
       meta: [
         { name: 'description', content: description, key: 'description' },
         { name: 'robots', content: seo.robots ?? defaultRobots, key: 'robots' },
+        { name: 'geo.region', content: 'ID-JI', key: 'geo-region' },
+        { name: 'geo.placename', content: 'Surabaya, Jawa Timur', key: 'geo-placename' },
         { property: 'og:type', content: seo.openGraphType ?? 'website', key: 'og-type' },
         { property: 'og:title', content: title, key: 'og-title' },
         { property: 'og:description', content: description, key: 'og-description' },

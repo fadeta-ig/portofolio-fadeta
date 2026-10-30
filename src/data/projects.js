@@ -15,6 +15,7 @@ export const featuredProjects = [
   {
     id: '01',
     slug: 'shinyoung-beauty',
+    relatedService: 'toko-online',
     title: 'Shinyoung Beauty',
     type: 'Website Bisnis',
     category: 'E-commerce · Beauty',
@@ -39,6 +40,7 @@ export const featuredProjects = [
   {
     id: '02',
     slug: 'mahakarya-kosmetika',
+    relatedService: 'company-profile',
     title: 'Mahakarya Kosmetika',
     type: 'Website Bisnis',
     category: 'Company profile · B2B',
@@ -63,6 +65,7 @@ export const featuredProjects = [
   {
     id: '03',
     slug: 'wijaya-inovasi',
+    relatedService: 'company-profile',
     title: 'Wijaya Inovasi',
     type: 'Website Bisnis',
     category: 'Company profile · Manufaktur',
@@ -87,6 +90,7 @@ export const featuredProjects = [
   {
     id: '04',
     slug: 'karya-teknik-internusa-abadi',
+    relatedService: 'company-profile',
     title: 'Karya Teknik Internusa Abadi',
     type: 'Website Bisnis',
     category: 'Company profile · Galangan kapal',
@@ -111,6 +115,7 @@ export const featuredProjects = [
   {
     id: '05',
     slug: 'nusamitra-consulting',
+    relatedService: 'company-profile',
     title: 'Nusamitra Consulting',
     type: 'Website Bisnis',
     category: 'Company profile · Konsultan',
@@ -135,6 +140,7 @@ export const featuredProjects = [
   {
     id: '06',
     slug: 'sastro-leather',
+    relatedService: 'company-profile',
     title: 'Sastro Leather Goods',
     type: 'Website Bisnis',
     category: 'Brand · Tas heritage',

@@ -39,6 +39,9 @@ useGsapScrollReveal(sectionRef, { y: 34, stagger: 0.1, duration: 0.75, once: tru
           <p class="max-w-2xl text-lg leading-relaxed text-text-secondary md:text-xl">
             Tanpa website dan sistem yang rapi, calon pembeli sering ragu dan tim Anda harus menjelaskan hal yang sama berulang kali secara manual.
           </p>
+          <p class="mt-5 max-w-2xl text-base leading-relaxed text-text-secondary">
+            Gandiva Labs berbasis di Surabaya dan melayani jasa pembuatan website untuk bisnis di Blitar, Surabaya, dan seluruh Jawa Timur — seluruh proses diskusi dan pengerjaan dapat berjalan online.
+          </p>
 
           <div class="mt-10 grid gap-4 sm:grid-cols-3">
             <article v-for="item in outcomes" :key="item.title" class="card-surface p-5 transition-transform duration-300 hover:-translate-y-1 md:p-6">

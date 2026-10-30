@@ -13,8 +13,8 @@ const NotFoundView = () => import('./views/NotFoundView.vue');
 
 export const siteUrl = 'https://www.gandivalabs.my.id';
 export const defaultImage = `${siteUrl}/og.png`;
-export const defaultImageAlt = 'Gandiva Labs — partner pembuatan website bisnis.';
-export const defaultDescription = 'Gandiva Labs adalah partner pembuatan website bisnis yang membantu memperjelas nilai usaha, membangun kepercayaan, dan mendorong calon pelanggan bertindak.';
+export const defaultImageAlt = 'Gandiva Labs — jasa pembuatan website bisnis.';
+export const defaultDescription = 'Gandiva Labs adalah jasa pembuatan website bisnis yang membantu memperjelas nilai usaha, membangun kepercayaan, dan mendorong calon pelanggan bertindak.';
 export const defaultRobots = 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
 
 export const routes = [
@@ -23,7 +23,7 @@ export const routes = [
     name: 'home',
     component: HomeView,
     meta: {
-      title: 'Partner Pembuatan Website Bisnis | Gandiva Labs',
+      title: 'Jasa Pembuatan Website Bisnis | Gandiva Labs',
       description: defaultDescription,
       canonicalPath: '/'
     }
@@ -35,7 +35,7 @@ export const routes = [
     component: EstimatorView,
     meta: {
       title: 'Kalkulator Harga Website 2026 | Gandiva Labs',
-      description: 'Hitung estimasi investasi website berdasarkan kebutuhan bisnis Anda. Pilih jenis website dan fitur yang dibutuhkan, lalu dapatkan estimasi dalam hitungan detik.',
+      description: 'Panduan harga pembuatan website yang transparan: pilih jenis website dan fitur yang dibutuhkan, lalu dapatkan estimasi investasi dalam hitungan detik.',
       canonicalPath: '/kalkulator-website'
     }
   },
@@ -66,7 +66,7 @@ export const routes = [
     name: 'consultation',
     component: ConsultationView,
     meta: {
-      title: 'Ceritakan Kebutuhan Website Anda | Gandiva Labs',
+      title: 'Konsultasi Pembuatan Website Bisnis | Gandiva Labs',
       description: 'Ceritakan masalah, tujuan, dan konteks bisnis Anda. Gandiva Labs akan memetakan kebutuhan sebelum membahas fitur atau visual.',
       canonicalPath: '/konsultasi'
     }
@@ -86,7 +86,7 @@ export const routes = [
     name: 'thank-you',
     component: ThankYouView,
     meta: {
-      title: 'Brief Berhasil Dikirim - Gandiva Labs',
+      title: 'Brief Berhasil Dikirim | Gandiva Labs',
       description: 'Brief konsultasi Anda telah diterima oleh Gandiva Labs.',
       robots: 'noindex, nofollow, noarchive',
       canonicalPath: '/terima-kasih'
