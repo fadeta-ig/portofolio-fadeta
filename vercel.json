@@ -99,6 +99,18 @@
       ]
     },
     {
+      "source": "/hasil/nusamitra-consulting",
+      "headers": [
+        { "key": "Link", "value": "<https://www.gandivalabs.my.id/hasil/nusamitra-consulting>; rel=\"canonical\"" }
+      ]
+    },
+    {
+      "source": "/hasil/sastro-leather",
+      "headers": [
+        { "key": "Link", "value": "<https://www.gandivalabs.my.id/hasil/sastro-leather>; rel=\"canonical\"" }
+      ]
+    },
+    {
       "source": "/konsultasi",
       "headers": [
         { "key": "Link", "value": "<https://www.gandivalabs.my.id/konsultasi>; rel=\"canonical\"" }

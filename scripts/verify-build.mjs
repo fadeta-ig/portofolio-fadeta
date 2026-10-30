@@ -47,6 +47,16 @@ const caseStudies = new Map([
     slug: 'karya-teknik-internusa-abadi',
     name: 'Karya Teknik Internusa Abadi',
     image: `https://${expectedHost}/og/karya-teknik-internusa-abadi.jpg`
+  }],
+  ['/hasil/nusamitra-consulting', {
+    slug: 'nusamitra-consulting',
+    name: 'Nusamitra Consulting',
+    image: `https://${expectedHost}/og/nusamitra-consulting.jpg`
+  }],
+  ['/hasil/sastro-leather', {
+    slug: 'sastro-leather',
+    name: 'Sastro Leather Goods',
+    image: `https://${expectedHost}/og/sastro-leather.jpg`
   }]
 ]);
 

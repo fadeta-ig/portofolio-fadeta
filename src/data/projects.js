@@ -6,6 +6,10 @@ import wijayaImg from '../assets/screenshots/wijaya.webp';
 import wijayaMobileImg from '../assets/screenshots/wijaya-mobile.webp';
 import ktiaImg from '../assets/screenshots/ktia.webp';
 import ktiaMobileImg from '../assets/screenshots/ktia-mobile.webp';
+import nusamitraImg from '../assets/screenshots/nusamitra.webp';
+import nusamitraMobileImg from '../assets/screenshots/nusamitra-mobile.webp';
+import sastroImg from '../assets/screenshots/sastro.webp';
+import sastroMobileImg from '../assets/screenshots/sastro-mobile.webp';
 
 export const featuredProjects = [
   {
@@ -101,6 +105,54 @@ export const featuredProjects = [
     imageMobile: ktiaMobileImg,
     socialImage: '/og/karya-teknik-internusa-abadi.jpg',
     socialImageAlt: 'Studi kasus Karya Teknik Internusa Abadi oleh Gandiva Labs dengan tampilan website galangan kapal.',
+    width: 960,
+    height: 540
+  },
+  {
+    id: '05',
+    slug: 'nusamitra-consulting',
+    title: 'Nusamitra Consulting',
+    type: 'Website Bisnis',
+    category: 'Company profile · Konsultan',
+    description: 'Website company profile untuk PT Nusamitra Consulting Indonesia yang memperkenalkan layanan konsultasi, pendekatan kerja, dan jalur kontak dalam struktur yang ringkas.',
+    need: 'Sebagai firma konsultasi, perusahaan perlu menjelaskan bidang layanan dan cara kerjanya kepada calon klien dalam bahasa yang mudah dipahami.',
+    approach: 'Informasi disusun dari pengenalan perusahaan menuju layanan, pendekatan, dan kontak agar calon klien dapat menilai kecocokan sebelum memulai percakapan.',
+    decisions: [
+      { title: 'Layanan sebagai pintu masuk', text: 'Bidang konsultasi ditempatkan sebagai jalur utama agar pengunjung langsung memahami apa yang ditawarkan.' },
+      { title: 'Kredibilitas tanpa klaim berlebih', text: 'Profil dan pendekatan dijelaskan secara faktual agar kepercayaan dibangun dari kejelasan, bukan janji.' },
+      { title: 'Jalur kontak yang jelas', text: 'Kontak ditempatkan sebagai kelanjutan alami setelah pengunjung memahami layanan yang relevan.' }
+    ],
+    result: 'Website company profile yang menyajikan profil perusahaan, layanan konsultasi, pendekatan kerja, dan jalur kontak dalam satu alur informasi.',
+    contribution: ['Arsitektur konten', 'Company profile', 'Pengembangan web'],
+    link: 'https://nusamitraconsulting.com/',
+    image: nusamitraImg,
+    imageMobile: nusamitraMobileImg,
+    socialImage: '/og/nusamitra-consulting.jpg',
+    socialImageAlt: 'Studi kasus Nusamitra Consulting oleh Gandiva Labs dengan tampilan website firma konsultasi.',
+    width: 960,
+    height: 540
+  },
+  {
+    id: '06',
+    slug: 'sastro-leather',
+    title: 'Sastro Leather Goods',
+    type: 'Website Bisnis',
+    category: 'Brand · Tas heritage',
+    description: 'Website untuk Sastro Leather Goods, brand tas heritage yang memperkenalkan cerita, keahlian, dan koleksi produknya dalam satu pengalaman digital.',
+    need: 'Sebagai brand heritage, Sastro perlu media yang menyampaikan karakter, ketelitian pengerjaan, dan koleksi tasnya secara konsisten.',
+    approach: 'Konten disusun dari cerita brand menuju keahlian dan koleksi agar pengunjung memahami nilai produk sebelum melihat pilihannya.',
+    decisions: [
+      { title: 'Cerita sebelum koleksi', text: 'Narasi brand diberi ruang pertama agar koleksi dibaca sebagai kelanjutan dari identitas, bukan sekadar daftar produk.' },
+      { title: 'Keahlian yang terlihat', text: 'Proses dan material dijelaskan agar ketelitian pengerjaan menjadi alasan yang konkret, bukan sekadar kesan.' },
+      { title: 'Koleksi mudah dijelajahi', text: 'Produk dikelompokkan agar pengunjung dapat menelusuri koleksi tanpa kehilangan konteks brand.' }
+    ],
+    result: 'Website brand yang menyajikan cerita, keahlian, koleksi tas, dan jalur kontak Sastro Leather Goods dalam struktur yang terarah.',
+    contribution: ['Brand story', 'Katalog koleksi', 'Pengembangan web'],
+    link: 'https://sastroleather.com/',
+    image: sastroImg,
+    imageMobile: sastroMobileImg,
+    socialImage: '/og/sastro-leather.jpg',
+    socialImageAlt: 'Studi kasus Sastro Leather Goods oleh Gandiva Labs dengan tampilan website brand tas heritage.',
     width: 960,
     height: 540
   }

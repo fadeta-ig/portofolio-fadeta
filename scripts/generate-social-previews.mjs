@@ -63,6 +63,22 @@ const projects = [
     summary: 'Website galangan kapal yang memperkenalkan layanan, fasilitas, pengalaman, dan profil perusahaan.',
     screenshot: 'ktia.webp',
     accent: '#597aa5'
+  },
+  {
+    slug: 'nusamitra-consulting',
+    title: 'Nusamitra Consulting',
+    category: 'Company profile · Konsultan',
+    summary: 'Website firma konsultasi yang memperkenalkan layanan, pendekatan kerja, dan jalur kontak.',
+    screenshot: 'nusamitra.webp',
+    accent: '#6f8ea8'
+  },
+  {
+    slug: 'sastro-leather',
+    title: 'Sastro Leather Goods',
+    category: 'Brand · Tas heritage',
+    summary: 'Website brand tas heritage yang menyajikan cerita, keahlian, dan koleksi produk.',
+    screenshot: 'sastro.webp',
+    accent: '#a0764a'
   }
 ];
 

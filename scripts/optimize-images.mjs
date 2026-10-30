@@ -29,6 +29,8 @@ async function optimizeImages() {
     { path: 'src/assets/screenshots/mahakarya.webp', mobilePath: 'src/assets/screenshots/mahakarya-mobile.webp', quality: 78 },
     { path: 'src/assets/screenshots/wijaya.webp', mobilePath: 'src/assets/screenshots/wijaya-mobile.webp', quality: 78 },
     { path: 'src/assets/screenshots/shinyoung.webp', mobilePath: 'src/assets/screenshots/shinyoung-mobile.webp', quality: 78 },
+    { path: 'src/assets/screenshots/nusamitra.webp', mobilePath: 'src/assets/screenshots/nusamitra-mobile.webp', quality: 78 },
+    { path: 'src/assets/screenshots/sastro.webp', mobilePath: 'src/assets/screenshots/sastro-mobile.webp', quality: 78 },
   ];
 
   for (const img of screenshots) {
