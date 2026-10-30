@@ -68,6 +68,7 @@ const routeCopy = Object.freeze({
 });
 
 export function getBookingRouteType(path) {
+  if (typeof path !== 'string') return null;
   if (path === '/') return 'home';
   if (path === '/portfolio') return 'portfolio';
   if (path.startsWith('/solusi/')) return 'solution';

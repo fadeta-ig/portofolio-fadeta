@@ -3,6 +3,7 @@ import { computed, defineAsyncComponent, nextTick, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { ArrowRight, Check, LoaderCircle, LockKeyhole } from '@lucide/vue';
 import { trackEvent } from '../lib/analytics';
+import { createWhatsAppLink } from '../data/contact';
 
 const props = defineProps({
   variant: {
@@ -24,7 +25,17 @@ const errors = ref({});
 const turnstileToken = ref('');
 const turnstileWidget = ref(null);
 const securityCheckRef = ref(null);
+// The widget always renders (dev included): the site key is public by design,
+// and skipping it in dev would 403 whenever the server has TURNSTILE_SECRET set.
+// Without a server secret, verification is skipped server-side (non-prod fail-open).
 const turnstileSiteKey = '0x4AAAAAAD7tVUg67iDC-OvG';
+const SUBMIT_TIMEOUT_MS = 15_000;
+const turnstileFailed = ref(false);
+const turnstileRetrying = ref(false);
+const submitTimedOut = ref(false);
+const waFallback = computed(() => createWhatsAppLink(
+  `Halo Gandiva Labs, verifikasi form gagal, saya ingin kirim brief: ${form.name.trim() || '-'}`
+));
 const TurnstileWidget = defineAsyncComponent(() => import('./TurnstileWidget.vue'));
 const formStartedAt = Date.now();
 const submissionId = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(16).slice(2)}`;
@@ -41,6 +52,8 @@ const form = reactive({
   website: ''
 });
 
+// Client UX mirrors of ALLOWED_SERVICES/ALLOWED_TIMELINES in api/contact.js
+// (server is authoritative); keep both lists in sync.
 const serviceOptions = [
   'Company profile',
   'Landing page',
@@ -67,6 +80,7 @@ function clearError(field) {
 
 function validateForm() {
   const nextErrors = {};
+  // Same pattern as api/contact.js validate (authoritative); keep in sync.
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   if (form.name.trim().length < 2) nextErrors.name = 'Masukkan nama lengkap Anda.';
@@ -76,7 +90,11 @@ function validateForm() {
   if (isFull.value && !form.timeline) nextErrors.timeline = 'Pilih target waktu atau “Belum ditentukan”.';
   if (form.summary.trim().length < 20) nextErrors.summary = 'Ceritakan kebutuhan Anda sedikit lebih detail, minimal 20 karakter.';
   if (!form.consent) nextErrors.consent = 'Persetujuan diperlukan agar kami dapat menghubungi Anda.';
-  if (turnstileSiteKey && !turnstileToken.value) nextErrors.turnstile = 'Selesaikan verifikasi keamanan terlebih dahulu.';
+  if (turnstileSiteKey && !turnstileToken.value) {
+    nextErrors.turnstile = turnstileFailed.value
+      ? 'Verifikasi keamanan tidak tersedia. Coba muat ulang verifikasi atau lanjutkan via WhatsApp.'
+      : 'Selesaikan verifikasi keamanan terlebih dahulu.';
+  }
 
   errors.value = nextErrors;
   return Object.keys(nextErrors).length === 0;
@@ -92,14 +110,36 @@ async function focusFirstError() {
 
 function handleTurnstileToken(token) {
   turnstileToken.value = token;
-  clearError('turnstile');
+  if (token) {
+    turnstileFailed.value = false;
+    clearError('turnstile');
+  } else if (!turnstileFailed.value) {
+    errors.value = {
+      ...errors.value,
+      turnstile: 'Verifikasi kedaluwarsa, silakan verifikasi ulang.'
+    };
+  }
 }
 
 function handleTurnstileError() {
+  turnstileFailed.value = true;
   errors.value = {
     ...errors.value,
-    turnstile: 'Verifikasi keamanan tidak tersedia. Muat ulang halaman lalu coba kembali.'
+    turnstile: 'Verifikasi keamanan tidak tersedia. Coba muat ulang verifikasi atau lanjutkan via WhatsApp.'
   };
+}
+
+async function retryTurnstile() {
+  if (turnstileRetrying.value) return;
+  turnstileRetrying.value = true;
+  turnstileFailed.value = false;
+  clearError('turnstile');
+  try {
+    if (turnstileWidget.value?.retry) await turnstileWidget.value.retry();
+    else handleTurnstileError();
+  } finally {
+    turnstileRetrying.value = false;
+  }
 }
 
 async function submitForm() {
@@ -111,6 +151,10 @@ async function submitForm() {
   }
 
   isSubmitting.value = true;
+  submitTimedOut.value = false;
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), SUBMIT_TIMEOUT_MS);
 
   try {
     const response = await fetch('/api/contact', {
@@ -123,8 +167,10 @@ async function submitForm() {
         submissionId,
         formStartedAt,
         turnstileToken: turnstileToken.value
-      })
+      }),
+      signal: controller.signal
     });
+    clearTimeout(timeout);
 
     const result = await response.json().catch(() => ({}));
     if (!response.ok && result.errors) {
@@ -143,11 +189,20 @@ async function submitForm() {
     trackEvent('generate_lead', { form_source: props.source, form_variant: props.variant, service: form.service });
     await router.push({ name: 'thank-you' });
   } catch (error) {
-    if (turnstileSiteKey) {
-      turnstileToken.value = '';
-      turnstileWidget.value?.reset();
+    clearTimeout(timeout);
+    if (error?.name === 'AbortError') {
+      submitTimedOut.value = true;
+      submitError.value = 'Pengiriman membutuhkan waktu terlalu lama. Periksa koneksi lalu coba kembali atau hubungi via WhatsApp.';
+    } else {
+      // Keep the Turnstile token on network failures so users don't re-verify;
+      // reset only when the server rejected the submission itself.
+      const isNetworkError = error instanceof TypeError;
+      if (!isNetworkError && turnstileSiteKey) {
+        turnstileToken.value = '';
+        turnstileWidget.value?.reset();
+      }
+      submitError.value = error.message || 'Terjadi kendala saat mengirim form. Silakan coba kembali.';
     }
-    submitError.value = error.message || 'Terjadi kendala saat mengirim form. Silakan coba kembali.';
   } finally {
     isSubmitting.value = false;
   }
@@ -318,11 +373,18 @@ async function submitForm() {
         @token="handleTurnstileToken"
         @error="handleTurnstileError"
       />
+      <div v-if="turnstileFailed" class="turnstile-fallback">
+        <button type="button" class="fallback-retry" :disabled="turnstileRetrying" @click="retryTurnstile">
+          {{ turnstileRetrying ? 'Memuat ulang…' : 'Coba lagi verifikasi' }}
+        </button>
+        <a class="fallback-wa" :href="waFallback" target="_blank" rel="noopener">Hubungi via WhatsApp</a>
+      </div>
       <span v-if="errors.turnstile" id="consultation-turnstile-error" class="field-error mt-2 block" role="alert">{{ errors.turnstile }}</span>
     </div>
 
     <div v-if="submitError" class="form-alert" role="alert">
       {{ submitError }}
+      <a v-if="submitTimedOut" class="alert-wa" :href="waFallback" target="_blank" rel="noopener">Hubungi via WhatsApp</a>
     </div>
 
     <button type="submit" class="submit-button group" :disabled="isSubmitting" :aria-busy="isSubmitting">
@@ -409,15 +471,7 @@ async function submitForm() {
     inset 0 1px 0 var(--glass-highlight);
 }
 
-.form-field select option {
-  background-color: var(--bg-elevated);
-  color: var(--text-primary);
-}
-
-.form-field select option:disabled {
-  color: var(--text-tertiary);
-}
-
+/* select option styling lives in the global stylesheet (main.css). */
 .form-field [aria-invalid="true"] {
   border-color: var(--accent);
 }
@@ -521,6 +575,45 @@ async function submitForm() {
 
 .security-check-error {
   border-color: var(--accent);
+}
+
+.turnstile-fallback {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.7rem;
+}
+
+.fallback-retry {
+  padding: 0.5rem 0.9rem;
+  border: 1px solid color-mix(in srgb, var(--text-primary) 60%, transparent);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-primary);
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.fallback-retry:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+
+.fallback-wa,
+.alert-wa {
+  color: var(--text-primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.alert-wa {
+  margin-left: 0.4rem;
+  white-space: nowrap;
 }
 
 .submit-button {

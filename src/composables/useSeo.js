@@ -3,6 +3,7 @@ import { useRoute } from 'vue-router';
 import { watch } from 'vue';
 import { featuredProjects } from '../data/projects';
 import { findService } from '../data/services';
+import { faqs } from '../data/faqs';
 import { defaultDescription, defaultImage, defaultImageAlt, defaultRobots, resolveRouteSeo, siteUrl } from '../router';
 import { trackPageView } from '../lib/analytics';
 
@@ -18,30 +19,11 @@ function breadcrumb(items) {
   };
 }
 
-const homeFaqs = [
-  {
-    question: 'Berapa biaya pembuatan website?',
-    answer: 'Biaya mengikuti jenis website (Landing Page start 750k, Company Profile start 1.8M, Toko Online start 3.5M, Custom Web App start 2M), jumlah halaman, dan fitur add-on yang dipilih.'
-  },
-  {
-    question: 'Berapa lama proses pengerjaannya?',
-    answer: 'Proses pengerjaan berkisar antara 1–2 minggu untuk Landing Page dan Company Profile, hingga 3–4 minggu untuk Toko Online dan Sistem Custom.'
-  },
-  {
-    question: 'Apakah sudah termasuk domain, hosting, dan maintenance?',
-    answer: 'Ya, setiap paket proyek Gandiva Labs menyertakan Gratis Domain (.com / .my.id), Bantuan Setup Hosting 100%, Free Maintenance & Bug Fixes 6 Bulan, dan Monitoring 24/7.'
-  },
-  {
-    question: 'Kalau belum punya materi atau susunan konten?',
-    answer: 'Gandiva Labs membantu menyusun struktur pesan utama, copywriting ringkasan bisnis, dan tata letak halaman tanpa membuat Anda kebingungan.'
-  }
-];
-
 function faqSchema(canonicalUrl) {
   return {
     '@type': 'FAQPage',
     '@id': `${canonicalUrl}#faq`,
-    mainEntity: homeFaqs.map((faq) => ({
+    mainEntity: faqs.map((faq) => ({
       '@type': 'Question',
       name: faq.question,
       acceptedAnswer: {
@@ -127,7 +109,6 @@ function routeSchema(route, canonicalUrl, title, description) {
         },
         provider: { '@id': `${siteUrl}/#organization` }
       },
-      faqSchema(canonicalUrl),
       breadcrumb([
         { name: 'Beranda', url: `${siteUrl}/` },
         { name: 'Kalkulator Website', url: canonicalUrl }
@@ -149,10 +130,10 @@ export function useSeo() {
   const route = useRoute();
 
   watch(
-    () => route.fullPath,
+    () => route.path,
     () => {
       const seo = resolveRouteSeo(route);
-      trackPageView(route.fullPath, seo.title ?? 'Gandiva Labs');
+      trackPageView(seo.canonicalPath ?? route.path, seo.title ?? 'Gandiva Labs');
     },
     { immediate: true }
   );
@@ -164,6 +145,9 @@ export function useSeo() {
     const image = seo.image ?? defaultImage;
     const imageAlt = seo.imageAlt ?? defaultImageAlt;
     const imageType = seo.imageType ?? 'image/png';
+    // Canonical source #2 of 4: router canonicalPath/meta, this tag, vercel.json
+    // Link headers, sitemap-lib extractCanonical. Kept separate on purpose;
+    // keep all four in sync per route.
     const canonicalUrl = new URL(seo.canonicalPath ?? route.path, `${siteUrl}/`).href;
     const schema = routeSchema(route, canonicalUrl, title, description);
     const links = [{ rel: 'canonical', href: canonicalUrl, key: 'canonical' }];
@@ -189,6 +173,32 @@ export function useSeo() {
       });
     }
 
+    if (route.name === 'case-study') {
+      const project = featuredProjects.find((item) => item.slug === route.params.slug);
+      if (project?.image) {
+        links.push({
+          rel: 'preload',
+          href: project.image,
+          as: 'image',
+          type: 'image/webp',
+          media: '(min-width: 768px)',
+          fetchpriority: 'high',
+          key: 'case-desktop-preload'
+        });
+        if (project.imageMobile) {
+          links.push({
+            rel: 'preload',
+            href: project.imageMobile,
+            as: 'image',
+            type: 'image/webp',
+            media: '(max-width: 767px)',
+            fetchpriority: 'high',
+            key: 'case-mobile-preload'
+          });
+        }
+      }
+    }
+
     return {
       htmlAttrs: { lang: 'id' },
       title,
@@ -210,9 +220,10 @@ export function useSeo() {
         { name: 'twitter:title', content: title, key: 'twitter-title' },
         { name: 'twitter:description', content: description, key: 'twitter-description' },
         { name: 'twitter:image', content: image, key: 'twitter-image' },
-        { name: 'twitter:image:alt', content: imageAlt, key: 'twitter-image-alt' }
+        { name: 'twitter:image:alt', content: imageAlt, key: 'twitter-image-alt' },
+        { name: 'twitter:site', content: '@gandivalabs', key: 'twitter-site' }
       ],
-      script: schema.length ? [{ type: 'application/ld+json', innerHTML: JSON.stringify({ '@context': 'https://schema.org', '@graph': schema }), key: 'route-schema' }] : []
+      script: schema.length ? [{ type: 'application/ld+json', innerHTML: JSON.stringify({ '@context': 'https://schema.org', '@graph': schema }).replace(/</g, '\\u003c'), key: 'route-schema' }] : []
     };
   });
 }

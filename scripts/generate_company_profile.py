@@ -38,7 +38,23 @@ ACCENT_LIGHT = HexColor("#EE8859")
 GREEN = HexColor("#73866C")
 WHITE = colors.white
 
-FONT_DIR = Path(r"C:\Windows\Fonts")
+def resolve_font_dir() -> Path:
+    """Layered font-dir fallback: explicit env override first, then repo-local,
+    then OS defaults. Returns the first existing directory."""
+    candidates = [
+        os.environ.get("GL_FONT_DIR"),
+        str(ROOT / "scripts" / "assets" / "fonts"),
+        r"C:\Windows\Fonts",
+        "/usr/share/fonts",
+        str(Path.home() / ".fonts"),
+    ]
+    for candidate in candidates:
+        if candidate and Path(candidate).is_dir():
+            return Path(candidate)
+    return Path(r"C:\Windows\Fonts")
+
+
+FONT_DIR = resolve_font_dir()
 FONT_FILES = {
     "GLSans": "segoeui.ttf",
     "GLSansBold": "segoeuib.ttf",
@@ -51,8 +67,20 @@ FONT_FILES = {
 
 
 def register_fonts() -> None:
+    missing = []
     for name, filename in FONT_FILES.items():
-        pdfmetrics.registerFont(TTFont(name, str(FONT_DIR / filename)))
+        path = FONT_DIR / filename
+        if not path.is_file():
+            print(f"warning: font tidak ditemukan, dilewati: {path}")
+            missing.append(filename)
+            continue
+        pdfmetrics.registerFont(TTFont(name, str(path)))
+    if len(missing) == len(FONT_FILES):
+        raise FileNotFoundError(
+            f"Tidak ada font yang ditemukan di {FONT_DIR}. "
+            "Set GL_FONT_DIR ke direktori berisi segoeui*.ttf/georgia*.ttf "
+            "atau sediakan scripts/assets/fonts/ di repo."
+        )
 
 
 def img_path(relative: str) -> str:

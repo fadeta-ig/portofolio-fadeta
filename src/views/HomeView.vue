@@ -1,16 +1,18 @@
 <script setup>
+import { defineAsyncComponent } from 'vue';
 import HeroSection from '../components/HeroSection.vue';
 import TechMarquee from '../components/TechMarquee.vue';
 import AboutSection from '../components/AboutSection.vue';
-import MethodSection from '../components/MethodSection.vue';
-import ExpertiseSection from '../components/ExpertiseSection.vue';
-import EstimatorCalloutSection from '../components/EstimatorCalloutSection.vue';
-import CaseStudiesSection from '../components/CaseStudiesSection.vue';
-import InfrastructureSection from '../components/InfrastructureSection.vue';
-import CertificationsSection from '../components/CertificationsSection.vue';
-import LeadFormSection from '../components/LeadFormSection.vue';
-import FaqSection from '../components/FaqSection.vue';
-import ContactSection from '../components/ContactSection.vue';
+
+const MethodSection = defineAsyncComponent(() => import('../components/MethodSection.vue'));
+const ExpertiseSection = defineAsyncComponent(() => import('../components/ExpertiseSection.vue'));
+const EstimatorCalloutSection = defineAsyncComponent(() => import('../components/EstimatorCalloutSection.vue'));
+const CaseStudiesSection = defineAsyncComponent(() => import('../components/CaseStudiesSection.vue'));
+const InfrastructureSection = defineAsyncComponent(() => import('../components/InfrastructureSection.vue'));
+const CertificationsSection = defineAsyncComponent(() => import('../components/CertificationsSection.vue'));
+const LeadFormSection = defineAsyncComponent(() => import('../components/LeadFormSection.vue'));
+const FaqSection = defineAsyncComponent(() => import('../components/FaqSection.vue'));
+const ContactSection = defineAsyncComponent(() => import('../components/ContactSection.vue'));
 </script>
 
 <template>

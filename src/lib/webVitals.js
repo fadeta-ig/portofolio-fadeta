@@ -3,6 +3,7 @@ import { hasAnalyticsConsent, trackEvent } from './analytics.js';
 export const webVitalsRelease = '2026-07-24-rum-v1';
 
 let initialized = false;
+let initPromise = null;
 
 function viewportCategory(windowRef = globalThis.window) {
   if (!windowRef?.matchMedia) return 'unknown';
@@ -45,29 +46,35 @@ export function formatWebVital(metric, {
   };
 }
 
-export async function initializeWebVitals() {
-  if (initialized || typeof window === 'undefined' || !hasAnalyticsConsent()) return false;
-  initialized = true;
-
-  const pagePath = `${window.location.pathname}${window.location.search}`;
-
+async function startWebVitals() {
   try {
     const { onCLS, onINP, onLCP } = await import('web-vitals/attribution');
     const report = (metric) => {
       if (!hasAnalyticsConsent()) return;
-      trackEvent('web_vital', formatWebVital(metric, { pagePath }));
+      trackEvent('web_vital', formatWebVital(metric, {
+        pagePath: `${window.location.pathname}${window.location.search}`
+      }));
     };
 
     onCLS(report);
     onINP(report);
     onLCP(report);
+    initialized = true;
     return true;
   } catch {
-    initialized = false;
+    initPromise = null;
     return false;
   }
 }
 
+export function initializeWebVitals() {
+  if (typeof window === 'undefined' || !hasAnalyticsConsent()) return Promise.resolve(false);
+  // Promise flight: concurrent callers share one init instead of racing.
+  initPromise ??= startWebVitals();
+  return initPromise;
+}
+
 export function resetWebVitalsForTests() {
   initialized = false;
+  initPromise = null;
 }

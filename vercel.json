@@ -2,14 +2,15 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "cleanUrls": true,
   "rewrites": [
-    { "source": "/terima-kasih", "destination": "/index.html" }
+    { "source": "/terima-kasih", "destination": "/index.html" },
+    { "source": "/website-estimator", "destination": "/kalkulator-website.html" }
   ],
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
         {
-          "key": "Content-Security-Policy-Report-Only",
+          "key": "Content-Security-Policy",
           "value": "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self' 'sha256-6mo6nyNSFX/cyTMNMff7g0CqmdqH9LQWe8c0EFVYw9s=' https://www.googletagmanager.com https://challenges.cloudflare.com; connect-src 'self' https://*.google-analytics.com https://challenges.cloudflare.com; img-src 'self' data: https://*.google-analytics.com; style-src 'self' 'unsafe-inline'; font-src 'self'; frame-src https://challenges.cloudflare.com https://calendar.google.com; upgrade-insecure-requests"
         },
         { "key": "X-Content-Type-Options", "value": "nosniff" },
@@ -18,6 +19,10 @@
         {
           "key": "Permissions-Policy",
           "value": "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000; includeSubDomains; preload"
         }
       ]
     },
@@ -25,6 +30,18 @@
       "source": "/",
       "headers": [
         { "key": "Link", "value": "<https://www.gandivalabs.my.id/>; rel=\"canonical\"" }
+      ]
+    },
+    {
+      "source": "/kalkulator-website",
+      "headers": [
+        { "key": "Link", "value": "<https://www.gandivalabs.my.id/kalkulator-website>; rel=\"canonical\"" }
+      ]
+    },
+    {
+      "source": "/website-estimator",
+      "headers": [
+        { "key": "Link", "value": "<https://www.gandivalabs.my.id/kalkulator-website>; rel=\"canonical\"" }
       ]
     },
     {
@@ -121,6 +138,12 @@
     },
     {
       "source": "/gandiva-hero-editorial-(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
       ]

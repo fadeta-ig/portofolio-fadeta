@@ -250,10 +250,12 @@ export function calculateEstimate(selections = {}) {
   const typeConfig = WEBSITE_TYPES.find((t) => t.id === activeTypeId) || WEBSITE_TYPES[0];
   const goalConfig = BUSINESS_GOALS.find((g) => g.id === selectedGoalId) || BUSINESS_GOALS[0];
 
+  const isCoerced = selectedComplexityId === 'custom';
   let activeComplexity = selectedComplexityId;
   if (activeComplexity === 'custom') {
     activeComplexity = 'professional';
   }
+  const complexityLabel = isCoerced ? 'CUSTOM' : activeComplexity.toUpperCase();
 
   const baseTier = typeConfig.basePrice?.[activeComplexity] || typeConfig.basePrice?.professional || { min: 1800000, max: 2800000, weeks: '1–2' };
 
@@ -275,16 +277,34 @@ export function calculateEstimate(selections = {}) {
     timelineAdjustNote = 'Prioritas Pengerjaan Cepat';
   }
 
+  const detailNotes = [];
+  if (detailedAnswers.contentReadiness === 'none') {
+    detailNotes.push('butuh bantuan materi konten');
+  }
+  if (detailedAnswers.designPreference === 'custom') {
+    detailNotes.push('desain khusus dari nol');
+  }
+  if (detailedAnswers.integrationNeed === 'yes') {
+    detailNotes.push('perlu scoping integrasi sistem');
+  }
+
   const estimatedMin = baseTier.min + addonsMinSum;
   const estimatedMax = baseTier.max + addonsMaxSum;
   const estimatedWeeks = baseTier.weeks;
 
-  const isCustomTriggered = selectedComplexityId === 'custom' || activeTypeId === 'custom-website';
+  const isCustomTriggered = selectedComplexityId === 'custom';
 
-  let rationale = `Berdasarkan tujuan utama untuk "${goalConfig.title.toLowerCase()}", rekomendasi paket ${typeConfig.title} tier ${activeComplexity.toUpperCase()} ini paling efektif memberikan hasil optimal dengan investasi terukur.`;
+  const tierDisplay = isCoerced
+    ? 'CUSTOM (dihitung setara PROFESSIONAL, perlu konsultasi)'
+    : activeComplexity.toUpperCase();
+  let rationale = `Berdasarkan tujuan utama untuk "${goalConfig.title.toLowerCase()}", rekomendasi paket ${typeConfig.title} tier ${tierDisplay} ini paling efektif memberikan hasil optimal dengan investasi terukur.`;
 
   if (activeAddonObjects.length > 0) {
     rationale += ` Dilengkapi dengan ${activeAddonObjects.length} fitur tambahan pilihan Anda.`;
+  }
+
+  if (detailNotes.length > 0) {
+    rationale += ` Konteks tambahan: ${detailNotes.join('; ')}.`;
   }
 
   return {
@@ -292,8 +312,11 @@ export function calculateEstimate(selections = {}) {
     resolvedTypeId: activeTypeId,
     businessGoal: goalConfig,
     complexity: activeComplexity,
+    complexityLabel,
+    isCoerced,
     rawComplexity: selectedComplexityId,
     isCustomTriggered,
+    detailNotes,
     estimatedMin,
     estimatedMax,
     priceFormatted: formatPriceRange(estimatedMin, estimatedMax, isCustomTriggered),
@@ -314,11 +337,15 @@ export function formatPriceRange(min, max, isCustom = false) {
     return `Mulai dari ${minFormatted}`;
   }
 
+  if (min === max) {
+    return formatRupiahShort(min);
+  }
+
   const minFormatted = formatRupiahShort(min);
   const maxFormatted = formatRupiahShort(max);
 
   if (minFormatted === maxFormatted) {
-    return minFormatted;
+    return formatPriceRangePrecise(min, max);
   }
 
   if (minFormatted.startsWith('Rp ') && minFormatted.endsWith(' juta') &&
@@ -351,22 +378,64 @@ function formatRupiahShort(amount) {
   return `Rp ${amount.toLocaleString('id-ID')}`;
 }
 
+function formatJutaPrecise(amount, decimals) {
+  const str = (amount / 1000000).toFixed(decimals).replace(/\.?0+$/, '').replace('.', ',');
+  return `Rp ${str} juta`;
+}
+
+function formatPriceRangePrecise(min, max) {
+  if (min >= 1000000 && max >= 1000000) {
+    for (const decimals of [2, 3]) {
+      const preciseMin = formatJutaPrecise(min, decimals);
+      const preciseMax = formatJutaPrecise(max, decimals);
+      if (preciseMin !== preciseMax) {
+        const cleanMin = preciseMin.replace('Rp ', '').replace(' juta', '');
+        const cleanMax = preciseMax.replace('Rp ', '');
+        return `Rp ${cleanMin} – ${cleanMax}`;
+      }
+    }
+  }
+  return `Rp ${min.toLocaleString('id-ID')} – ${max.toLocaleString('id-ID')}`;
+}
+
+function tierLabelOf(result) {
+  return result.complexityLabel ?? result.complexity.toUpperCase();
+}
+
+export function buildAddonsList(selectedAddons = []) {
+  if (selectedAddons.length === 0) {
+    return '- Tidak ada (Paket Standar)';
+  }
+  return selectedAddons.map((a) => `- ${a.title} (${a.priceFormatted})`).join('\n');
+}
+
+export function buildEstimateFieldRows(result, {
+  estimationLabel = 'Estimasi Waktu',
+  bonusText = 'Gratis Domain + Free Maintenance 6 Bln + Monitoring 24/7'
+} = {}) {
+  const { websiteType, businessGoal, priceFormatted, timelineText } = result;
+  return [
+    `Jenis Website      : ${websiteType.title}`,
+    `Tujuan Utama       : ${businessGoal.title}`,
+    `Skala Kebutuhan    : Tier ${tierLabelOf(result)}`,
+    `Estimasi Investasi : ${priceFormatted}`,
+    `${estimationLabel.padEnd(19)}: ${timelineText}`,
+    `Bonus Promo        : ${bonusText}`
+  ];
+}
+
+function buildDetailNoteLines(detailNotes = []) {
+  return detailNotes.map((note) => `- ${note}`);
+}
+
 /**
  * Generate encoded WhatsApp URL without emojis
  */
 export function generateWhatsAppUrl(result, customNote = '') {
-  const {
-    websiteType,
-    businessGoal,
-    complexity,
-    priceFormatted,
-    timelineText,
-    selectedAddons = []
-  } = result;
-
-  const addonsList = selectedAddons.length > 0
-    ? selectedAddons.map((a) => `- ${a.title} (${a.priceFormatted})`).join('\n')
-    : '- Tidak ada (Paket standar)';
+  const { selectedAddons = [], detailNotes = [] } = result;
+  const addonsList = buildAddonsList(selectedAddons);
+  const fieldRows = buildEstimateFieldRows(result);
+  const contextLines = buildDetailNoteLines(detailNotes);
 
   const textPayload = [
     'Halo Gandiva Labs,',
@@ -374,15 +443,11 @@ export function generateWhatsAppUrl(result, customNote = '') {
     'Saya baru saja menggunakan Smart Website Estimator di website Anda dan ingin berkonsultasi mengenai proyek ini:',
     '',
     `[ ringkasan proyek ]`,
-    `Jenis Website      : ${websiteType.title}`,
-    `Tujuan Utama       : ${businessGoal.title}`,
-    `Skala Kebutuhan    : Tier ${complexity.toUpperCase()}`,
-    `Estimasi Investasi : ${priceFormatted}`,
-    `Estimasi Waktu     : ${timelineText}`,
-    'Bonus Promo        : Gratis Domain + Free Maintenance 6 Bln + Monitoring 24/7',
+    ...fieldRows,
     '',
     '[ fitur add-on ]',
     addonsList,
+    ...(contextLines.length > 0 ? ['[ konteks kebutuhan ]', ...contextLines] : []),
     customNote ? `\n[ catatan tambahan ]\n${customNote}` : '',
     '',
     'Saya ingin mendiskusikan kebutuhan proyek ini lebih lanjut dengan tim Gandiva Labs. Terima kasih.'
@@ -395,28 +460,19 @@ export function generateWhatsAppUrl(result, customNote = '') {
  * Format raw text for Clipboard Copy action without emojis
  */
 export function formatSummaryText(result) {
-  const {
-    websiteType,
-    businessGoal,
-    complexity,
-    priceFormatted,
-    timelineText,
-    selectedAddons = []
-  } = result;
-
-  const addonsList = selectedAddons.length > 0
-    ? selectedAddons.map((a) => `- ${a.title} (${a.priceFormatted})`).join('\n')
-    : '- Tidak ada (Paket Standar)';
+  const { selectedAddons = [], detailNotes = [] } = result;
+  const addonsList = buildAddonsList(selectedAddons);
+  const fieldRows = buildEstimateFieldRows(result, {
+    estimationLabel: 'Estimasi Pengerjaan',
+    bonusText: 'Gratis Domain + Maintenance 6 Bln + Monitoring 24/7'
+  });
+  const contextLines = buildDetailNoteLines(detailNotes);
 
   return [
     'Gandiva Labs — Estimasi Website',
     '----------------------------------------',
-    `Jenis Website      : ${websiteType.title}`,
-    `Tujuan Utama       : ${businessGoal.title}`,
-    `Skala Kebutuhan    : Tier ${complexity.toUpperCase()}`,
-    `Estimasi Investasi : ${priceFormatted}`,
-    `Estimasi Pengerjaan: ${timelineText}`,
-    'Bonus Promo        : Gratis Domain + Maintenance 6 Bln + Monitoring 24/7',
+    ...fieldRows,
+    ...(contextLines.length > 0 ? ['', 'Konteks Kebutuhan:', ...contextLines] : []),
     '',
     'Fitur Standar Gratis & Garansi:',
     '- Gratis Maintenance & Bug Fixes 6 Bulan',

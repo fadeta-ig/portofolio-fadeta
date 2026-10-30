@@ -2,24 +2,37 @@ export const themeStorageKey = 'gandiva-theme';
 export const darkTheme = 'dark';
 export const lightTheme = 'light';
 
-export function readStoredTheme(storage = globalThis.localStorage) {
+function safeStorage() {
   try {
-    const value = storage?.getItem(themeStorageKey);
+    return globalThis.localStorage ?? null;
+  } catch {
+    return null;
+  }
+}
+
+export function readStoredTheme(storage) {
+  try {
+    const store = storage === undefined ? safeStorage() : storage;
+    const value = store?.getItem(themeStorageKey);
     return value === darkTheme || value === lightTheme ? value : null;
   } catch {
     return null;
   }
 }
 
-export function writeStoredTheme(theme, storage = globalThis.localStorage) {
+export function writeStoredTheme(theme, storage) {
   try {
-    storage?.setItem(themeStorageKey, theme);
+    const store = storage === undefined ? safeStorage() : storage;
+    store?.setItem(themeStorageKey, theme);
     return true;
   } catch {
     return false;
   }
 }
 
+// Mirror of the inline boot script in index.html (kept duplicated on purpose:
+// the boot script must run before Vue, and its bytes are pinned by the CSP
+// hash in vercel.json). Keep the semantics identical in both places.
 export function resolveTheme({ storedTheme, prefersDark = false } = {}) {
   if (storedTheme === darkTheme || storedTheme === lightTheme) return storedTheme;
   return prefersDark ? darkTheme : lightTheme;

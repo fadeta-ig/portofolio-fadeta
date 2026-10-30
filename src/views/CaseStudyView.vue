@@ -37,6 +37,8 @@ const project = computed(() => featuredProjects.find((item) => item.slug === rou
             :width="project.width"
             :height="project.height"
             class="w-full object-cover object-top"
+            fetchpriority="high"
+            loading="eager"
             decoding="async"
           />
         </div>
@@ -58,6 +60,7 @@ const project = computed(() => featuredProjects.find((item) => item.slug === rou
 
     <section class="py-20 md:py-28">
       <div class="section-shell">
+        <h2 class="sr-only">Keputusan proyek</h2>
         <div class="grid gap-4 md:grid-cols-3">
           <article v-for="(decision, index) in project.decisions" :key="decision.title" class="card-surface p-6 md:p-8">
             <span class="text-xs font-bold tracking-[0.16em] text-accent">0{{ index + 1 }}</span>
@@ -86,5 +89,13 @@ const project = computed(() => featuredProjects.find((item) => item.slug === rou
       </div>
     </section>
     <ContactSection />
+  </main>
+  <main v-else id="main-content" tabindex="-1" class="flex-grow bg-bg-primary pt-28 md:pt-36">
+    <div class="section-shell py-20">
+      <p class="section-kicker">Studi kasus</p>
+      <h1 class="mt-4 text-4xl font-bold tracking-tight text-text-primary md:text-5xl">Karya tidak ditemukan.</h1>
+      <p class="mt-4 max-w-xl text-base leading-relaxed text-text-secondary">Tautan yang Anda buka tidak cocok dengan studi kasus mana pun. Mungkin alamatnya berubah atau belum diterbitkan.</p>
+      <RouterLink to="/portfolio" class="mt-8 inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-text-primary px-6 text-sm font-bold text-bg-primary">Kembali ke semua karya</RouterLink>
+    </div>
   </main>
 </template>

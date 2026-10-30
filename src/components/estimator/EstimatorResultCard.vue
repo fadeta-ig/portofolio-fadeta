@@ -1,17 +1,14 @@
 <script setup>
-import { ref } from 'vue';
+import { onUnmounted, ref } from 'vue';
 import {
   CheckCircle2,
   Copy,
   Check,
   MessageCircle,
   ShieldCheck,
-  Sparkles,
   Clock,
   Send,
   Lock,
-  Gift,
-  Server,
   ChevronRight
 } from '@lucide/vue';
 import { generateWhatsAppUrl, formatSummaryText } from '../../data/estimator';
@@ -27,36 +24,56 @@ const props = defineProps({
 const emit = defineEmits(['restart']);
 
 const copied = ref(false);
+const copyError = ref('');
 const showLeadForm = ref(false);
 const leadSubmitted = ref(false);
 
 const leadName = ref('');
 const leadWhatsapp = ref('');
-const leadEmail = ref('');
 const leadError = ref('');
 
-function copyResult() {
+let copyTimer;
+onUnmounted(() => {
+  clearTimeout(copyTimer);
+});
+
+async function copyResult() {
   const text = formatSummaryText(props.result);
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(text);
-  } else {
-    const textarea = document.createElement('textarea');
-    textarea.value = text;
-    document.body.appendChild(textarea);
-    textarea.select();
-    document.execCommand('copy');
-    document.body.removeChild(textarea);
-  }
+  copyError.value = '';
+  try {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(text);
+    } else {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      document.body.appendChild(textarea);
+      textarea.select();
+      let ok = false;
+      try {
+        ok = document.execCommand('copy');
+      } finally {
+        document.body.removeChild(textarea);
+      }
+      if (!ok) {
+        throw new Error('copy failed');
+      }
+    }
 
-  copied.value = true;
-  trackEvent('copy_result', {
-    website_type: props.result.websiteType.id,
-    estimated_price: props.result.priceFormatted
-  });
-
-  setTimeout(() => {
+    copied.value = true;
+    trackEvent('copy_result', {
+      website_type: props.result.websiteType.id,
+      estimated_price: props.result.priceFormatted
+    });
+  } catch {
     copied.value = false;
-  }, 2500);
+    copyError.value = 'Gagal menyalin ringkasan. Silakan coba lagi.';
+    return;
+  } finally {
+    clearTimeout(copyTimer);
+    copyTimer = setTimeout(() => {
+      copied.value = false;
+    }, 2500);
+  }
 }
 
 function handleWhatsAppClick() {
@@ -66,20 +83,55 @@ function handleWhatsAppClick() {
   });
 }
 
+function normalizeWhatsapp(raw) {
+  const digits = raw.replace(/\D/g, '');
+  if (digits.startsWith('62')) {
+    return digits;
+  }
+  if (digits.startsWith('0')) {
+    return `62${digits.slice(1)}`;
+  }
+  return digits;
+}
+
 function submitLead() {
-  if (!leadName.value.trim() && !leadWhatsapp.value.trim() && !leadEmail.value.trim()) {
-    leadError.value = 'Silakan isi nama atau nomor WhatsApp Anda.';
+  const nama = leadName.value.trim();
+  const whatsappRaw = leadWhatsapp.value.trim();
+
+  if (!nama) {
+    leadError.value = 'Silakan isi nama Anda.';
+    return;
+  }
+  if (!whatsappRaw) {
+    leadError.value = 'Silakan isi nomor WhatsApp Anda.';
+    return;
+  }
+
+  const whatsapp = normalizeWhatsapp(whatsappRaw);
+  if (!/^\d{9,15}$/.test(whatsapp)) {
+    leadError.value = 'Nomor WhatsApp tidak valid (9–15 digit angka).';
     return;
   }
 
   leadError.value = '';
+  try {
+    localStorage.setItem('gandiva_estimator_lead', JSON.stringify({
+      nama,
+      whatsapp,
+      hasil: props.result,
+      timestamp: new Date().toISOString()
+    }));
+  } catch {
+    leadError.value = 'Gagal menyimpan. Silakan coba lagi.';
+    return;
+  }
+
   leadSubmitted.value = true;
 
   trackEvent('lead_submitted', {
     website_type: props.result.websiteType.id,
-    has_name: Boolean(leadName.value.trim()),
-    has_whatsapp: Boolean(leadWhatsapp.value.trim()),
-    has_email: Boolean(leadEmail.value.trim())
+    has_name: true,
+    has_whatsapp: true
   });
 }
 </script>
@@ -92,12 +144,12 @@ function submitLead() {
       <div class="flex flex-wrap items-center justify-between gap-3 border-b border-border-default pb-4 text-xs">
         <div class="flex items-center gap-2">
           <span class="h-2 w-2 rounded-full bg-accent animate-pulse" />
-          <span class="font-mono font-bold tracking-wider text-accent uppercase">
+          <h2 class="font-mono font-bold tracking-wider text-accent uppercase">
             Hasil Estimasi Terhitung
-          </span>
+          </h2>
         </div>
         <span class="font-mono text-text-tertiary bg-bg-secondary px-3 py-1 rounded-full border border-border-default">
-          {{ result.websiteType.title }} • Tier {{ result.complexity.toUpperCase() }}
+          {{ result.websiteType.title }} • Tier {{ result.complexityLabel ?? result.complexity.toUpperCase() }}
         </span>
       </div>
 
@@ -137,9 +189,9 @@ function submitLead() {
       <div class="p-4.5 rounded-xl bg-bg-secondary/70 border border-border-default space-y-2">
         <div class="flex items-center gap-2.5">
           <ShieldCheck class="h-4 w-4 text-accent shrink-0" />
-          <h4 class="text-xs font-bold text-text-primary">
+          <h3 class="text-xs font-bold text-text-primary">
             Garansi Maintenance 6 Bulan & Infrastructure Support
-          </h4>
+          </h3>
         </div>
         <p class="text-xs text-text-secondary leading-relaxed pl-6">
           <strong>Free Maintenance & Bug Fixes 6 Bulan</strong> serta <strong>Monitoring Uptime & Keamanan 24/7</strong> disertakan tanpa biaya tambahan. <strong>Gratis Domain (.com / .my.id)</strong> & Cloud Server 100% dibantu setup gratis dengan kepemilikan akun penuh atas nama Anda.
@@ -168,15 +220,16 @@ function submitLead() {
           <span>{{ copied ? 'Berhasil Disalin' : 'Salin Ringkasan Hasil' }}</span>
         </button>
       </div>
+      <p v-if="copyError" class="text-[11px] text-rose-500 font-mono">{{ copyError }}</p>
     </div>
 
     <!-- Summary Details Breakdown Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <!-- Included Inclusions -->
       <div class="p-5 rounded-2xl bg-bg-card border border-border-default space-y-3">
-        <h4 class="text-xs font-bold text-text-tertiary uppercase tracking-wider font-mono">
+        <h3 class="text-xs font-bold text-text-tertiary uppercase tracking-wider font-mono">
           Fitur Standar Termasuk
-        </h4>
+        </h3>
         <ul class="space-y-2 text-xs text-text-secondary">
           <li v-for="inc in result.inclusions" :key="inc.id" class="flex items-center justify-between">
             <span class="flex items-center gap-2 text-[11px]">
@@ -192,9 +245,9 @@ function submitLead() {
 
       <!-- Selected Addons -->
       <div class="p-5 rounded-2xl bg-bg-card border border-border-default space-y-3">
-        <h4 class="text-xs font-bold text-text-tertiary uppercase tracking-wider font-mono">
+        <h3 class="text-xs font-bold text-text-tertiary uppercase tracking-wider font-mono">
           Fitur Add-On Pilihan
-        </h4>
+        </h3>
         <div v-if="result.selectedAddons.length === 0" class="text-xs text-text-tertiary py-3 text-center border border-dashed border-border-default rounded-xl">
           Tidak ada add-on berbayar (Paket Standar)
         </div>
@@ -211,10 +264,10 @@ function submitLead() {
     <div class="p-5 rounded-2xl bg-bg-card border border-border-default space-y-3">
       <div class="flex items-center justify-between cursor-pointer" @click="showLeadForm = !showLeadForm">
         <div class="space-y-0.5">
-          <h4 class="text-xs font-bold text-text-primary flex items-center gap-2">
+          <h3 class="text-xs font-bold text-text-primary flex items-center gap-2">
             <Lock class="h-3.5 w-3.5 text-accent" />
             Simpan Hasil Estimasi ke Kontak Anda (Opsional)
-          </h4>
+          </h3>
           <p class="text-[11px] text-text-tertiary">
             Hasil estimasi tetap bisa langsung digunakan via WhatsApp tanpa mengikat.
           </p>

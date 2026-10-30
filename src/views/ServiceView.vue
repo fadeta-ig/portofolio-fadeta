@@ -107,4 +107,12 @@ const whatsappLink = computed(() => createWhatsAppLink(`Halo Gandiva Labs, saya 
 
     <ContactSection />
   </main>
+  <main v-else id="main-content" tabindex="-1" class="flex-grow bg-bg-primary pt-28 md:pt-36">
+    <div class="section-shell py-20">
+      <p class="section-kicker">Solusi</p>
+      <h1 class="mt-4 text-4xl font-bold tracking-tight text-text-primary md:text-5xl">Solusi tidak ditemukan.</h1>
+      <p class="mt-4 max-w-xl text-base leading-relaxed text-text-secondary">Tautan yang Anda buka tidak cocok dengan solusi mana pun. Mungkin alamatnya berubah atau belum diterbitkan.</p>
+      <RouterLink to="/#services" class="mt-8 inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-text-primary px-6 text-sm font-bold text-bg-primary">Kembali ke solusi</RouterLink>
+    </div>
+  </main>
 </template>

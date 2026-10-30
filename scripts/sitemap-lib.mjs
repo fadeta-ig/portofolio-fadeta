@@ -1,5 +1,9 @@
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 export function readAttribute(tag, attribute) {
-  return tag.match(new RegExp(`\\b${attribute}=["']([^"']+)["']`, 'i'))?.[1] ?? '';
+  return tag.match(new RegExp(`\\b${escapeRegExp(attribute)}=["']([^"']+)["']`, 'i'))?.[1] ?? '';
 }
 
 export function extractCanonical(html) {
@@ -9,8 +13,8 @@ export function extractCanonical(html) {
 }
 
 export function isIndexable(html) {
-  const robotsTag = html.match(/<meta\b[^>]*\bname=["']robots["'][^>]*>/i)?.[0];
-  return !robotsTag || !readAttribute(robotsTag, 'content').toLowerCase().includes('noindex');
+  const robotsTags = html.match(/<meta\b[^>]*\bname=["']robots["'][^>]*>/gi) ?? [];
+  return !robotsTags.some((tag) => readAttribute(tag, 'content').toLowerCase().includes('noindex'));
 }
 
 export function escapeXml(value) {

@@ -104,7 +104,7 @@ onUnmounted(() => window.removeEventListener('scroll', updateScrollProgress));
       </div>
     </section>
 
-    <div class="sticky top-[5.75rem] z-30 border-y border-white/30 bg-bg-primary/72 py-3 shadow-[0_12px_36px_rgba(0,0,0,0.06)] backdrop-blur-2xl">
+    <div class="sticky top-[5.75rem] z-30 border-y border-white/30 bg-bg-primary/85 py-3 shadow-[0_12px_36px_rgba(0,0,0,0.06)] backdrop-blur-md md:backdrop-blur-2xl">
       <div class="section-shell flex items-center justify-between gap-5 overflow-x-auto">
         <div class="flex min-w-max items-center gap-2" role="group" aria-label="Filter portofolio">
           <button
@@ -149,7 +149,8 @@ onUnmounted(() => window.removeEventListener('scroll', updateScrollProgress));
                     :alt="`Tampilan website ${project.title}`"
                     :width="project.width"
                     :height="project.height"
-                    loading="lazy"
+                    :loading="index === 0 ? 'eager' : 'lazy'"
+                    :fetchpriority="index === 0 ? 'high' : 'auto'"
                     decoding="async"
                     class="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.025]"
                   />

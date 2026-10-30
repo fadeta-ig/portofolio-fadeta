@@ -11,7 +11,7 @@ import {
   ShieldCheck,
   TrendingUp
 } from '@lucide/vue';
-import { siInstagram, siThreads, siWhatsapp } from 'simple-icons';
+import { instagramBrandPath, threadsBrandPath, whatsappBrandPath } from '../data/brandIcons';
 import { contact, createWhatsAppLink } from '../data/contact';
 
 const whatsappLink = createWhatsAppLink(
@@ -22,7 +22,7 @@ const socialLinks = [
   {
     label: 'WhatsApp',
     href: whatsappLink,
-    brandPath: siWhatsapp.path,
+    brandPath: whatsappBrandPath,
     external: true
   },
   {
@@ -34,13 +34,13 @@ const socialLinks = [
   {
     label: 'Threads',
     href: 'https://www.threads.com/@gandivalabs',
-    brandPath: siThreads.path,
+    brandPath: threadsBrandPath,
     external: true
   },
   {
     label: 'Instagram',
     href: 'https://www.instagram.com/gandivalabs',
-    brandPath: siInstagram.path,
+    brandPath: instagramBrandPath,
     external: true
   }
 ];
@@ -808,6 +808,8 @@ function showNextBenefit() {
     align-self: flex-start;
     margin: 0.75rem 1rem 1.15rem;
     padding: 0.3rem;
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    backdrop-filter: blur(12px) saturate(140%);
   }
 
   .hero-social-link {
@@ -826,6 +828,8 @@ function showNextBenefit() {
     margin: 1rem 0.9rem 0;
     grid-template-columns: 4.6rem minmax(0, 1fr);
     gap: 0.75rem;
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    backdrop-filter: blur(14px) saturate(140%);
   }
 
   .hero-benefit-icon {

@@ -13,13 +13,27 @@ export function useGsapScrollReveal(elementRef, options = {}) {
     duration = 0.9,
     stagger = 0.1,
     ease = 'power3.out',
-    triggerStart: _triggerStart = 'top 85%',
-    once: _once = false
+    triggerStart = 'top 85%',
+    once = false
   } = options;
 
   let ctx;
   let observer;
   let isDisposed = false;
+
+  function toRootMargin(value) {
+    const match = /top\s+(\d+(?:\.\d+)?)%/.exec(value ?? '');
+    if (!match) return '0px';
+    const visible = Math.min(Math.max(parseFloat(match[1]), 0), 100);
+    return `0px 0px -${(100 - visible).toFixed(2)}% 0px`;
+  }
+
+  function showFallback(targets) {
+    targets.forEach((el) => {
+      el.style.opacity = '1';
+      el.style.transform = '';
+    });
+  }
 
   onMounted(() => {
     if (!elementRef.value) return;
@@ -36,25 +50,36 @@ export function useGsapScrollReveal(elementRef, options = {}) {
       return;
     }
 
+    const targets = elementRef.value.children
+      ? Array.from(elementRef.value.children)
+      : [elementRef.value];
+    targets.forEach((el) => {
+      el.style.opacity = '0';
+      el.style.transform = `translateY(${y}px)`;
+    });
+
     const reveal = async () => {
-      const { default: gsap } = await import('gsap');
+      let gsap;
+      try {
+        ({ default: gsap } = await import('gsap'));
+      } catch {
+        if (!isDisposed) showFallback(targets);
+        return;
+      }
       if (isDisposed || !elementRef.value) return;
 
+      ctx?.revert();
       ctx = gsap.context(() => {
-      const targets = elementRef.value.children
-        ? Array.from(elementRef.value.children)
-        : [elementRef.value];
-
-      gsap.fromTo(targets,
-        { y, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration,
-          stagger,
-          ease
-        }
-      );
+        gsap.fromTo(targets,
+          { y, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration,
+            stagger,
+            ease
+          }
+        );
       }, elementRef.value);
     };
 
@@ -65,10 +90,12 @@ export function useGsapScrollReveal(elementRef, options = {}) {
 
     observer = new IntersectionObserver((entries) => {
       if (!entries.some((entry) => entry.isIntersecting)) return;
-      observer?.disconnect();
-      observer = undefined;
+      if (once) {
+        observer?.disconnect();
+        observer = undefined;
+      }
       reveal();
-    }, { rootMargin: '0px' });
+    }, { rootMargin: toRootMargin(triggerStart) });
     observer.observe(elementRef.value);
   });
 

@@ -66,6 +66,37 @@ const projects = [
   }
 ];
 
+const services = [
+  {
+    slug: 'company-profile',
+    title: 'Company Profile',
+    category: 'Solusi · Profil Bisnis',
+    summary: 'Website resmi berkelas yang menampilkan profil, keunggulan, dan portofolio bisnis Anda.',
+    accent: '#ee8859'
+  },
+  {
+    slug: 'landing-page',
+    title: 'Landing Page',
+    category: 'Solusi · Penawaran Fokus',
+    summary: 'Halaman fokus untuk satu penawaran agar hasil iklan lebih maksimal.',
+    accent: '#d1aa7c'
+  },
+  {
+    slug: 'toko-online',
+    title: 'Toko Online',
+    category: 'Solusi · Katalog & Belanja',
+    summary: 'Website katalog dan belanja agar pembeli memilih dan memesan sendiri.',
+    accent: '#8fa586'
+  },
+  {
+    slug: 'website-custom',
+    title: 'Website Custom',
+    category: 'Solusi · Sistem Bisnis',
+    summary: 'Aplikasi web dan sistem internal mengikuti alur kerja bisnis Anda.',
+    accent: '#597aa5'
+  }
+];
+
 function escapeMarkup(value) {
   return value
     .replaceAll('&', '&amp;')
@@ -130,7 +161,9 @@ async function createTextLayer({
 }
 
 async function createPreview(project) {
-  const screenshotPath = resolve(root, 'src/assets/screenshots', project.screenshot);
+  const screenshotPath = project.screenshot
+    ? resolve(root, 'src/assets/screenshots', project.screenshot)
+    : heroImagePath;
   const outputPath = resolve(outputDirectory, `${project.slug}.jpg`);
   const titleLines = wrapText(project.title, 15, 3);
   const summaryLines = wrapText(project.summary, 42, 4);
@@ -427,7 +460,7 @@ await mkdir(outputDirectory, { recursive: true });
 
 if (!selectedSlug) {
   const scriptPath = fileURLToPath(import.meta.url);
-  for (const project of projects) {
+  for (const project of [...projects, ...services]) {
     const child = spawnSync(process.execPath, [scriptPath, `--project=${project.slug}`], {
       cwd: root,
       env: process.env,
@@ -451,8 +484,8 @@ if (!selectedSlug) {
   const defaultPreview = await createDefaultPreview();
   console.log(`Social preview dibuat: gandiva-labs (${defaultPreview.size} byte)`);
 } else {
-  const project = projects.find((item) => item.slug === selectedSlug);
-  if (!project) throw new Error(`Project social preview tidak dikenal: ${selectedSlug}`);
+  const project = [...projects, ...services].find((item) => item.slug === selectedSlug);
+  if (!project) throw new Error(`Social preview tidak dikenal: ${selectedSlug}`);
   const result = await createPreview(project);
   console.log(`Social preview dibuat: ${project.slug} (${result.size} byte)`);
 }

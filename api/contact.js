@@ -1,4 +1,5 @@
 import {
+  TURNSTILE_ACTION,
   consumeRateLimit,
   getClientIp,
   validateSubmissionTiming,
@@ -9,7 +10,10 @@ const CONTACT_TO_EMAIL = process.env.CONTACT_TO_EMAIL || 'fadeta287@gmail.com';
 const CONTACT_FROM_EMAIL = process.env.CONTACT_FROM_EMAIL || 'Gandiva Labs <onboarding@resend.dev>';
 const RESEND_ENDPOINT = 'https://api.resend.com/emails';
 const RESEND_TIMEOUT_MS = 8_000;
+const MAX_BODY_BYTES = 25_000;
 
+// Server is authoritative. Values mirror serviceOptions/timelineOptions in
+// ConsultationForm.vue (client UX validation only); keep both lists in sync.
 const ALLOWED_SERVICES = new Set([
   'Company profile',
   'Landing page',
@@ -66,20 +70,32 @@ export function isAllowedOrigin(req) {
   if (configuredOrigins.length) return configuredOrigins.includes(origin);
 
   try {
-    return new URL(origin).host === req.headers.host;
+    const originHost = new URL(origin).hostname.toLowerCase();
+    const requestHost = String(req.headers.host || '').trim().toLowerCase().replace(/:\d+$/, '');
+    return originHost !== '' && originHost === requestHost;
   } catch {
     return false;
   }
 }
 
+export function getDeclaredContentLength(headers) {
+  const raw = headers?.['content-length'];
+  const first = Array.isArray(raw) ? raw[0] : String(raw ?? '').split(',')[0];
+  const parsed = Number.parseInt(String(first ?? '').trim(), 10);
+  return Number.isFinite(parsed) && parsed >= 0 ? parsed : 0;
+}
+
 export function validate(data) {
   const errors = {};
+  // Same pattern as ConsultationForm.vue validateForm (client UX only);
+  // this server check is authoritative — keep both in sync.
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   if (data.name.length < 2) errors.name = 'Nama tidak valid.';
   if (!emailPattern.test(data.email)) errors.email = 'Email tidak valid.';
   if (data.whatsapp && data.whatsapp.replace(/\D/g, '').length < 8) errors.whatsapp = 'Nomor WhatsApp tidak valid.';
   if (!ALLOWED_SERVICES.has(data.service)) errors.service = 'Jenis kebutuhan tidak valid.';
+  if (!['compact', 'full'].includes(data.variant)) errors.variant = 'Varian form tidak valid.';
   if (!ALLOWED_TIMELINES.has(data.timeline)) errors.timeline = 'Target waktu tidak valid.';
   if (data.variant === 'full' && !data.timeline) errors.timeline = 'Target waktu diperlukan.';
   if (data.summary.length < 20) errors.summary = 'Ringkasan kebutuhan terlalu pendek.';
@@ -153,7 +169,7 @@ export default async function handler(req, res) {
   if (contentType && !contentType.includes('application/json')) {
     return json(res, 415, { message: 'Format data tidak didukung.' });
   }
-  if (Number(req.headers?.['content-length'] || 0) > 25_000) {
+  if (getDeclaredContentLength(req.headers) > MAX_BODY_BYTES) {
     return json(res, 413, { message: 'Data form terlalu besar.' });
   }
 
@@ -172,14 +188,27 @@ export default async function handler(req, res) {
     return json(res, 400, { message: 'Data form tidak dapat dibaca.' });
   }
 
+  // The header check above is advisory only (missing/chunked/spoofed lengths);
+  // enforce the limit against the actual parsed body.
+  const rawBody = typeof req.body === 'string' ? req.body : JSON.stringify(body);
+  if (Buffer.byteLength(rawBody) > MAX_BODY_BYTES) {
+    return json(res, 413, { message: 'Data form terlalu besar.' });
+  }
+
   // Honeypot: return success so automated submitters do not learn how filtering works.
-  if (normalize(body.website, 120)) return json(res, 200, { ok: true });
+  // The decoy id keeps the response shape identical to a real success ({ ok, id }).
+  if (normalize(body.website, 120)) {
+    const decoyId = globalThis.crypto?.randomUUID?.() ?? `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
+    return json(res, 200, { ok: true, id: decoyId });
+  }
 
   const timing = validateSubmissionTiming(body.formStartedAt);
   if (!timing.valid) {
     const message = timing.reason === 'expired'
       ? 'Sesi form sudah terlalu lama. Muat ulang halaman lalu coba kembali.'
-      : 'Form belum dapat dikirim. Tunggu sebentar lalu coba kembali.';
+      : timing.reason === 'missing'
+        ? 'Data sesi form tidak ditemukan. Muat ulang halaman lalu coba kembali.'
+        : 'Form belum dapat dikirim. Tunggu sebentar lalu coba kembali.';
     return json(res, 400, { message });
   }
 
@@ -192,7 +221,7 @@ export default async function handler(req, res) {
     timeline: normalize(body.timeline, 80),
     summary: normalize(body.summary, 2000),
     source: normalize(body.source, 80) || 'unknown',
-    variant: normalize(body.variant, 20) === 'full' ? 'full' : 'compact',
+    variant: normalize(body.variant, 20) || 'compact',
     consent: body.consent === true,
     submissionId: normalize(body.submissionId, 80)
   };
@@ -202,6 +231,9 @@ export default async function handler(req, res) {
     return json(res, 422, { message: 'Periksa kembali informasi yang dimasukkan.', errors: validationErrors });
   }
 
+  // Fail-closed in production, fail-open elsewhere: local/preview without a
+  // secret skip verification (see verifyTurnstile); production without one is
+  // a misconfiguration and must not accept unverified submissions.
   const turnstileSecret = process.env.TURNSTILE_SECRET;
   if (process.env.VERCEL_ENV === 'production' && !turnstileSecret) {
     return json(res, 503, { message: 'Verifikasi keamanan belum dikonfigurasi.' });
@@ -212,7 +244,7 @@ export default async function handler(req, res) {
     secret: turnstileSecret,
     remoteIp: clientIp,
     expectedHostname: req.headers?.host,
-    expectedAction: 'turnstile-spin-v2'
+    expectedAction: TURNSTILE_ACTION
   });
   if (!turnstile.success) {
     const unavailable = ['verification-timeout', 'verification-unavailable'].includes(turnstile.error);
@@ -258,8 +290,8 @@ export default async function handler(req, res) {
       return json(res, 502, { message: 'Email belum berhasil dikirim. Silakan coba kembali atau gunakan WhatsApp.' });
     }
 
-    const result = await resendResponse.json();
-    return json(res, 200, { ok: true, id: result.id });
+    const result = await resendResponse.json().catch(() => ({}));
+    return json(res, 200, { ok: true, id: result?.id });
   } catch (error) {
     console.error('Contact email request failed', error instanceof Error ? error.message : 'Unknown error');
     const timedOut = error?.name === 'AbortError';

@@ -14,7 +14,7 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
-            if (id.includes('@lucide/vue') || id.includes('simple-icons')) {
+            if (id.includes('@lucide/vue')) {
               return 'icons';
             }
             if (id.includes('vue') || id.includes('vue-router') || id.includes('@unhead')) {

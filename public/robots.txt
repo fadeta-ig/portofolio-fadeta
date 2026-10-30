@@ -14,5 +14,4 @@ Allow: /og.png
 User-agent: Bingbot
 Allow: /
 
-Host: https://www.gandivalabs.my.id
 Sitemap: https://www.gandivalabs.my.id/sitemap.xml

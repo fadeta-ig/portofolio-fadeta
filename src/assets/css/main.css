@@ -473,3 +473,14 @@ select option {
 select option:disabled {
   color: var(--text-tertiary);
 }
+
+@media (max-width: 767px) {
+  .glass-panel,
+  .card-surface,
+  .liquid-panel,
+  .liquid-dark,
+  .liquid-button {
+    -webkit-backdrop-filter: blur(10px) saturate(130%);
+    backdrop-filter: blur(10px) saturate(130%);
+  }
+}

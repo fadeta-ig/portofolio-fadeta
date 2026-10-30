@@ -50,6 +50,29 @@ const caseStudies = new Map([
   }]
 ]);
 
+const servicePages = new Map([
+  ['/solusi/company-profile', {
+    slug: 'company-profile',
+    name: 'Company Profile',
+    image: `https://${expectedHost}/og/company-profile.jpg`
+  }],
+  ['/solusi/landing-page', {
+    slug: 'landing-page',
+    name: 'Landing Page',
+    image: `https://${expectedHost}/og/landing-page.jpg`
+  }],
+  ['/solusi/toko-online', {
+    slug: 'toko-online',
+    name: 'Toko Online',
+    image: `https://${expectedHost}/og/toko-online.jpg`
+  }],
+  ['/solusi/website-custom', {
+    slug: 'website-custom',
+    name: 'Website Custom',
+    image: `https://${expectedHost}/og/website-custom.jpg`
+  }]
+]);
+
 function check(condition, message) {
   if (!condition) errors.push(message);
 }
@@ -135,6 +158,16 @@ for (const project of caseStudies.values()) {
   });
 }
 
+for (const service of servicePages.values()) {
+  await verifyImage(resolve(dist, 'og', `${service.slug}.jpg`), {
+    format: 'jpeg',
+    width: 1200,
+    height: 630,
+    maximumBytes: 750_000,
+    label: `dist/og/${service.slug}.jpg`
+  });
+}
+
 check(existsSync(sitemapFile), 'dist/sitemap.xml tidak ditemukan.');
 check(existsSync(robotsFile), 'dist/robots.txt tidak ditemukan.');
 check(!existsSync(resolve(root, 'public/sitemap.xml')), 'public/sitemap.xml harus dihapus; sitemap dibentuk dari hasil prerender.');
@@ -171,8 +204,9 @@ for (const url of urls) {
   const parsed = new URL(url);
   const file = renderedFileForPath(parsed.pathname);
   const project = caseStudies.get(parsed.pathname);
-  const expectedImage = project?.image ?? defaultSocialImage;
-  const expectedImageType = project ? 'image/jpeg' : 'image/png';
+  const service = servicePages.get(parsed.pathname);
+  const expectedImage = project?.image ?? service?.image ?? defaultSocialImage;
+  const expectedImageType = project || service ? 'image/jpeg' : 'image/png';
 
   check(parsed.host === expectedHost, `Host sitemap tidak sesuai: ${url}`);
   check(existsSync(file), `Halaman pre-render tidak ditemukan untuk ${parsed.pathname}`);
@@ -397,16 +431,21 @@ if (existsSync(vercelConfigFile)) {
       ?.headers ?? [];
     const headerMap = new Map(globalHeaders.map(({ key, value }) => [key.toLowerCase(), value]));
     for (const header of [
-      'content-security-policy-report-only',
+      'content-security-policy',
       'x-content-type-options',
       'x-frame-options',
       'referrer-policy',
-      'permissions-policy'
+      'permissions-policy',
+      'strict-transport-security'
     ]) {
       check(headerMap.has(header), `Security header belum dikonfigurasi: ${header}`);
     }
 
-    const csp = headerMap.get('content-security-policy-report-only') ?? '';
+    const hsts = headerMap.get('strict-transport-security') ?? '';
+    check(hsts.includes('max-age='), 'Strict-Transport-Security belum menetapkan max-age.');
+    check(hsts.includes('includeSubDomains'), 'Strict-Transport-Security belum mencakup includeSubDomains.');
+
+    const csp = headerMap.get('content-security-policy') ?? '';
     check(csp.includes("default-src 'self'"), 'CSP belum membatasi default-src ke origin sendiri.');
     check(csp.includes(`'${themeHash}'`), `CSP belum mengizinkan theme boot script (${themeHash}).`);
     check(csp.includes('challenges.cloudflare.com'), 'CSP belum mengizinkan Turnstile.');

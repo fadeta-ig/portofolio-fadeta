@@ -90,3 +90,41 @@ test('formatPriceRange renders human readable Rupiah strings', () => {
   assert.equal(formatPriceRange(5000000, 5000000), 'Rp 5 juta');
   assert.equal(formatPriceRange(2000000, 4500000, true), 'Mulai dari Rp 2 juta');
 });
+
+test('formatPriceRange keeps narrow ranges visible instead of collapsing', () => {
+  assert.equal(formatPriceRange(2750000, 2840000), 'Rp 2,75 – 2,84 juta');
+  assert.equal(formatPriceRange(2000000, 2200000), 'Rp 2 – 2.2 juta');
+});
+
+test('calculateEstimate labels coerced custom tier explicitly', () => {
+  const result = calculateEstimate({ complexity: 'custom' });
+  assert.equal(result.isCoerced, true);
+  assert.equal(result.complexityLabel, 'CUSTOM');
+  assert.equal(result.isCustomTriggered, true);
+  assert.ok(result.priceFormatted.startsWith('Mulai dari '));
+  assert.match(result.rationale, /CUSTOM \(dihitung setara PROFESSIONAL/);
+});
+
+test('calculateEstimate keeps ranges for custom-website type with explicit tier', () => {
+  const result = calculateEstimate({ websiteType: 'custom-website', complexity: 'starter' });
+  assert.equal(result.isCustomTriggered, false);
+  assert.ok(!result.priceFormatted.startsWith('Mulai dari '));
+});
+
+test('calculateEstimate surfaces detailed answers as context notes', () => {
+  const result = calculateEstimate({
+    detailedAnswers: {
+      contentReadiness: 'none',
+      designPreference: 'custom',
+      integrationNeed: 'yes',
+      timelineUrgency: 'flexible'
+    }
+  });
+  assert.deepEqual(result.detailNotes, [
+    'butuh bantuan materi konten',
+    'desain khusus dari nol',
+    'perlu scoping integrasi sistem'
+  ]);
+  assert.match(result.rationale, /Konteks tambahan/);
+  assert.ok(formatSummaryText(result).includes('Konteks Kebutuhan:'));
+});

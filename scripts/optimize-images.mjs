@@ -4,6 +4,23 @@ import sharp from 'sharp';
 
 const workspaceRoot = process.cwd();
 
+async function readMetadata(filePath) {
+  try {
+    return await sharp(filePath).metadata();
+  } catch {
+    return null;
+  }
+}
+
+async function isOutputFresh(outputPath, sourcePath) {
+  try {
+    const [outputStat, sourceStat] = await Promise.all([fs.stat(outputPath), fs.stat(sourcePath)]);
+    return outputStat.mtimeMs >= sourceStat.mtimeMs;
+  } catch {
+    return false;
+  }
+}
+
 async function optimizeImages() {
   console.log('🚀 Initiating Image Optimization...');
 
@@ -26,23 +43,39 @@ async function optimizeImages() {
     const metadata = await sharp(inputBuffer).metadata();
     console.log(`Optimizing ${img.path}: Original ${metadata.width}x${metadata.height} (${(inputBuffer.length / 1024).toFixed(1)} KiB)`);
 
-    // Desktop 960w variant
-    const desktopBuffer = await sharp(inputBuffer)
-      .resize({ width: 960, withoutEnlargement: true })
-      .webp({ quality: img.quality, effort: 6 })
-      .toBuffer();
+    // Desktop 960w variant (skip when already optimized to keep builds idempotent)
+    if (metadata.format === 'webp' && (metadata.width ?? 0) <= 960) {
+      console.log(`  ○ Skipping desktop ${img.path}: already optimized (${metadata.width}w webp).`);
+    } else {
+      const desktopBuffer = await sharp(inputBuffer)
+        .resize({ width: 960, withoutEnlargement: true })
+        .webp({ quality: img.quality, effort: 6 })
+        .toBuffer();
 
-    await fs.writeFile(fullPath, desktopBuffer);
-    console.log(`  ✓ Updated desktop ${img.path}: 960w (${(desktopBuffer.length / 1024).toFixed(1)} KiB)`);
+      await fs.writeFile(fullPath, desktopBuffer);
+      console.log(`  ✓ Updated desktop ${img.path}: 960w (${(desktopBuffer.length / 1024).toFixed(1)} KiB)`);
+    }
 
-    // Mobile 640w variant
-    const mobileBuffer = await sharp(inputBuffer)
-      .resize({ width: 640, withoutEnlargement: true })
-      .webp({ quality: img.quality, effort: 6 })
-      .toBuffer();
+    // Mobile 640w variant (regenerate only when missing, stale, or oversized)
+    let mobileFresh = false;
+    if (existsSync(mobileFullPath)) {
+      const mobileMeta = await readMetadata(mobileFullPath);
+      mobileFresh = mobileMeta?.format === 'webp'
+        && (mobileMeta.width ?? 0) <= 640
+        && await isOutputFresh(mobileFullPath, fullPath);
+    }
 
-    await fs.writeFile(mobileFullPath, mobileBuffer);
-    console.log(`  ✓ Generated mobile ${img.mobilePath}: 640w (${(mobileBuffer.length / 1024).toFixed(1)} KiB)`);
+    if (mobileFresh) {
+      console.log(`  ○ Skipping mobile ${img.mobilePath}: output is newer than source.`);
+    } else {
+      const mobileBuffer = await sharp(inputBuffer)
+        .resize({ width: 640, withoutEnlargement: true })
+        .webp({ quality: img.quality, effort: 6 })
+        .toBuffer();
+
+      await fs.writeFile(mobileFullPath, mobileBuffer);
+      console.log(`  ✓ Generated mobile ${img.mobilePath}: 640w (${(mobileBuffer.length / 1024).toFixed(1)} KiB)`);
+    }
   }
 
   // Optimize logo mark in public
@@ -54,6 +87,12 @@ async function optimizeImages() {
   for (const logo of logos) {
     const fullPath = resolve(workspaceRoot, logo.path);
     if (!existsSync(fullPath)) continue;
+
+    const logoMeta = await readMetadata(fullPath);
+    if (logoMeta?.format === 'webp' && (logoMeta.width ?? 0) <= logo.targetWidth) {
+      console.log(`  ○ Skipping logo ${logo.path}: already optimized (${logoMeta.width}w webp).`);
+      continue;
+    }
 
     const inputBuffer = await fs.readFile(fullPath);
     const outputBuffer = await sharp(inputBuffer)

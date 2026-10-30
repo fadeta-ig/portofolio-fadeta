@@ -4,7 +4,21 @@ export const cookieSettingsEvent = 'gandiva:open-cookie-settings';
 export const analyticsConsentChangedEvent = 'gandiva:analytics-consent-changed';
 
 let analyticsConfigured = false;
+// memoryConsent is the session cache (authoritative when storage is blocked);
+// localStorage is the persisted copy. The storage listener below keeps the
+// session cache in sync when another tab changes the persisted choice.
 let memoryConsent = null;
+
+if (typeof window !== 'undefined') {
+  window.addEventListener('storage', (event) => {
+    if (event.key !== analyticsConsentStorageKey) return;
+    if (event.newValue === 'granted' || event.newValue === 'denied') {
+      memoryConsent = event.newValue;
+    } else if (event.newValue === null) {
+      memoryConsent = null;
+    }
+  });
+}
 
 function ensureGtag() {
   window.dataLayer = window.dataLayer || [];

@@ -9,6 +9,7 @@ const ConsultationView = () => import('./views/ConsultationView.vue');
 const EstimatorView = () => import('./views/EstimatorView.vue');
 const PrivacyView = () => import('./views/PrivacyView.vue');
 const ThankYouView = () => import('./views/ThankYouView.vue');
+const NotFoundView = () => import('./views/NotFoundView.vue');
 
 export const siteUrl = 'https://www.gandivalabs.my.id';
 export const defaultImage = `${siteUrl}/og.png`;
@@ -91,7 +92,18 @@ export const routes = [
       canonicalPath: '/terima-kasih'
     }
   },
-  { path: '/:pathMatch(.*)*', redirect: '/' }
+  {
+    path: '/404',
+    name: 'not-found',
+    component: NotFoundView,
+    meta: {
+      title: 'Halaman Tidak Ditemukan | Gandiva Labs',
+      description: 'Alamat yang Anda buka tidak cocok dengan halaman mana pun di website Gandiva Labs.',
+      robots: 'noindex, nofollow, noarchive',
+      canonicalPath: '/404'
+    }
+  },
+  { path: '/:pathMatch(.*)*', redirect: '/404' }
 ];
 
 export function scrollBehavior(to, from, savedPosition) {
@@ -103,7 +115,15 @@ export function scrollBehavior(to, from, savedPosition) {
 export function resolveRouteSeo(to) {
   if (to.name === 'service-detail') {
     const service = findService(to.params.slug);
-    return service ? { title: service.seoTitle, description: service.seoDescription, canonicalPath: to.path } : {};
+    return service ? {
+      title: service.seoTitle,
+      description: service.seoDescription,
+      canonicalPath: to.path,
+      image: `${siteUrl}${service.socialImage}`,
+      imageAlt: service.socialImageAlt,
+      imageType: 'image/jpeg',
+      openGraphType: 'website'
+    } : {};
   }
 
   if (to.name === 'case-study') {
@@ -129,5 +149,6 @@ export const prerenderRoutes = [
   ...services.map((service) => `/solusi/${service.slug}`),
   ...featuredProjects.map((project) => `/hasil/${project.slug}`),
   '/konsultasi',
-  '/privasi'
+  '/privasi',
+  '/404'
 ];

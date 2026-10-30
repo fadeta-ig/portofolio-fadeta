@@ -3,15 +3,10 @@ import { computed, ref } from 'vue';
 import {
   ArrowLeft,
   ArrowRight,
-  Calculator,
   CheckCircle2,
-  Gift,
   RotateCcw,
-  Sparkles,
-  Sliders,
-  ShieldCheck
+  Sliders
 } from '@lucide/vue';
-import { useSeo } from '../composables/useSeo';
 import {
   WEBSITE_TYPES,
   BUSINESS_GOALS,
@@ -26,23 +21,24 @@ import EstimatorFeatureSelector from '../components/estimator/EstimatorFeatureSe
 import EstimatorResultCard from '../components/estimator/EstimatorResultCard.vue';
 import EstimatorRestartModal from '../components/estimator/EstimatorRestartModal.vue';
 
-// Initialize SEO metadata
-useSeo();
-
 // State management
+// Stage map: landing ↔ wizard(1-3) → recommendation ↔ detailed → result
+// (prevStep from result returns to the stage it came from via resultOrigin)
 const currentStage = ref('landing'); // 'landing' | 'wizard' | 'recommendation' | 'detailed' | 'result'
 const wizardStep = ref(1); // 1: Type, 2: Goal, 3: Complexity
+const resultOrigin = ref('recommendation'); // 'recommendation' | 'detailed'
 
 const selectedType = ref('company-profile');
 const selectedGoal = ref('kredibilitas');
 const selectedComplexity = ref('professional');
 const selectedAddons = ref([]);
-const detailedAnswers = ref({
+const DEFAULT_DETAILED_ANSWERS = {
   contentReadiness: 'partial',
   designPreference: 'brand',
   integrationNeed: 'no',
   timelineUrgency: 'flexible'
-});
+};
+const detailedAnswers = ref({ ...DEFAULT_DETAILED_ANSWERS });
 
 const isShowRestartModal = ref(false);
 
@@ -88,7 +84,7 @@ function handleComplexitySelect(complexityId) {
 
 function prevStep() {
   if (currentStage.value === 'result') {
-    currentStage.value = 'recommendation';
+    currentStage.value = resultOrigin.value;
     return;
   }
   if (currentStage.value === 'detailed') {
@@ -121,6 +117,7 @@ function toggleAddon(addonId) {
 }
 
 function goToResult() {
+  resultOrigin.value = currentStage.value === 'detailed' ? 'detailed' : 'recommendation';
   currentStage.value = 'result';
   trackEvent('estimate_view', {
     type: selectedType.value,
@@ -142,8 +139,10 @@ function confirmRestart() {
   selectedGoal.value = 'kredibilitas';
   selectedComplexity.value = 'professional';
   selectedAddons.value = [];
+  detailedAnswers.value = { ...DEFAULT_DETAILED_ANSWERS };
   wizardStep.value = 1;
   currentStage.value = 'landing';
+  resultOrigin.value = 'recommendation';
   isShowRestartModal.value = false;
   trackEvent('estimator_restart');
 }
@@ -273,7 +272,7 @@ function confirmRestart() {
 
               <div class="space-y-1">
                 <h2 class="text-xl font-bold tracking-tight text-text-primary">
-                  {{ estimateResult.websiteType.title }} — Tier <span class="font-display italic text-accent">{{ estimateResult.complexity.toUpperCase() }}</span>
+                  {{ estimateResult.websiteType.title }} — Tier <span class="font-display italic text-accent">{{ estimateResult.complexityLabel ?? estimateResult.complexity.toUpperCase() }}</span>
                 </h2>
                 <p class="text-xs leading-relaxed text-text-secondary">
                   {{ estimateResult.rationale }}
@@ -378,7 +377,7 @@ function confirmRestart() {
         <div class="pt-2 flex items-center justify-between">
           <button
             type="button"
-            @click="currentStage = 'recommendation'"
+            @click="prevStep"
             class="text-xs text-text-secondary hover:text-text-primary"
           >
             Selesai Detail

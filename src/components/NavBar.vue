@@ -1,7 +1,7 @@
 <script setup>
 import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
 import { ArrowUpRight, Menu, MessageCircle, Moon, Sun, X } from '@lucide/vue';
-import { useRoute, useRouter } from 'vue-router';
+import { isNavigationFailure, useRoute, useRouter } from 'vue-router';
 import LogoMark from './LogoMark.vue';
 import { useTheme } from '../composables/useTheme';
 import { overlayStateEvent } from '../lib/bookingOffer';
@@ -10,7 +10,6 @@ const { isDark, toggleTheme } = useTheme();
 const route = useRoute();
 const router = useRouter();
 
-const navRef = ref(null);
 const brandLinkRef = ref(null);
 const menuDialogRef = ref(null);
 const closeMenuButtonRef = ref(null);
@@ -32,12 +31,19 @@ function hrefFor(item) {
   return item.path ?? `/#${item.id}`;
 }
 
+function safePush(navigation) {
+  return navigation.catch((error) => {
+    if (isNavigationFailure(error)) return undefined;
+    throw error;
+  });
+}
+
 async function navigateTo(item) {
   const isSamePageAnchor = !item.path && route.path === '/';
   closeMobileMenu({ restoreFocus: isSamePageAnchor });
 
   if (item.path) {
-    await router.push(item.path);
+    await safePush(router.push(item.path));
     return;
   }
 
@@ -47,7 +53,7 @@ async function navigateTo(item) {
     return;
   }
 
-  await router.push({ name: 'home', hash: `#${item.id}` });
+  await safePush(router.push({ name: 'home', hash: `#${item.id}` }));
 }
 
 async function goHome() {
@@ -58,7 +64,7 @@ async function goHome() {
     document.getElementById('hero')?.scrollIntoView({ behavior: 'smooth' });
     return;
   }
-  await router.push({ name: 'home' });
+  await safePush(router.push({ name: 'home' }));
 }
 
 function closeMobileMenu({ restoreFocus = true } = {}) {
@@ -83,6 +89,8 @@ function handleDialogKeydown(event) {
   }
   if (event.key !== 'Tab') return;
 
+  // Intentional focus-trap variant: no iframe, hidden-attribute filter only
+  // (differs from BookingOffer's trap; do not unify).
   const focusable = [...menuDialogRef.value.querySelectorAll(
     'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
   )].filter((element) => !element.hasAttribute('hidden'));
@@ -159,8 +167,16 @@ watch(isMobileMenuOpen, async (isOpen) => {
     return;
   }
 
-  if (appRoot) appRoot.inert = false;
-  document.body.style.overflow = previousBodyOverflow;
+  // Another overlay (booking dialog, cookie consent) may hold the lock; only
+  // release it when nothing else is open. :not(#mobile-menu) excludes our own
+  // panel, which is still in the DOM until the next tick.
+  const otherOverlayOpen = Boolean(document.querySelector(
+    '.booking-dialog, [data-blocks-marketing-overlay]:not(#mobile-menu)'
+  ));
+  if (!otherOverlayOpen) {
+    if (appRoot) appRoot.inert = false;
+    document.body.style.overflow = previousBodyOverflow;
+  }
   await nextTick();
   const previousFocusIsVisible = previouslyFocusedElement?.isConnected
     && previouslyFocusedElement.getClientRects().length > 0;
@@ -195,7 +211,6 @@ onUnmounted(() => {
 
 <template>
   <header
-    ref="navRef"
     class="site-header fixed inset-x-0 top-0 z-50 px-3 pt-3 md:px-5"
     :class="{ 'hero-nav-active': isHeroNav }"
   >
@@ -630,6 +645,18 @@ onUnmounted(() => {
   .mobile-menu-link small,
   .mobile-menu-footer p {
     display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .nav-surface {
+    -webkit-backdrop-filter: blur(12px) saturate(150%);
+    backdrop-filter: blur(12px) saturate(150%);
+  }
+
+  .mobile-menu-panel {
+    -webkit-backdrop-filter: blur(14px) saturate(150%);
+    backdrop-filter: blur(14px) saturate(150%);
   }
 }
 </style>

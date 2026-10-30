@@ -31,7 +31,6 @@ const stage = ref('offer');
 const iframeLoaded = ref(false);
 const showSlowMessage = ref(false);
 const dialogRef = ref(null);
-const closeButtonRef = ref(null);
 const primaryButtonRef = ref(null);
 const schedulerHeadingRef = ref(null);
 const copy = computed(() => getBookingOfferCopy(route.path));
@@ -58,9 +57,29 @@ function getStorage(type) {
   }
 }
 
-function readTimestamp(storage, key) {
-  const value = Number(storage?.getItem(key));
-  return Number.isFinite(value) && value > 0 ? value : 0;
+const CLOCK_SKEW_TOLERANCE_MS = 60 * 60 * 1000;
+
+function readTimestamp(storage, key, now = Date.now()) {
+  let value = 0;
+  try {
+    value = Number(storage?.getItem(key));
+  } catch {
+    return 0;
+  }
+  if (!Number.isFinite(value) || value <= 0) return 0;
+  if (value > now + CLOCK_SKEW_TOLERANCE_MS) {
+    console.warn('[booking-offer] Ignoring future suppression timestamp (clock skew?)', { key });
+    return 0;
+  }
+  return value;
+}
+
+function readShownThisSession(sessionStorage) {
+  try {
+    return sessionStorage?.getItem(bookingOfferStorageKeys.shownThisSession) === '1';
+  } catch {
+    return false;
+  }
 }
 
 function writeStorage(storage, key, value) {
@@ -77,7 +96,7 @@ function isSuppressed() {
   return Boolean(getBookingOfferSuppression({
     dismissedAt: readTimestamp(localStorage, bookingOfferStorageKeys.dismissedAt),
     schedulerOpenedAt: readTimestamp(localStorage, bookingOfferStorageKeys.schedulerOpenedAt),
-    shownThisSession: hasShownInMemory || sessionStorage?.getItem(bookingOfferStorageKeys.shownThisSession) === '1'
+    shownThisSession: hasShownInMemory || readShownThisSession(sessionStorage)
   }));
 }
 
@@ -140,13 +159,26 @@ function evaluateTrigger({ exitIntent = false } = {}) {
 }
 
 let scrollTicking = false;
+let scrollFrame = 0;
+let setupFrame = 0;
+let triggerGeneration = 0;
+
+function cancelPendingFrames() {
+  window.cancelAnimationFrame(scrollFrame);
+  window.cancelAnimationFrame(setupFrame);
+  scrollFrame = 0;
+  setupFrame = 0;
+  scrollTicking = false;
+}
 
 function handleScroll() {
   if (!triggerConfig || hasShownInMemory || scrollTicking) return;
   scrollTicking = true;
-  requestAnimationFrame(() => {
+  const generation = triggerGeneration;
+  scrollFrame = requestAnimationFrame(() => {
     scrollTicking = false;
-    if (!triggerConfig || hasShownInMemory) return;
+    scrollFrame = 0;
+    if (generation !== triggerGeneration || !triggerConfig || hasShownInMemory) return;
     const documentHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
     const progress = documentHeight > 0
       ? (window.scrollY + window.innerHeight) / documentHeight
@@ -171,6 +203,8 @@ function handleOverlayStateChange() {
 
 function setupTrigger() {
   clearTriggerTimers();
+  cancelPendingFrames();
+  triggerGeneration += 1;
   triggerConfig = getBookingTriggerConfig(route.path);
   pageStartedAt = Date.now();
   dwellReached = false;
@@ -261,6 +295,8 @@ function handleDialogKeydown(event) {
   }
   if (event.key !== 'Tab' || !dialogRef.value) return;
 
+  // Intentional focus-trap variant: includes the scheduler iframe and filters
+  // by visibility (differs from NavBar's trap; do not unify).
   const focusable = [...dialogRef.value.querySelectorAll(
     'a[href], button:not([disabled]), iframe, input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
   )].filter((element) => element.getClientRects().length > 0 && element.getAttribute('aria-hidden') !== 'true');
@@ -295,8 +331,13 @@ watch(isOpen, async (open) => {
     return;
   }
 
-  if (appRoot) appRoot.inert = false;
-  document.body.style.overflow = previousBodyOverflow;
+  // Another overlay (mobile menu, cookie consent) may hold the lock; only
+  // release it when nothing else is open. Our own dialog carries no
+  // data-blocks-marketing-overlay marker, so this never matches itself.
+  if (!isAnotherOverlayOpen()) {
+    if (appRoot) appRoot.inert = false;
+    document.body.style.overflow = previousBodyOverflow;
+  }
   await nextTick();
   if (previouslyFocusedElement?.isConnected && previouslyFocusedElement !== document.body) {
     previouslyFocusedElement.focus();
@@ -305,8 +346,9 @@ watch(isOpen, async (open) => {
 
 watch(() => route.path, async () => {
   closeDialog('route-change', { recordDismissal: false });
+  cancelPendingFrames();
   await nextTick();
-  window.requestAnimationFrame(setupTrigger);
+  setupFrame = window.requestAnimationFrame(setupTrigger);
 });
 
 onMounted(() => {
@@ -318,6 +360,8 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   clearTriggerTimers();
+  cancelPendingFrames();
+  triggerGeneration += 1;
   window.clearTimeout(iframeTimer);
   window.removeEventListener('scroll', handleScroll);
   document.removeEventListener('mouseout', handleExitIntent);
@@ -354,7 +398,6 @@ onBeforeUnmount(() => {
         <template v-if="stage === 'offer'">
           <div class="booking-glow" aria-hidden="true" />
           <button
-            ref="closeButtonRef"
             type="button"
             class="booking-close"
             aria-label="Tutup penawaran konsultasi"
